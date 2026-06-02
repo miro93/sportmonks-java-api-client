@@ -63,8 +63,10 @@ class CompetitionDecodingTest {
         assertThat(league.name()).isEqualTo("Scottish Premiership");
         assertThat(league.active()).isTrue();
         assertThat(league.shortCode()).isEqualTo("SPL");
+        assertThat(league.imagePath()).isEqualTo("https://cdn.sportmonks.com/images/soccer/leagues/501.png");
         assertThat(league.type()).isEqualTo("league");
         assertThat(league.subType()).isEqualTo("domestic");
+        assertThat(league.lastPlayedAt()).isEqualTo("2024-05-19 15:00:00");
         assertThat(league.category()).isEqualTo(1);
         assertThat(league.hasJerseys()).isFalse();
 
@@ -74,6 +76,7 @@ class CompetitionDecodingTest {
         assertThat(season.name()).isEqualTo("2023/2024");
         assertThat(season.finished()).isTrue();
         assertThat(season.isCurrent()).isFalse();
+        assertThat(season.tieBreakerRuleId()).isEqualTo(169L);
         assertThat(season.standingMethod()).isEqualTo("points");
     }
 
@@ -235,6 +238,7 @@ class CompetitionDecodingTest {
         assertThat(stage.name()).isEqualTo("Regular Season");
         assertThat(stage.seasonId()).isEqualTo(19735L);
         assertThat(stage.finished()).isTrue();
+        assertThat(stage.isCurrent()).isFalse();
         assertThat(stage.sortOrder()).isEqualTo(1);
 
         assertThat(stage.rounds()).hasSize(1);
@@ -244,6 +248,7 @@ class CompetitionDecodingTest {
         assertThat(round.stageId()).isEqualTo(77457866L);
         assertThat(round.groupId()).isNull();
         assertThat(round.finished()).isTrue();
+        assertThat(round.isCurrent()).isFalse();
 
         assertThat(round.fixtures()).hasSize(1);
         Fixture fixture = round.fixtures().getFirst();
@@ -256,5 +261,71 @@ class CompetitionDecodingTest {
         // No nested includes on the fixture itself
         assertThat(fixture.participants()).isNull();
         assertThat(fixture.state()).isNull();
+    }
+
+    // -------------------------------------------------------------------------
+    // 4. Stage and Round without includes — relations are null
+    // -------------------------------------------------------------------------
+
+    @Test
+    void decodesStageListWithoutIncludes() {
+        String json = """
+                {
+                  "data": [
+                    {
+                      "id": 77457866,
+                      "sport_id": 1,
+                      "league_id": 501,
+                      "season_id": 19735,
+                      "type_id": 223,
+                      "name": "Regular Season",
+                      "sort_order": 1,
+                      "finished": true,
+                      "pending": false,
+                      "is_current": false,
+                      "starting_at": "2023-07-29",
+                      "ending_at": "2024-05-19",
+                      "games_in_current_week": false
+                    }
+                  ]
+                }
+                """;
+
+        List<Stage> stages = codec.decode(json, codec.listType(Stage.class)).data();
+
+        assertThat(stages).hasSize(1);
+        Stage stage = stages.getFirst();
+        assertThat(stage.id()).isEqualTo(77457866L);
+        // Relation not included → null
+        assertThat(stage.rounds()).isNull();
+    }
+
+    @Test
+    void decodesRoundWithoutIncludes() {
+        String json = """
+                {
+                  "data": {
+                    "id": 274719,
+                    "sport_id": 1,
+                    "league_id": 501,
+                    "season_id": 19735,
+                    "stage_id": 77457866,
+                    "group_id": null,
+                    "name": "1",
+                    "finished": true,
+                    "pending": false,
+                    "is_current": false,
+                    "starting_at": "2023-07-29",
+                    "ending_at": "2023-08-06",
+                    "games_in_current_week": false
+                  }
+                }
+                """;
+
+        Round round = codec.decode(json, codec.type(Round.class)).data();
+
+        assertThat(round.id()).isEqualTo(274719L);
+        // Relation not included → null
+        assertThat(round.fixtures()).isNull();
     }
 }
