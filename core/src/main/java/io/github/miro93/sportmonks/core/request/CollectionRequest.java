@@ -62,8 +62,9 @@ public final class CollectionRequest<T> {
 
     /// Lazily walks every page, following {@code pagination.has_more}.
     public Stream<T> stream() {
+        RequestSpec base = spec.build();
         return Pages.stream(page -> {
-            ApiResponse<List<T>> response = executor.execute(spec.page(page).build(), listType);
+            ApiResponse<List<T>> response = executor.execute(base.withPage(page), listType);
             return response;
         });
     }

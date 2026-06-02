@@ -26,6 +26,11 @@ public record RequestSpec(
         return new Builder(path);
     }
 
+    /// Returns a copy of this spec with the page number set, leaving this instance unchanged.
+    public RequestSpec withPage(int page) {
+        return new RequestSpec(path, includes, filters, select, sort, page);
+    }
+
     public static final class Builder {
         private final String path;
         private final List<String> includes = new ArrayList<>();
