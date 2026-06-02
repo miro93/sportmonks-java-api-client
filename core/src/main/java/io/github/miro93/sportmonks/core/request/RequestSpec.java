@@ -24,7 +24,8 @@ public record RequestSpec(
 
     /// Starts a new builder for the given relative path.
     ///
-    /// @param path the relative request path
+    /// @param path the raw (un-encoded) relative request path; callers must not
+    ///             percent-encode it — {@link UrlBuilder} encodes each path segment
     /// @return a fresh builder
     public static Builder builder(String path) {
         return new Builder(path);
