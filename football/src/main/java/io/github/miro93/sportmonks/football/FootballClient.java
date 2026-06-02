@@ -8,13 +8,18 @@ import io.github.miro93.sportmonks.core.json.JacksonCodec;
 import io.github.miro93.sportmonks.core.retry.RetryPolicy;
 import io.github.miro93.sportmonks.core.retry.RetryingTransport;
 import io.github.miro93.sportmonks.core.retry.Sleeper;
+import io.github.miro93.sportmonks.football.endpoint.CoachesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.FixturesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.LeaguesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.LivescoresEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.PlayersEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.RoundsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.SchedulesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.SeasonsEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.SquadsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.StagesEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.TeamsEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.TransfersEndpoint;
 
 import java.net.http.HttpClient;
 import java.time.Duration;
@@ -32,6 +37,11 @@ public final class FootballClient {
     private final StagesEndpoint stages;
     private final RoundsEndpoint rounds;
     private final SchedulesEndpoint schedules;
+    private final TeamsEndpoint teams;
+    private final PlayersEndpoint players;
+    private final CoachesEndpoint coaches;
+    private final SquadsEndpoint squads;
+    private final TransfersEndpoint transfers;
 
     private FootballClient(
             FixturesEndpoint fixtures,
@@ -40,7 +50,12 @@ public final class FootballClient {
             SeasonsEndpoint seasons,
             StagesEndpoint stages,
             RoundsEndpoint rounds,
-            SchedulesEndpoint schedules) {
+            SchedulesEndpoint schedules,
+            TeamsEndpoint teams,
+            PlayersEndpoint players,
+            CoachesEndpoint coaches,
+            SquadsEndpoint squads,
+            TransfersEndpoint transfers) {
         this.fixtures = fixtures;
         this.livescores = livescores;
         this.leagues = leagues;
@@ -48,6 +63,11 @@ public final class FootballClient {
         this.stages = stages;
         this.rounds = rounds;
         this.schedules = schedules;
+        this.teams = teams;
+        this.players = players;
+        this.coaches = coaches;
+        this.squads = squads;
+        this.transfers = transfers;
     }
 
     /// Creates a new builder for a {@link FootballClient}.
@@ -104,6 +124,41 @@ public final class FootballClient {
     /// @return the {@code /schedules} endpoint accessor
     public SchedulesEndpoint schedules() {
         return schedules;
+    }
+
+    /// Returns the teams endpoint.
+    ///
+    /// @return the {@code /teams} endpoint accessor
+    public TeamsEndpoint teams() {
+        return teams;
+    }
+
+    /// Returns the players endpoint.
+    ///
+    /// @return the {@code /players} endpoint accessor
+    public PlayersEndpoint players() {
+        return players;
+    }
+
+    /// Returns the coaches endpoint.
+    ///
+    /// @return the {@code /coaches} endpoint accessor
+    public CoachesEndpoint coaches() {
+        return coaches;
+    }
+
+    /// Returns the squads endpoint.
+    ///
+    /// @return the {@code /squads} endpoint accessor
+    public SquadsEndpoint squads() {
+        return squads;
+    }
+
+    /// Returns the transfers endpoint.
+    ///
+    /// @return the {@code /transfers} endpoint accessor
+    public TransfersEndpoint transfers() {
+        return transfers;
     }
 
     /// Fluent builder for {@link FootballClient}. The API token is required; the
@@ -170,7 +225,12 @@ public final class FootballClient {
                     new SeasonsEndpoint(executor, codec),
                     new StagesEndpoint(executor, codec),
                     new RoundsEndpoint(executor, codec),
-                    new SchedulesEndpoint(executor, codec));
+                    new SchedulesEndpoint(executor, codec),
+                    new TeamsEndpoint(executor, codec),
+                    new PlayersEndpoint(executor, codec),
+                    new CoachesEndpoint(executor, codec),
+                    new SquadsEndpoint(executor, codec),
+                    new TransfersEndpoint(executor, codec));
         }
     }
 }
