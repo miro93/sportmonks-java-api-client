@@ -117,4 +117,20 @@ class SchedulesEndpointTest {
         assertThat(response.data()).hasSize(2);
         assertThat(response.data().get(0).id()).isEqualTo(10L);
     }
+
+    @Test
+    void bySeasonAndTeamUsesGetAsync(WireMockRuntimeInfo wm) throws Exception {
+        stubFor(get(urlPathEqualTo("/schedules/seasons/19686/teams/53")).willReturn(okJson("""
+                { "data": [ { "id": 3, "name": "Regular Season" } ] }
+                """)));
+
+        var future = schedules(wm.getHttpBaseUrl())
+                .bySeasonAndTeam(19686L, 53L)
+                .getAsync();
+
+        var response = future.get();
+        assertThat(response.data()).hasSize(1);
+        assertThat(response.data().get(0).id()).isEqualTo(3L);
+        assertThat(response.data().get(0).name()).isEqualTo("Regular Season");
+    }
 }
