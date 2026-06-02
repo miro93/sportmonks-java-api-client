@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import java.net.http.HttpClient;
 import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -70,10 +71,9 @@ class ApiExecutorTest {
                 { "data": [ { "id": 1, "name": "Ajax" } ] }
                 """)));
 
-        var future = executor(wm.getHttpBaseUrl())
+        CompletableFuture<ApiResponse<List<Team>>> future = executor(wm.getHttpBaseUrl())
                 .executeAsync(RequestSpec.builder("teams").build(), codec.listType(Team.class));
-        @SuppressWarnings("unchecked")
-        ApiResponse<List<Team>> response = (ApiResponse<List<Team>>) (Object) future.get();
+        ApiResponse<List<Team>> response = future.get();
 
         assertThat(response.data()).hasSize(1);
     }
