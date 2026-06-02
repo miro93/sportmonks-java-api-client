@@ -9,7 +9,12 @@ import io.github.miro93.sportmonks.core.retry.RetryPolicy;
 import io.github.miro93.sportmonks.core.retry.RetryingTransport;
 import io.github.miro93.sportmonks.core.retry.Sleeper;
 import io.github.miro93.sportmonks.football.endpoint.FixturesEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.LeaguesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.LivescoresEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.RoundsEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.SchedulesEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.SeasonsEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.StagesEndpoint;
 
 import java.net.http.HttpClient;
 import java.time.Duration;
@@ -22,10 +27,27 @@ public final class FootballClient {
 
     private final FixturesEndpoint fixtures;
     private final LivescoresEndpoint livescores;
+    private final LeaguesEndpoint leagues;
+    private final SeasonsEndpoint seasons;
+    private final StagesEndpoint stages;
+    private final RoundsEndpoint rounds;
+    private final SchedulesEndpoint schedules;
 
-    private FootballClient(FixturesEndpoint fixtures, LivescoresEndpoint livescores) {
+    private FootballClient(
+            FixturesEndpoint fixtures,
+            LivescoresEndpoint livescores,
+            LeaguesEndpoint leagues,
+            SeasonsEndpoint seasons,
+            StagesEndpoint stages,
+            RoundsEndpoint rounds,
+            SchedulesEndpoint schedules) {
         this.fixtures = fixtures;
         this.livescores = livescores;
+        this.leagues = leagues;
+        this.seasons = seasons;
+        this.stages = stages;
+        this.rounds = rounds;
+        this.schedules = schedules;
     }
 
     /// Creates a new builder for a {@link FootballClient}.
@@ -47,6 +69,41 @@ public final class FootballClient {
     /// @return the {@code /livescores} endpoint accessor
     public LivescoresEndpoint livescores() {
         return livescores;
+    }
+
+    /// Returns the leagues endpoint.
+    ///
+    /// @return the {@code /leagues} endpoint accessor
+    public LeaguesEndpoint leagues() {
+        return leagues;
+    }
+
+    /// Returns the seasons endpoint.
+    ///
+    /// @return the {@code /seasons} endpoint accessor
+    public SeasonsEndpoint seasons() {
+        return seasons;
+    }
+
+    /// Returns the stages endpoint.
+    ///
+    /// @return the {@code /stages} endpoint accessor
+    public StagesEndpoint stages() {
+        return stages;
+    }
+
+    /// Returns the rounds endpoint.
+    ///
+    /// @return the {@code /rounds} endpoint accessor
+    public RoundsEndpoint rounds() {
+        return rounds;
+    }
+
+    /// Returns the schedules endpoint.
+    ///
+    /// @return the {@code /schedules} endpoint accessor
+    public SchedulesEndpoint schedules() {
+        return schedules;
     }
 
     /// Fluent builder for {@link FootballClient}. The API token is required; the
@@ -108,7 +165,12 @@ public final class FootballClient {
             ApiExecutor executor = new ApiExecutor(transport, codec, apiToken, baseUrl);
             return new FootballClient(
                     new FixturesEndpoint(executor, codec),
-                    new LivescoresEndpoint(executor, codec));
+                    new LivescoresEndpoint(executor, codec),
+                    new LeaguesEndpoint(executor, codec),
+                    new SeasonsEndpoint(executor, codec),
+                    new StagesEndpoint(executor, codec),
+                    new RoundsEndpoint(executor, codec),
+                    new SchedulesEndpoint(executor, codec));
         }
     }
 }
