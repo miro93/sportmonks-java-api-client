@@ -4,12 +4,16 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /// Turns a base URL + {@link RequestSpec} into a SportMonks-style {@link URI}.
-/// Structural separators ({@code ;} {@code ,} {@code :}) are kept literal; only the atomic values
-/// are percent-encoded.
+/// Path segments are percent-encoded individually (so a value such as a search term may
+/// contain spaces or reserved characters), while the {@code /} separators between segments and
+/// the {@code ,} used in comma-list segments (e.g. multi-id paths) are kept literal.
+/// In the query string, structural separators ({@code ;} {@code ,} {@code :}) are likewise kept
+/// literal; only the atomic values are percent-encoded.
 public final class UrlBuilder {
 
     private UrlBuilder() {
@@ -17,7 +21,7 @@ public final class UrlBuilder {
 
     public static URI build(String baseUrl, RequestSpec spec) {
         String base = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
-        StringBuilder url = new StringBuilder(base).append('/').append(spec.path());
+        StringBuilder url = new StringBuilder(base).append('/').append(encodePath(spec.path()));
 
         List<String> params = new ArrayList<>();
 
@@ -56,5 +60,22 @@ public final class UrlBuilder {
 
     private static String encode(String value) {
         return URLEncoder.encode(value, StandardCharsets.UTF_8);
+    }
+
+    /// Percent-encodes each {@code /}-separated path segment, preserving the slashes between
+    /// segments and any literal commas within a segment (the multi-id / comma-list separator).
+    private static String encodePath(String path) {
+        return Arrays.stream(path.split("/", -1))
+                .map(UrlBuilder::encodePathSegment)
+                .collect(Collectors.joining("/"));
+    }
+
+    /// Percent-encodes a single path segment. Unlike form encoding, spaces become {@code %20}
+    /// (not {@code +}), and the comma sub-delimiter is left literal so comma-separated id lists
+    /// stay readable and RFC 3986-valid.
+    private static String encodePathSegment(String segment) {
+        return URLEncoder.encode(segment, StandardCharsets.UTF_8)
+                .replace("+", "%20")
+                .replace("%2C", ",");
     }
 }

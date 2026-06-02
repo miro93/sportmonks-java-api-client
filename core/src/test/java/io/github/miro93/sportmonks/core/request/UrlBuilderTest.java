@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.net.URI;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 class UrlBuilderTest {
 
@@ -22,6 +23,37 @@ class UrlBuilderTest {
                 .include("participants", "events.player")
                 .build());
         assertThat(uri.toString()).isEqualTo(BASE + "/fixtures/1?include=participants;events.player");
+    }
+
+    @Test
+    void encodesSpacesInPathSegmentsAsPercent20() {
+        URI uri = UrlBuilder.build(BASE, RequestSpec.builder("leagues/search/Premier League").build());
+        assertThat(uri.toString()).isEqualTo(BASE + "/leagues/search/Premier%20League");
+    }
+
+    @Test
+    void doesNotThrowForSpaceInPathSegment() {
+        assertThatCode(() ->
+                UrlBuilder.build(BASE, RequestSpec.builder("leagues/search/Premier League").build()))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    void encodesReservedCharactersInPathSegments() {
+        URI uri = UrlBuilder.build(BASE, RequestSpec.builder("leagues/search/A&B?C").build());
+        assertThat(uri.toString()).isEqualTo(BASE + "/leagues/search/A%26B%3FC");
+    }
+
+    @Test
+    void preservesSlashSeparatorsBetweenSegments() {
+        URI uri = UrlBuilder.build(BASE, RequestSpec.builder("fixtures/head-to-head/1/2").build());
+        assertThat(uri.toString()).isEqualTo(BASE + "/fixtures/head-to-head/1/2");
+    }
+
+    @Test
+    void keepsCommasInMultiIdPathSegmentLiteral() {
+        URI uri = UrlBuilder.build(BASE, RequestSpec.builder("fixtures/multi/1,2,3").build());
+        assertThat(uri.toString()).isEqualTo(BASE + "/fixtures/multi/1,2,3");
     }
 
     @Test
