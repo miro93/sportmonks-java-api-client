@@ -22,6 +22,13 @@ import java.util.concurrent.Executors;
 
 /// Ties transport + auth + codec + error mapping together. Sport modules call this.
 /// Async variants run the blocking pipeline on a virtual-thread executor (Java 25).
+///
+/// A client normally creates a single, long-lived {@code ApiExecutor}. The
+/// four-argument constructor provisions a per-instance
+/// {@link Executors#newVirtualThreadPerTaskExecutor() virtual-thread executor}
+/// (which starts no threads until work is submitted); deployments that prefer to
+/// share or manage their own executor can supply one via the five-argument
+/// constructor instead.
 public final class ApiExecutor {
 
     private final HttpTransport transport;
