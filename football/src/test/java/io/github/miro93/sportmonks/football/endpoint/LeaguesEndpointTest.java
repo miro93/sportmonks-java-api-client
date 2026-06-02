@@ -107,6 +107,12 @@ class LeaguesEndpointTest {
     }
 
     @Test
+    void byDateRejectsNull(WireMockRuntimeInfo wm) {
+        assertThatThrownBy(() -> leagues(wm.getHttpBaseUrl()).byDate(null))
+                .isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
     void liveHitsLivePath(WireMockRuntimeInfo wm) {
         stubFor(get(urlPathEqualTo("/leagues/live")).willReturn(okJson("""
                 { "data": [ { "id": 8, "name": "Premier League" }, { "id": 564, "name": "La Liga" } ] }

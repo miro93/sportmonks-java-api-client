@@ -74,6 +74,7 @@ public final class LeaguesEndpoint {
     /// @param date the calendar date
     /// @return a collection request for leagues with fixtures on that date
     public CollectionRequest<League> byDate(LocalDate date) {
+        Objects.requireNonNull(date, "date");
         return collection("leagues/fixtures/" + date);
     }
 
