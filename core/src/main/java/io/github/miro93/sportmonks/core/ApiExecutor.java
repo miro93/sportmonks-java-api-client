@@ -7,6 +7,7 @@ import io.github.miro93.sportmonks.core.error.ServerException;
 import io.github.miro93.sportmonks.core.http.HttpTransport;
 import io.github.miro93.sportmonks.core.http.RawResponse;
 import io.github.miro93.sportmonks.core.json.CodecException;
+import io.github.miro93.sportmonks.core.json.DataType;
 import io.github.miro93.sportmonks.core.json.JacksonCodec;
 import io.github.miro93.sportmonks.core.request.RequestSpec;
 import io.github.miro93.sportmonks.core.request.UrlBuilder;
@@ -51,7 +52,7 @@ public final class ApiExecutor {
         this.asyncExecutor = Objects.requireNonNull(asyncExecutor, "asyncExecutor");
     }
 
-    public <T> ApiResponse<T> execute(RequestSpec spec, JavaType dataType) {
+    public <T> ApiResponse<T> execute(RequestSpec spec, DataType<T> dataType) {
         RawResponse response = transport.get(
                 UrlBuilder.build(baseUrl, spec),
                 Map.of("Authorization", token.value(), "Accept", "application/json"));
@@ -68,9 +69,19 @@ public final class ApiExecutor {
         }
     }
 
-    public <T> CompletableFuture<ApiResponse<T>> executeAsync(RequestSpec spec, JavaType dataType) {
+    /// Low-level overload retained for callers that hold a raw {@link JavaType}.
+    public <T> ApiResponse<T> execute(RequestSpec spec, JavaType dataType) {
+        return execute(spec, new DataType<>(dataType));
+    }
+
+    public <T> CompletableFuture<ApiResponse<T>> executeAsync(RequestSpec spec, DataType<T> dataType) {
         return CompletableFuture.supplyAsync(
                 () -> this.<T>execute(spec, dataType), asyncExecutor);
+    }
+
+    /// Low-level overload retained for callers that hold a raw {@link JavaType}.
+    public <T> CompletableFuture<ApiResponse<T>> executeAsync(RequestSpec spec, JavaType dataType) {
+        return executeAsync(spec, new DataType<>(dataType));
     }
 
     private static Optional<Duration> retryAfter(RawResponse response) {

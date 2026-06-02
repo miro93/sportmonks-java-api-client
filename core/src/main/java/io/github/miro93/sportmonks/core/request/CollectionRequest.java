@@ -1,7 +1,7 @@
 package io.github.miro93.sportmonks.core.request;
 
-import com.fasterxml.jackson.databind.JavaType;
 import io.github.miro93.sportmonks.core.ApiExecutor;
+import io.github.miro93.sportmonks.core.json.DataType;
 import io.github.miro93.sportmonks.core.paging.Pages;
 import io.github.miro93.sportmonks.core.response.ApiResponse;
 
@@ -19,9 +19,9 @@ public final class CollectionRequest<T> {
 
     private final ApiExecutor executor;
     private final RequestSpec.Builder spec;
-    private final JavaType listType;
+    private final DataType<List<T>> listType;
 
-    public CollectionRequest(ApiExecutor executor, RequestSpec.Builder spec, JavaType listType) {
+    public CollectionRequest(ApiExecutor executor, RequestSpec.Builder spec, DataType<List<T>> listType) {
         this.executor = Objects.requireNonNull(executor, "executor");
         this.spec = Objects.requireNonNull(spec, "spec");
         this.listType = Objects.requireNonNull(listType, "listType");

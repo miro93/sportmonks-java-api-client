@@ -1,7 +1,7 @@
 package io.github.miro93.sportmonks.core.request;
 
-import com.fasterxml.jackson.databind.JavaType;
 import io.github.miro93.sportmonks.core.ApiExecutor;
+import io.github.miro93.sportmonks.core.json.DataType;
 import io.github.miro93.sportmonks.core.response.ApiResponse;
 
 import java.util.Objects;
@@ -13,9 +13,9 @@ public final class SingleResourceRequest<T> {
 
     private final ApiExecutor executor;
     private final RequestSpec.Builder spec;
-    private final JavaType dataType;
+    private final DataType<T> dataType;
 
-    public SingleResourceRequest(ApiExecutor executor, RequestSpec.Builder spec, JavaType dataType) {
+    public SingleResourceRequest(ApiExecutor executor, RequestSpec.Builder spec, DataType<T> dataType) {
         this.executor = Objects.requireNonNull(executor, "executor");
         this.spec = Objects.requireNonNull(spec, "spec");
         this.dataType = Objects.requireNonNull(dataType, "dataType");
