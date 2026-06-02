@@ -2,7 +2,7 @@ package io.github.miro93.sportmonks.football.model;
 
 /// A football coach. {@code id} is always present. Foreign-key {@code Long}
 /// fields ({@code playerId}, {@code sportId}, {@code countryId},
-/// {@code nationalityId}, {@code positionId}, {@code detailedPositionId}) and
+/// {@code nationalityId}) and
 /// optional scalars ({@code cityId}, {@code commonName}, {@code firstname},
 /// {@code lastname}, {@code name}, {@code displayName}, {@code imagePath},
 /// {@code height}, {@code weight}, {@code dateOfBirth}, {@code gender}) may be

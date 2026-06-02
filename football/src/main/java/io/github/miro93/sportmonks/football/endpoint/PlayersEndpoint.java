@@ -56,6 +56,7 @@ public final class PlayersEndpoint {
     ///
     /// @param name the search term (must not be {@code null})
     /// @return a collection request for the matching players
+    /// @throws NullPointerException if {@code name} is {@code null}
     public CollectionRequest<Player> search(String name) {
         Objects.requireNonNull(name, "name");
         return collection("players/search/" + name);
