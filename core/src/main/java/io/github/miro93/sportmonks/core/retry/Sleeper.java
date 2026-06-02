@@ -1,5 +1,7 @@
 package io.github.miro93.sportmonks.core.retry;
 
+import io.github.miro93.sportmonks.core.error.TransportException;
+
 import java.time.Duration;
 
 /// Abstracts thread sleeping so retry timing is testable.
@@ -13,7 +15,7 @@ public interface Sleeper {
             Thread.sleep(duration.toMillis());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted during backoff", e);
+            throw new TransportException("Interrupted during backoff", e);
         }
     };
 }
