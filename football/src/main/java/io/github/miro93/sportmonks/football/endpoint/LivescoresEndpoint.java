@@ -16,6 +16,10 @@ public final class LivescoresEndpoint {
     private final ApiExecutor executor;
     private final DataType<List<Fixture>> list;
 
+    /// Creates the endpoint, building the {@link Fixture} list decoder from {@code codec}.
+    ///
+    /// @param executor the executor used to run requests
+    /// @param codec    the codec used to derive the list response type
     public LivescoresEndpoint(ApiExecutor executor, JacksonCodec codec) {
         this.executor = Objects.requireNonNull(executor, "executor");
         Objects.requireNonNull(codec, "codec");

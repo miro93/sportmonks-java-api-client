@@ -28,18 +28,29 @@ public final class FootballClient {
         this.livescores = livescores;
     }
 
+    /// Creates a new builder for a {@link FootballClient}.
+    ///
+    /// @return a fresh builder
     public static Builder builder() {
         return new Builder();
     }
 
+    /// Returns the fixtures endpoint.
+    ///
+    /// @return the {@code /fixtures} endpoint accessor
     public FixturesEndpoint fixtures() {
         return fixtures;
     }
 
+    /// Returns the livescores endpoint.
+    ///
+    /// @return the {@code /livescores} endpoint accessor
     public LivescoresEndpoint livescores() {
         return livescores;
     }
 
+    /// Fluent builder for {@link FootballClient}. The API token is required; the
+    /// retry policy, base URL and request timeout default to sensible values.
     public static final class Builder {
         private ApiToken apiToken;
         private RetryPolicy retryPolicy = RetryPolicy.defaults();
@@ -49,26 +60,46 @@ public final class FootballClient {
         private Builder() {
         }
 
+        /// Sets the SportMonks API token used to authenticate requests (required).
+        ///
+        /// @param apiToken the API token
+        /// @return this builder
         public Builder apiToken(ApiToken apiToken) {
             this.apiToken = apiToken;
             return this;
         }
 
+        /// Overrides the retry policy applied to transient failures.
+        ///
+        /// @param retryPolicy the retry policy to use
+        /// @return this builder
         public Builder retryPolicy(RetryPolicy retryPolicy) {
             this.retryPolicy = Objects.requireNonNull(retryPolicy, "retryPolicy");
             return this;
         }
 
+        /// Overrides the API base URL (defaults to {@link #DEFAULT_BASE_URL}).
+        ///
+        /// @param baseUrl the base URL
+        /// @return this builder
         public Builder baseUrl(String baseUrl) {
             this.baseUrl = Objects.requireNonNull(baseUrl, "baseUrl");
             return this;
         }
 
+        /// Overrides the per-request timeout (defaults to 30 seconds).
+        ///
+        /// @param requestTimeout the request timeout
+        /// @return this builder
         public Builder requestTimeout(Duration requestTimeout) {
             this.requestTimeout = Objects.requireNonNull(requestTimeout, "requestTimeout");
             return this;
         }
 
+        /// Builds the configured {@link FootballClient}.
+        ///
+        /// @return a ready-to-use client
+        /// @throws NullPointerException if no API token was set
         public FootballClient build() {
             Objects.requireNonNull(apiToken, "apiToken is required");
             HttpTransport base = new JdkHttpTransport(HttpClient.newHttpClient(), requestTimeout);

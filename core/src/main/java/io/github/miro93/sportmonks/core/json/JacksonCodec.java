@@ -16,6 +16,8 @@ public final class JacksonCodec {
 
     private final JsonMapper mapper;
 
+    /// Creates a codec with a snake_case naming strategy, the Blackbird module,
+    /// and lenient handling of unknown properties.
     public JacksonCodec() {
         this.mapper = JsonMapper.builder()
                 .addModule(new BlackbirdModule())
