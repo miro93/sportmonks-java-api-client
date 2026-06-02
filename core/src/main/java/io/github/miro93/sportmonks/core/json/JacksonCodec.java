@@ -41,12 +41,6 @@ public final class JacksonCodec {
         return decodeJavaType(json, dataType.javaType());
     }
 
-    /// Low-level overload for callers that already have a raw {@link JavaType}.
-    @SuppressWarnings("unchecked")
-    public <T> ApiResponse<T> decode(String json, JavaType dataType) {
-        return (ApiResponse<T>) decodeJavaType(json, dataType);
-    }
-
     @SuppressWarnings("unchecked")
     private <T> ApiResponse<T> decodeJavaType(String json, JavaType dataType) {
         JavaType responseType = mapper.getTypeFactory()

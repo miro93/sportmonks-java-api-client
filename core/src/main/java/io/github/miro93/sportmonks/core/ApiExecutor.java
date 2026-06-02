@@ -1,6 +1,5 @@
 package io.github.miro93.sportmonks.core;
 
-import com.fasterxml.jackson.databind.JavaType;
 import io.github.miro93.sportmonks.core.auth.ApiToken;
 import io.github.miro93.sportmonks.core.error.ErrorMapper;
 import io.github.miro93.sportmonks.core.error.ServerException;
@@ -69,19 +68,9 @@ public final class ApiExecutor {
         }
     }
 
-    /// Low-level overload retained for callers that hold a raw {@link JavaType}.
-    public <T> ApiResponse<T> execute(RequestSpec spec, JavaType dataType) {
-        return execute(spec, new DataType<>(dataType));
-    }
-
     public <T> CompletableFuture<ApiResponse<T>> executeAsync(RequestSpec spec, DataType<T> dataType) {
         return CompletableFuture.supplyAsync(
                 () -> this.<T>execute(spec, dataType), asyncExecutor);
-    }
-
-    /// Low-level overload retained for callers that hold a raw {@link JavaType}.
-    public <T> CompletableFuture<ApiResponse<T>> executeAsync(RequestSpec spec, JavaType dataType) {
-        return executeAsync(spec, new DataType<>(dataType));
     }
 
     private static Optional<Duration> retryAfter(RawResponse response) {
