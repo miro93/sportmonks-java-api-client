@@ -37,6 +37,9 @@ public final class FixturesEndpoint {
     }
 
     public CollectionRequest<Fixture> byMultipleIds(long... ids) {
+        if (ids.length == 0) {
+            throw new IllegalArgumentException("byMultipleIds requires at least one id");
+        }
         String csv = LongStream.of(ids).mapToObj(Long::toString).collect(Collectors.joining(","));
         return collection("fixtures/multi/" + csv);
     }
@@ -58,6 +61,7 @@ public final class FixturesEndpoint {
     }
 
     public CollectionRequest<Fixture> search(String name) {
+        Objects.requireNonNull(name, "name");
         return collection("fixtures/search/" + name);
     }
 

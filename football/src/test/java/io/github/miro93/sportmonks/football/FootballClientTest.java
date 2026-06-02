@@ -3,6 +3,7 @@ package io.github.miro93.sportmonks.football;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import io.github.miro93.sportmonks.core.auth.ApiToken;
+import io.github.miro93.sportmonks.core.error.NotFoundException;
 import org.junit.jupiter.api.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -49,5 +50,14 @@ class FootballClientTest {
     void defaultBaseUrlIsSportmonksFootballV3() {
         assertThat(FootballClient.DEFAULT_BASE_URL)
                 .isEqualTo("https://api.sportmonks.com/v3/football");
+    }
+
+    @Test
+    void notFoundPropagatesAsTypedException(WireMockRuntimeInfo wm) {
+        stubFor(get(urlPathEqualTo("/fixtures/999"))
+                .willReturn(aResponse().withStatus(404).withBody("missing")));
+
+        assertThatThrownBy(() -> client(wm.getHttpBaseUrl()).fixtures().byId(999L).get())
+                .isInstanceOf(NotFoundException.class);
     }
 }

@@ -13,6 +13,8 @@ import java.util.stream.Stream;
 /// Fluent builder for a collection request. Resolves to an {@code ApiResponse<List<T>>}
 /// via {@link #get()} / {@link #getAsync()}, or a lazily-paginated {@link #stream()}.
 ///
+/// Instances are not thread-safe; use one instance per logical request.
+///
 /// @implNote {@link #stream()} is sequential; calling {@code parallel()} on it is
 /// unsupported because the underlying page iterator is stateful.
 public final class CollectionRequest<T> {
@@ -47,6 +49,7 @@ public final class CollectionRequest<T> {
         return this;
     }
 
+    /// Applies to {@link #get()} / {@link #getAsync()} only; {@link #stream()} always walks from the first page.
     public CollectionRequest<T> page(int page) {
         spec.page(page);
         return this;

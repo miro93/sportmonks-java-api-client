@@ -15,6 +15,7 @@ import java.time.LocalDate;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @WireMockTest
 class FixturesEndpointTest {
@@ -119,6 +120,18 @@ class FixturesEndpointTest {
                 .get();
 
         assertThat(response.data()).hasSize(1);
+    }
+
+    @Test
+    void searchRejectsNull(WireMockRuntimeInfo wm) {
+        assertThatThrownBy(() -> fixtures(wm.getHttpBaseUrl()).search(null))
+                .isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    void byMultipleIdsRejectsEmpty(WireMockRuntimeInfo wm) {
+        assertThatThrownBy(() -> fixtures(wm.getHttpBaseUrl()).byMultipleIds())
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
