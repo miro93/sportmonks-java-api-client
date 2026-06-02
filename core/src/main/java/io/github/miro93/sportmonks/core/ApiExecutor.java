@@ -64,7 +64,7 @@ public final class ApiExecutor {
         } catch (CodecException e) {
             throw new ServerException(
                     "Failed to parse successful response (status " + response.status() + ")",
-                    response.status());
+                    response.status(), e);
         }
     }
 

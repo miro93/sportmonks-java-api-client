@@ -6,6 +6,7 @@ import io.github.miro93.sportmonks.core.auth.ApiToken;
 import io.github.miro93.sportmonks.core.error.NotFoundException;
 import io.github.miro93.sportmonks.core.error.ServerException;
 import io.github.miro93.sportmonks.core.http.JdkHttpTransport;
+import io.github.miro93.sportmonks.core.json.CodecException;
 import io.github.miro93.sportmonks.core.json.JacksonCodec;
 import io.github.miro93.sportmonks.core.request.RequestSpec;
 import io.github.miro93.sportmonks.core.response.ApiResponse;
@@ -62,7 +63,8 @@ class ApiExecutorTest {
 
         assertThatThrownBy(() -> executor(wm.getHttpBaseUrl())
                 .execute(RequestSpec.builder("teams/1").build(), codec.type(Team.class)))
-                .isInstanceOf(ServerException.class);
+                .isInstanceOf(ServerException.class)
+                .hasCauseInstanceOf(CodecException.class);
     }
 
     @Test
