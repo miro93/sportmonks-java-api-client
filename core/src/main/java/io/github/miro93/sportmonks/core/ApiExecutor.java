@@ -1,12 +1,12 @@
 package io.github.miro93.sportmonks.core;
 
-import com.fasterxml.jackson.databind.JavaType;
 import io.github.miro93.sportmonks.core.auth.ApiToken;
 import io.github.miro93.sportmonks.core.error.ErrorMapper;
 import io.github.miro93.sportmonks.core.error.ServerException;
 import io.github.miro93.sportmonks.core.http.HttpTransport;
 import io.github.miro93.sportmonks.core.http.RawResponse;
 import io.github.miro93.sportmonks.core.json.CodecException;
+import io.github.miro93.sportmonks.core.json.DataType;
 import io.github.miro93.sportmonks.core.json.JacksonCodec;
 import io.github.miro93.sportmonks.core.request.RequestSpec;
 import io.github.miro93.sportmonks.core.request.UrlBuilder;
@@ -37,11 +37,24 @@ public final class ApiExecutor {
     private final String baseUrl;
     private final Executor asyncExecutor;
 
+    /// Creates an executor with a per-instance virtual-thread executor for async calls.
+    ///
+    /// @param transport the HTTP transport
+    /// @param codec     the JSON codec
+    /// @param token     the API token applied to every request
+    /// @param baseUrl   the API base URL
     public ApiExecutor(HttpTransport transport, JacksonCodec codec, ApiToken token, String baseUrl) {
         this(transport, codec, token, baseUrl,
                 Executors.newVirtualThreadPerTaskExecutor());
     }
 
+    /// Creates an executor using a caller-supplied executor for async calls.
+    ///
+    /// @param transport     the HTTP transport
+    /// @param codec         the JSON codec
+    /// @param token         the API token applied to every request
+    /// @param baseUrl       the API base URL
+    /// @param asyncExecutor the executor backing {@link #executeAsync}
     public ApiExecutor(HttpTransport transport, JacksonCodec codec, ApiToken token,
                        String baseUrl, Executor asyncExecutor) {
         this.transport = Objects.requireNonNull(transport, "transport");
@@ -51,7 +64,15 @@ public final class ApiExecutor {
         this.asyncExecutor = Objects.requireNonNull(asyncExecutor, "asyncExecutor");
     }
 
-    public <T> ApiResponse<T> execute(RequestSpec spec, JavaType dataType) {
+    /// Runs the request synchronously: builds the URL, applies auth, and decodes
+    /// the response into a typed {@link ApiResponse}.
+    ///
+    /// @param spec     the request specification
+    /// @param dataType the token describing the {@code data} payload type
+    /// @param <T>      the payload type
+    /// @return the decoded response
+    /// @throws io.github.miro93.sportmonks.core.error.SportmonksException on HTTP or decoding failure
+    public <T> ApiResponse<T> execute(RequestSpec spec, DataType<T> dataType) {
         RawResponse response = transport.get(
                 UrlBuilder.build(baseUrl, spec),
                 Map.of("Authorization", token.value(), "Accept", "application/json"));
@@ -68,7 +89,13 @@ public final class ApiExecutor {
         }
     }
 
-    public <T> CompletableFuture<ApiResponse<T>> executeAsync(RequestSpec spec, JavaType dataType) {
+    /// Runs {@link #execute} on the async executor.
+    ///
+    /// @param spec     the request specification
+    /// @param dataType the token describing the {@code data} payload type
+    /// @param <T>      the payload type
+    /// @return a future completing with the decoded response (or the failure)
+    public <T> CompletableFuture<ApiResponse<T>> executeAsync(RequestSpec spec, DataType<T> dataType) {
         return CompletableFuture.supplyAsync(
                 () -> this.<T>execute(spec, dataType), asyncExecutor);
     }

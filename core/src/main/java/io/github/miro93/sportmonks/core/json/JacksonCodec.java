@@ -16,6 +16,8 @@ public final class JacksonCodec {
 
     private final JsonMapper mapper;
 
+    /// Creates a codec with a snake_case naming strategy, the Blackbird module,
+    /// and lenient handling of unknown properties.
     public JacksonCodec() {
         this.mapper = JsonMapper.builder()
                 .addModule(new BlackbirdModule())
@@ -24,21 +26,29 @@ public final class JacksonCodec {
                 .build();
     }
 
-    /// Build the {@link JavaType} for a single-resource {@code data} payload.
-    public JavaType type(Class<?> dataClass) {
-        return mapper.getTypeFactory().constructType(dataClass);
+    /// Build the {@link DataType} for a single-resource {@code data} payload.
+    /// The returned token carries the generic parameter {@code T} so that
+    /// {@link #decode(String, DataType)} can infer the response type.
+    public <T> DataType<T> type(Class<T> dataClass) {
+        return new DataType<>(mapper.getTypeFactory().constructType(dataClass));
     }
 
-    /// Build the {@link JavaType} for a {@code List<dataClass>} {@code data} payload.
-    public JavaType listType(Class<?> dataClass) {
-        return mapper.getTypeFactory().constructCollectionType(List.class, dataClass);
+    /// Build the {@link DataType} for a {@code List<T>} {@code data} payload.
+    public <T> DataType<List<T>> listType(Class<T> dataClass) {
+        return new DataType<>(mapper.getTypeFactory().constructCollectionType(List.class, dataClass));
     }
 
-    public <T> ApiResponse<T> decode(String json, JavaType dataType) {
+    /// Decode a SportMonks JSON envelope using a typed {@link DataType} token.
+    public <T> ApiResponse<T> decode(String json, DataType<T> dataType) {
+        return decodeJavaType(json, dataType.javaType());
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> ApiResponse<T> decodeJavaType(String json, JavaType dataType) {
         JavaType responseType = mapper.getTypeFactory()
                 .constructParametricType(ApiResponse.class, dataType);
         try {
-            return mapper.readValue(json, responseType);
+            return (ApiResponse<T>) mapper.readValue(json, responseType);
         } catch (JacksonException e) {
             throw new CodecException("Failed to decode SportMonks response", e);
         }

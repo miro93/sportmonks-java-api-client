@@ -1,0 +1,114 @@
+package io.github.miro93.sportmonks.football;
+
+import io.github.miro93.sportmonks.core.ApiExecutor;
+import io.github.miro93.sportmonks.core.auth.ApiToken;
+import io.github.miro93.sportmonks.core.http.HttpTransport;
+import io.github.miro93.sportmonks.core.http.JdkHttpTransport;
+import io.github.miro93.sportmonks.core.json.JacksonCodec;
+import io.github.miro93.sportmonks.core.retry.RetryPolicy;
+import io.github.miro93.sportmonks.core.retry.RetryingTransport;
+import io.github.miro93.sportmonks.core.retry.Sleeper;
+import io.github.miro93.sportmonks.football.endpoint.FixturesEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.LivescoresEndpoint;
+
+import java.net.http.HttpClient;
+import java.time.Duration;
+import java.util.Objects;
+
+/// Entry point for the SportMonks football API. Build via {@link #builder()}.
+public final class FootballClient {
+
+    public static final String DEFAULT_BASE_URL = "https://api.sportmonks.com/v3/football";
+
+    private final FixturesEndpoint fixtures;
+    private final LivescoresEndpoint livescores;
+
+    private FootballClient(FixturesEndpoint fixtures, LivescoresEndpoint livescores) {
+        this.fixtures = fixtures;
+        this.livescores = livescores;
+    }
+
+    /// Creates a new builder for a {@link FootballClient}.
+    ///
+    /// @return a fresh builder
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    /// Returns the fixtures endpoint.
+    ///
+    /// @return the {@code /fixtures} endpoint accessor
+    public FixturesEndpoint fixtures() {
+        return fixtures;
+    }
+
+    /// Returns the livescores endpoint.
+    ///
+    /// @return the {@code /livescores} endpoint accessor
+    public LivescoresEndpoint livescores() {
+        return livescores;
+    }
+
+    /// Fluent builder for {@link FootballClient}. The API token is required; the
+    /// retry policy, base URL and request timeout default to sensible values.
+    public static final class Builder {
+        private ApiToken apiToken;
+        private RetryPolicy retryPolicy = RetryPolicy.defaults();
+        private String baseUrl = DEFAULT_BASE_URL;
+        private Duration requestTimeout = Duration.ofSeconds(30);
+
+        private Builder() {
+        }
+
+        /// Sets the SportMonks API token used to authenticate requests (required).
+        ///
+        /// @param apiToken the API token
+        /// @return this builder
+        public Builder apiToken(ApiToken apiToken) {
+            this.apiToken = apiToken;
+            return this;
+        }
+
+        /// Overrides the retry policy applied to transient failures.
+        ///
+        /// @param retryPolicy the retry policy to use
+        /// @return this builder
+        public Builder retryPolicy(RetryPolicy retryPolicy) {
+            this.retryPolicy = Objects.requireNonNull(retryPolicy, "retryPolicy");
+            return this;
+        }
+
+        /// Overrides the API base URL (defaults to {@link #DEFAULT_BASE_URL}).
+        ///
+        /// @param baseUrl the base URL
+        /// @return this builder
+        public Builder baseUrl(String baseUrl) {
+            this.baseUrl = Objects.requireNonNull(baseUrl, "baseUrl");
+            return this;
+        }
+
+        /// Overrides the per-request timeout (defaults to 30 seconds).
+        ///
+        /// @param requestTimeout the request timeout
+        /// @return this builder
+        public Builder requestTimeout(Duration requestTimeout) {
+            this.requestTimeout = Objects.requireNonNull(requestTimeout, "requestTimeout");
+            return this;
+        }
+
+        /// Builds the configured {@link FootballClient}.
+        ///
+        /// @return a ready-to-use client
+        /// @throws NullPointerException if no API token was set
+        public FootballClient build() {
+            Objects.requireNonNull(apiToken, "apiToken is required");
+            HttpTransport base = new JdkHttpTransport(HttpClient.newHttpClient(), requestTimeout);
+            HttpTransport transport = new RetryingTransport(base, retryPolicy, Sleeper.REAL);
+            JacksonCodec codec = new JacksonCodec();
+            ApiExecutor executor = new ApiExecutor(transport, codec, apiToken, baseUrl);
+            return new FootballClient(
+                    new FixturesEndpoint(executor, codec),
+                    new LivescoresEndpoint(executor, codec));
+        }
+    }
+}

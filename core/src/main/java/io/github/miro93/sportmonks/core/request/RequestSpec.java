@@ -22,10 +22,21 @@ public record RequestSpec(
         sort = List.copyOf(sort);
     }
 
+    /// Starts a new builder for the given relative path.
+    ///
+    /// @param path the relative request path
+    /// @return a fresh builder
     public static Builder builder(String path) {
         return new Builder(path);
     }
 
+    /// Returns a copy of this spec with the page number set, leaving this instance unchanged.
+    public RequestSpec withPage(int page) {
+        return new RequestSpec(path, includes, filters, select, sort, page);
+    }
+
+    /// Mutable builder that accumulates query options before producing an
+    /// immutable {@link RequestSpec}.
     public static final class Builder {
         private final String path;
         private final List<String> includes = new ArrayList<>();
@@ -38,31 +49,55 @@ public record RequestSpec(
             this.path = path;
         }
 
+        /// Adds one or more includes (related resources) to load.
+        ///
+        /// @param values the include names
+        /// @return this builder
         public Builder include(String... values) {
             includes.addAll(List.of(values));
             return this;
         }
 
+        /// Adds a filter on the named attribute, replacing any prior value.
+        ///
+        /// @param name   the filter name
+        /// @param values the filter values
+        /// @return this builder
         public Builder filter(String name, String... values) {
             filters.put(name, List.of(values));
             return this;
         }
 
+        /// Restricts the returned fields to the given selection.
+        ///
+        /// @param fields the field names to select
+        /// @return this builder
         public Builder select(String... fields) {
             select.addAll(List.of(fields));
             return this;
         }
 
+        /// Sets the sort order on the given fields.
+        ///
+        /// @param fields the field names to sort by
+        /// @return this builder
         public Builder sort(String... fields) {
             sort.addAll(List.of(fields));
             return this;
         }
 
+        /// Sets the 1-based page number to request.
+        ///
+        /// @param page the page number
+        /// @return this builder
         public Builder page(int page) {
             this.page = page;
             return this;
         }
 
+        /// Produces the immutable spec from the accumulated options.
+        ///
+        /// @return the built {@link RequestSpec}
         public RequestSpec build() {
             return new RequestSpec(path, includes, filters, select, sort, page);
         }
