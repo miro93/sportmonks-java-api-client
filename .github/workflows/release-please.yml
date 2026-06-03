@@ -1,0 +1,27 @@
+name: Release Please
+
+# Automates versioning + CHANGELOG from Conventional Commits. On every push to main it
+# opens/updates a "release PR"; merging that PR bumps the version (gradle.properties +
+# CHANGELOG.md), creates the `vX.Y.Z` tag and the GitHub Release — which in turn trigger
+# release.yml (publish to Maven Central) and javadoc.yml (GitHub Pages).
+#
+# Requires a repository secret RELEASE_PLEASE_TOKEN (a PAT). The default GITHUB_TOKEN
+# cannot be used: PRs/tags it creates do NOT trigger other workflows, so the release PR
+# would never get its required CI/CodeQL checks and the tag would not start a release.
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
