@@ -1,6 +1,6 @@
 package io.github.miro93.sportmonks.core.json;
 
-import com.fasterxml.jackson.databind.JavaType;
+import tools.jackson.databind.JavaType;
 import io.github.miro93.sportmonks.core.response.ApiResponse;
 import org.junit.jupiter.api.Test;
 

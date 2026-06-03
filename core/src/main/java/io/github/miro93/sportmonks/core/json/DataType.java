@@ -1,6 +1,6 @@
 package io.github.miro93.sportmonks.core.json;
 
-import com.fasterxml.jackson.databind.JavaType;
+import tools.jackson.databind.JavaType;
 
 /// An opaque, type-safe token describing the {@code data} payload type of a
 /// SportMonks response. Obtain instances from {@link JacksonCodec#type(Class)} or
