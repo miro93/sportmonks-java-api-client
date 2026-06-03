@@ -1,0 +1,70 @@
+name: Javadoc
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Generate Javadoc
+        run: ./gradlew javadoc --no-daemon
+
+      - name: Assemble site
+        run: |
+          mkdir -p site/core site/football
+          cp -r core/build/docs/javadoc/. site/core/
+          cp -r football/build/docs/javadoc/. site/football/
+          cat > site/index.html <<'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <title>SportMonks Java Client — Javadoc</title>
+          </head>
+          <body>
+            <h1>SportMonks Java Client — Javadoc</h1>
+            <ul>
+              <li><a href="core/">core</a></li>
+              <li><a href="football/">football</a></li>
+            </ul>
+          </body>
+          </html>
+          EOF
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
