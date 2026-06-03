@@ -5,6 +5,13 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0](https://github.com/miro93/sportmonks-java-api-client/compare/v0.3.0...v0.4.0) (2026-06-03)
+
+
+### Features
+
+* football referentials (States/Venues/Referees/TV Stations/Commentaries) ([#67](https://github.com/miro93/sportmonks-java-api-client/issues/67)) ([a2b8482](https://github.com/miro93/sportmonks-java-api-client/commit/a2b84820decbc80e5deb495260d46df34ca0d25e))
+
 ## [0.3.0](https://github.com/miro93/sportmonks-java-api-client/compare/v0.2.0...v0.3.0) (2026-06-03)
 
 
