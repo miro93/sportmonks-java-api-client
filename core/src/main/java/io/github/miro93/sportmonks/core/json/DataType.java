@@ -1,22 +1,24 @@
 package io.github.miro93.sportmonks.core.json;
 
-import com.fasterxml.jackson.databind.JavaType;
+import tools.jackson.databind.ObjectReader;
 
-/// An opaque, type-safe token describing the {@code data} payload type of a
-/// SportMonks response. Obtain instances from {@link JacksonCodec#type(Class)} or
-/// {@link JacksonCodec#listType(Class)} — the wrapped Jackson type is an internal
-/// detail and is not part of the public API.
+/// An opaque, type-safe token describing the `data` payload type of a SportMonks
+/// response. Obtain instances from {@link JacksonCodec#type(Class)} or
+/// {@link JacksonCodec#listType(Class)} — the wrapped Jackson {@link ObjectReader} is an
+/// internal detail and is not part of the public API.
 ///
-/// Instances are not thread-safe; use one instance per logical request.
+/// The reader for the full `ApiResponse<T>` envelope is resolved once, when the token is
+/// created, and reused for every decode. Instances are immutable and thread-safe; create
+/// one per endpoint and reuse it across requests.
 public final class DataType<T> {
 
-    private final JavaType javaType;
+    private final ObjectReader reader;
 
-    DataType(JavaType javaType) {
-        this.javaType = javaType;
+    DataType(ObjectReader reader) {
+        this.reader = reader;
     }
 
-    JavaType javaType() {
-        return javaType;
+    ObjectReader reader() {
+        return reader;
     }
 }
