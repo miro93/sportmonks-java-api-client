@@ -1,6 +1,5 @@
 package io.github.miro93.sportmonks.core.json;
 
-import tools.jackson.databind.JavaType;
 import io.github.miro93.sportmonks.core.response.ApiResponse;
 import org.junit.jupiter.api.Test;
 
