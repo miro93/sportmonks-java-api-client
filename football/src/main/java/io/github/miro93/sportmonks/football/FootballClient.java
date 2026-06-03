@@ -2,6 +2,7 @@ package io.github.miro93.sportmonks.football;
 
 import io.github.miro93.sportmonks.core.ApiExecutor;
 import io.github.miro93.sportmonks.core.auth.ApiToken;
+import io.github.miro93.sportmonks.core.coreapi.CoreClient;
 import io.github.miro93.sportmonks.core.http.HttpTransport;
 import io.github.miro93.sportmonks.core.http.JdkHttpTransport;
 import io.github.miro93.sportmonks.core.json.JacksonCodec;
@@ -46,6 +47,7 @@ public final class FootballClient {
     private final TransfersEndpoint transfers;
     private final StandingsEndpoint standings;
     private final TopscorersEndpoint topscorers;
+    private final CoreClient core;
 
     private FootballClient(
             FixturesEndpoint fixtures,
@@ -61,7 +63,8 @@ public final class FootballClient {
             SquadsEndpoint squads,
             TransfersEndpoint transfers,
             StandingsEndpoint standings,
-            TopscorersEndpoint topscorers) {
+            TopscorersEndpoint topscorers,
+            CoreClient core) {
         this.fixtures = fixtures;
         this.livescores = livescores;
         this.leagues = leagues;
@@ -76,6 +79,7 @@ public final class FootballClient {
         this.transfers = transfers;
         this.standings = standings;
         this.topscorers = topscorers;
+        this.core = core;
     }
 
     /// Creates a new builder for a {@link FootballClient}.
@@ -183,12 +187,21 @@ public final class FootballClient {
         return topscorers;
     }
 
+    /// Returns the SportMonks Core API client (continents, countries, regions,
+    /// cities, types) backed by the same credentials and transport.
+    ///
+    /// @return the embedded {@link CoreClient}
+    public CoreClient core() {
+        return core;
+    }
+
     /// Fluent builder for {@link FootballClient}. The API token is required; the
     /// retry policy, base URL and request timeout default to sensible values.
     public static final class Builder {
         private ApiToken apiToken;
         private RetryPolicy retryPolicy = RetryPolicy.defaults();
         private String baseUrl = DEFAULT_BASE_URL;
+        private String coreBaseUrl = CoreClient.DEFAULT_BASE_URL;
         private Duration requestTimeout = Duration.ofSeconds(30);
 
         private Builder() {
@@ -221,6 +234,16 @@ public final class FootballClient {
             return this;
         }
 
+        /// Overrides the SportMonks Core API base URL used by {@link FootballClient#core()}
+        /// (defaults to {@link CoreClient#DEFAULT_BASE_URL}).
+        ///
+        /// @param coreBaseUrl the Core API base URL
+        /// @return this builder
+        public Builder coreBaseUrl(String coreBaseUrl) {
+            this.coreBaseUrl = Objects.requireNonNull(coreBaseUrl, "coreBaseUrl");
+            return this;
+        }
+
         /// Overrides the per-request timeout (defaults to 30 seconds).
         ///
         /// @param requestTimeout the request timeout
@@ -240,6 +263,8 @@ public final class FootballClient {
             HttpTransport transport = new RetryingTransport(base, retryPolicy, Sleeper.REAL);
             JacksonCodec codec = new JacksonCodec();
             ApiExecutor executor = new ApiExecutor(transport, codec, apiToken, baseUrl);
+            ApiExecutor coreExecutor = new ApiExecutor(transport, codec, apiToken, coreBaseUrl);
+            CoreClient core = new CoreClient(coreExecutor, codec);
             return new FootballClient(
                     new FixturesEndpoint(executor, codec),
                     new LivescoresEndpoint(executor, codec),
@@ -254,7 +279,8 @@ public final class FootballClient {
                     new SquadsEndpoint(executor, codec),
                     new TransfersEndpoint(executor, codec),
                     new StandingsEndpoint(executor, codec),
-                    new TopscorersEndpoint(executor, codec));
+                    new TopscorersEndpoint(executor, codec),
+                    core);
         }
     }
 }
