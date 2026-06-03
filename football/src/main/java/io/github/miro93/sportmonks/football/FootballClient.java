@@ -9,12 +9,16 @@ import io.github.miro93.sportmonks.core.json.JacksonCodec;
 import io.github.miro93.sportmonks.core.retry.RetryPolicy;
 import io.github.miro93.sportmonks.core.retry.RetryingTransport;
 import io.github.miro93.sportmonks.core.retry.Sleeper;
+import io.github.miro93.sportmonks.football.endpoint.BookmakersEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.CoachesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.CommentariesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.FixturesEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.InplayOddsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.LeaguesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.LivescoresEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.MarketsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.PlayersEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.PreMatchOddsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.RefereesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.RoundsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.SchedulesEndpoint;
@@ -57,6 +61,10 @@ public final class FootballClient {
     private final RefereesEndpoint referees;
     private final TvStationsEndpoint tvStations;
     private final CommentariesEndpoint commentaries;
+    private final BookmakersEndpoint bookmakers;
+    private final MarketsEndpoint markets;
+    private final PreMatchOddsEndpoint preMatchOdds;
+    private final InplayOddsEndpoint inplayOdds;
     private final CoreClient core;
 
     private FootballClient(
@@ -79,6 +87,10 @@ public final class FootballClient {
             RefereesEndpoint referees,
             TvStationsEndpoint tvStations,
             CommentariesEndpoint commentaries,
+            BookmakersEndpoint bookmakers,
+            MarketsEndpoint markets,
+            PreMatchOddsEndpoint preMatchOdds,
+            InplayOddsEndpoint inplayOdds,
             CoreClient core) {
         this.fixtures = fixtures;
         this.livescores = livescores;
@@ -99,6 +111,10 @@ public final class FootballClient {
         this.referees = referees;
         this.tvStations = tvStations;
         this.commentaries = commentaries;
+        this.bookmakers = bookmakers;
+        this.markets = markets;
+        this.preMatchOdds = preMatchOdds;
+        this.inplayOdds = inplayOdds;
         this.core = core;
     }
 
@@ -242,6 +258,34 @@ public final class FootballClient {
         return commentaries;
     }
 
+    /// Returns the bookmakers endpoint.
+    ///
+    /// @return the {@code /bookmakers} endpoint accessor
+    public BookmakersEndpoint bookmakers() {
+        return bookmakers;
+    }
+
+    /// Returns the markets endpoint.
+    ///
+    /// @return the {@code /markets} endpoint accessor
+    public MarketsEndpoint markets() {
+        return markets;
+    }
+
+    /// Returns the pre-match odds endpoint.
+    ///
+    /// @return the {@code /odds/pre-match} endpoint accessor
+    public PreMatchOddsEndpoint preMatchOdds() {
+        return preMatchOdds;
+    }
+
+    /// Returns the in-play odds endpoint.
+    ///
+    /// @return the {@code /odds/inplay} endpoint accessor
+    public InplayOddsEndpoint inplayOdds() {
+        return inplayOdds;
+    }
+
     /// Returns the SportMonks Core API client (continents, countries, regions,
     /// cities, types) backed by the same credentials and transport.
     ///
@@ -340,6 +384,10 @@ public final class FootballClient {
                     new RefereesEndpoint(executor, codec),
                     new TvStationsEndpoint(executor, codec),
                     new CommentariesEndpoint(executor, codec),
+                    new BookmakersEndpoint(executor, codec),
+                    new MarketsEndpoint(executor, codec),
+                    new PreMatchOddsEndpoint(executor, codec),
+                    new InplayOddsEndpoint(executor, codec),
                     core);
         }
     }
