@@ -5,6 +5,13 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0](https://github.com/miro93/sportmonks-java-api-client/compare/v0.2.0...v0.3.0) (2026-06-03)
+
+
+### Features
+
+* Core API foundation (CoreClient + continents/countries/regions/cities/types) ([#65](https://github.com/miro93/sportmonks-java-api-client/issues/65)) ([ca8c232](https://github.com/miro93/sportmonks-java-api-client/commit/ca8c232a7d8e68f4ebbd110cd05139c8f06e9d87))
+
 ## [Unreleased]
 
 ## [0.2.0] - 2026-06-03
