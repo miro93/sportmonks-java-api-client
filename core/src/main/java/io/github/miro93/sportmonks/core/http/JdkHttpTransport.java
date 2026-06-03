@@ -28,7 +28,7 @@ public final class JdkHttpTransport implements HttpTransport {
         headers.forEach(builder::header);
         HttpRequest request = builder.build();
         try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<byte[]> response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
             return new RawResponse(response.statusCode(), response.body(), response.headers().map());
         } catch (IOException e) {
             throw new TransportException("HTTP request failed: " + uri, e);

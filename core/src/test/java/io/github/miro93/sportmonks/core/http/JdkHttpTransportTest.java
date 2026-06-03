@@ -32,7 +32,7 @@ class JdkHttpTransportTest {
                 URI.create(wm.getHttpBaseUrl() + "/ping"), Map.of());
 
         assertThat(response.status()).isEqualTo(200);
-        assertThat(response.body()).isEqualTo("pong");
+        assertThat(response.bodyAsString()).isEqualTo("pong");
         assertThat(response.header("x-test")).contains("yes");
     }
 

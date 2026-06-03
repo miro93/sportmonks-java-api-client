@@ -78,7 +78,7 @@ public final class ApiExecutor {
                 Map.of("Authorization", token.value(), "Accept", "application/json"));
 
         if (!response.isSuccessful()) {
-            throw ErrorMapper.fromResponse(response.status(), response.body(), retryAfter(response));
+            throw ErrorMapper.fromResponse(response.status(), response.bodyAsString(), retryAfter(response));
         }
         try {
             return codec.decode(response.body(), dataType);
