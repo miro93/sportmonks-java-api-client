@@ -120,6 +120,40 @@ Stream<Fixture> allFixtures = client.fixtures().all().stream();
 allFixtures.forEach(f -> System.out.println(f.id()));
 ```
 
+### Core API (cross-sport reference data)
+
+The Core API (`/v3/core`) exposes cross-sport reference resources: continents,
+countries, regions, cities and types. Use it standalone:
+
+```java
+import io.github.miro93.sportmonks.core.auth.ApiToken;
+import io.github.miro93.sportmonks.core.coreapi.CoreClient;
+import io.github.miro93.sportmonks.core.coreapi.model.Country;
+import io.github.miro93.sportmonks.core.coreapi.model.Type;
+import java.util.List;
+
+CoreClient core = CoreClient.builder()
+        .apiToken(ApiToken.of(System.getenv("SPORTMONKS_TOKEN")))
+        .build();
+
+List<Country> countries = core.countries().search("Scot").get().data();
+List<Type> types = core.types().all().get().data();
+```
+
+…or reach it from a football client, which shares the same credentials:
+
+```java
+import io.github.miro93.sportmonks.core.auth.ApiToken;
+import io.github.miro93.sportmonks.core.coreapi.model.Country;
+import io.github.miro93.sportmonks.football.FootballClient;
+
+FootballClient football = FootballClient.builder()
+        .apiToken(ApiToken.of(System.getenv("SPORTMONKS_TOKEN")))
+        .build();
+
+Country country = football.core().countries().byId(320L).get().data();
+```
+
 ---
 
 ## Includes / Filters / Select / Sort / Pagination
@@ -206,6 +240,17 @@ All endpoints are accessed via `FootballClient`:
 | `transfers()` | `TransfersEndpoint` | `all()`, `latest()`, `byTeam(teamId)`, `byPlayer(playerId)`, `byDateRange(start, end)` |
 | `standings()` | `StandingsEndpoint` | `all()`, `bySeason(seasonId)`, `byRound(roundId)`, `correctionsBySeason(seasonId)`, `liveByLeague(leagueId)` |
 | `topscorers()` | `TopscorersEndpoint` | `bySeason(seasonId)`, `byStage(stageId)` |
+
+The Core API reference resources are reachable via `CoreClient` (standalone) or
+`FootballClient.core()`:
+
+| Accessor | Endpoint class | Example methods |
+|----------|---------------|-----------------|
+| `continents()` | `ContinentsEndpoint` | `all()`, `byId(id)` |
+| `countries()` | `CountriesEndpoint` | `all()`, `byId(id)`, `search(name)` |
+| `regions()` | `RegionsEndpoint` | `all()`, `byId(id)`, `search(name)` |
+| `cities()` | `CitiesEndpoint` | `all()`, `byId(id)`, `search(name)` |
+| `types()` | `TypesEndpoint` | `all()`, `byId(id)` |
 
 ---
 
