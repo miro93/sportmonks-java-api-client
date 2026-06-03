@@ -10,19 +10,24 @@ import io.github.miro93.sportmonks.core.retry.RetryPolicy;
 import io.github.miro93.sportmonks.core.retry.RetryingTransport;
 import io.github.miro93.sportmonks.core.retry.Sleeper;
 import io.github.miro93.sportmonks.football.endpoint.CoachesEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.CommentariesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.FixturesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.LeaguesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.LivescoresEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.PlayersEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.RefereesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.RoundsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.SchedulesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.SeasonsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.SquadsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.StagesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.StandingsEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.StatesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.TeamsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.TopscorersEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.TransfersEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.TvStationsEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.VenuesEndpoint;
 
 import java.net.http.HttpClient;
 import java.time.Duration;
@@ -47,6 +52,11 @@ public final class FootballClient {
     private final TransfersEndpoint transfers;
     private final StandingsEndpoint standings;
     private final TopscorersEndpoint topscorers;
+    private final StatesEndpoint states;
+    private final VenuesEndpoint venues;
+    private final RefereesEndpoint referees;
+    private final TvStationsEndpoint tvStations;
+    private final CommentariesEndpoint commentaries;
     private final CoreClient core;
 
     private FootballClient(
@@ -64,6 +74,11 @@ public final class FootballClient {
             TransfersEndpoint transfers,
             StandingsEndpoint standings,
             TopscorersEndpoint topscorers,
+            StatesEndpoint states,
+            VenuesEndpoint venues,
+            RefereesEndpoint referees,
+            TvStationsEndpoint tvStations,
+            CommentariesEndpoint commentaries,
             CoreClient core) {
         this.fixtures = fixtures;
         this.livescores = livescores;
@@ -79,6 +94,11 @@ public final class FootballClient {
         this.transfers = transfers;
         this.standings = standings;
         this.topscorers = topscorers;
+        this.states = states;
+        this.venues = venues;
+        this.referees = referees;
+        this.tvStations = tvStations;
+        this.commentaries = commentaries;
         this.core = core;
     }
 
@@ -187,6 +207,41 @@ public final class FootballClient {
         return topscorers;
     }
 
+    /// Returns the states endpoint.
+    ///
+    /// @return the {@code /states} endpoint accessor
+    public StatesEndpoint states() {
+        return states;
+    }
+
+    /// Returns the venues endpoint.
+    ///
+    /// @return the {@code /venues} endpoint accessor
+    public VenuesEndpoint venues() {
+        return venues;
+    }
+
+    /// Returns the referees endpoint.
+    ///
+    /// @return the {@code /referees} endpoint accessor
+    public RefereesEndpoint referees() {
+        return referees;
+    }
+
+    /// Returns the TV stations endpoint.
+    ///
+    /// @return the {@code /tv-stations} endpoint accessor
+    public TvStationsEndpoint tvStations() {
+        return tvStations;
+    }
+
+    /// Returns the commentaries endpoint.
+    ///
+    /// @return the {@code /commentaries} endpoint accessor
+    public CommentariesEndpoint commentaries() {
+        return commentaries;
+    }
+
     /// Returns the SportMonks Core API client (continents, countries, regions,
     /// cities, types) backed by the same credentials and transport.
     ///
@@ -280,6 +335,11 @@ public final class FootballClient {
                     new TransfersEndpoint(executor, codec),
                     new StandingsEndpoint(executor, codec),
                     new TopscorersEndpoint(executor, codec),
+                    new StatesEndpoint(executor, codec),
+                    new VenuesEndpoint(executor, codec),
+                    new RefereesEndpoint(executor, codec),
+                    new TvStationsEndpoint(executor, codec),
+                    new CommentariesEndpoint(executor, codec),
                     core);
         }
     }
