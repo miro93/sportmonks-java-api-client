@@ -1,9 +1,11 @@
+import com.vanniktech.maven.publish.JavaLibrary
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.SourcesJar
+
 plugins {
     `java-library`
+    alias(libs.plugins.vanniktech.mavenPublish)
 }
-
-group = "io.github.miro93.sportmonks"
-version = "0.1.0-SNAPSHOT"
 
 java {
     toolchain {
@@ -26,4 +28,8 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+mavenPublishing {
+    configure(JavaLibrary(javadocJar = JavadocJar.Javadoc(), sourcesJar = SourcesJar.Sources()))
 }
