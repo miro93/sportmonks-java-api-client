@@ -114,8 +114,9 @@ allFixtures.forEach(f -> System.out.println(f.id()));
 
 ## Includes / Filters / Select / Sort / Pagination
 
-All request objects (`CollectionRequest` and `SingleResourceRequest`) expose the
-same fluent builder methods:
+Both request types (`CollectionRequest` and `SingleResourceRequest`) share the
+fluent builder methods `include`, `filter`, `select`, `sort`, `get` and
+`getAsync`. Paging (`page`, `stream`) is specific to `CollectionRequest`:
 
 | Method | Description |
 |--------|-------------|
@@ -123,10 +124,10 @@ same fluent builder methods:
 | `filter(String name, String... values)` | Filter by an attribute |
 | `select(String... fields)` | Restrict the returned fields |
 | `sort(String... fields)` | Sort order; prefix with `-` for descending |
-| `page(int page)` | 1-based page number (collection requests only; ignored by `stream()`) |
+| `page(int page)` | 1-based page number (`CollectionRequest` only; ignored by `stream()`) |
 | `get()` | Execute synchronously, returns `ApiResponse<T>` |
 | `getAsync()` | Execute asynchronously, returns `CompletableFuture<ApiResponse<T>>` |
-| `stream()` | Lazily walk all pages, returns `Stream<T>` |
+| `stream()` | Lazily walk all pages, returns `Stream<T>` (`CollectionRequest` only) |
 
 `ApiResponse<T>` is a record with:
 
