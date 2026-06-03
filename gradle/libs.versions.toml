@@ -2,8 +2,8 @@
 jackson = "3.1.4"
 junit = "5.11.4"
 junit-platform = "1.11.4"
-assertj = "3.27.3"
-wiremock = "3.10.0"
+assertj = "3.27.7"
+wiremock = "3.13.2"
 
 [libraries]
 jackson-databind = { module = "tools.jackson.core:jackson-databind", version.ref = "jackson" }
