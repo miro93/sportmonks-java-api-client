@@ -16,9 +16,8 @@ A type-safe Java 25 client for the [SportMonks v3 API](https://sportmonks.com/).
 
 ## Installation
 
-> Once the first release is published to Maven Central, add the `sportmonks-football`
-> artifact to your build. It pulls `sportmonks-core` transitively — you only need one
-> dependency.
+Available on Maven Central. Add the `sportmonks-football` artifact to your build — it
+pulls `sportmonks-core` transitively, so you only need one dependency.
 
 ### Gradle (Kotlin DSL)
 
