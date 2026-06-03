@@ -1,11 +1,20 @@
 # sportmonks-java-api-client
 
-A type-safe Java 25 client for the [SportMonks v3 API](https://sportmonks.com/).
+A type-safe Java 25 client for the [SportMonks v3 football API](https://docs.sportmonks.com/football).
 
 ![CI](https://github.com/miro93/sportmonks-java-api-client/actions/workflows/ci.yml/badge.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/miro93/sportmonks-java-api-client/badge)](https://scorecard.dev/viewer/?uri=github.com/miro93/sportmonks-java-api-client)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.miro93.sportmonks/sportmonks-football)](https://central.sonatype.com/artifact/io.github.miro93.sportmonks/sportmonks-football)
+
+> [!IMPORTANT]
+> **Unofficial library.** This is an independent, community-maintained client. It is **not**
+> affiliated with, endorsed by, or supported by SportMonks, and the maintainers are not part of
+> the SportMonks team. "SportMonks" and related names are trademarks of their respective owners.
+> You need your own SportMonks subscription and API token to use it.
+>
+> - Official website: <https://www.sportmonks.com>
+> - Official API documentation: <https://docs.sportmonks.com>
 
 ---
 
