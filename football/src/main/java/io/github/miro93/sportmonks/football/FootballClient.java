@@ -18,7 +18,9 @@ import io.github.miro93.sportmonks.football.endpoint.SchedulesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.SeasonsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.SquadsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.StagesEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.StandingsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.TeamsEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.TopscorersEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.TransfersEndpoint;
 
 import java.net.http.HttpClient;
@@ -42,6 +44,8 @@ public final class FootballClient {
     private final CoachesEndpoint coaches;
     private final SquadsEndpoint squads;
     private final TransfersEndpoint transfers;
+    private final StandingsEndpoint standings;
+    private final TopscorersEndpoint topscorers;
 
     private FootballClient(
             FixturesEndpoint fixtures,
@@ -55,7 +59,9 @@ public final class FootballClient {
             PlayersEndpoint players,
             CoachesEndpoint coaches,
             SquadsEndpoint squads,
-            TransfersEndpoint transfers) {
+            TransfersEndpoint transfers,
+            StandingsEndpoint standings,
+            TopscorersEndpoint topscorers) {
         this.fixtures = fixtures;
         this.livescores = livescores;
         this.leagues = leagues;
@@ -68,6 +74,8 @@ public final class FootballClient {
         this.coaches = coaches;
         this.squads = squads;
         this.transfers = transfers;
+        this.standings = standings;
+        this.topscorers = topscorers;
     }
 
     /// Creates a new builder for a {@link FootballClient}.
@@ -161,6 +169,20 @@ public final class FootballClient {
         return transfers;
     }
 
+    /// Returns the standings endpoint.
+    ///
+    /// @return the {@code /standings} endpoint accessor
+    public StandingsEndpoint standings() {
+        return standings;
+    }
+
+    /// Returns the topscorers endpoint.
+    ///
+    /// @return the {@code /topscorers} endpoint accessor
+    public TopscorersEndpoint topscorers() {
+        return topscorers;
+    }
+
     /// Fluent builder for {@link FootballClient}. The API token is required; the
     /// retry policy, base URL and request timeout default to sensible values.
     public static final class Builder {
@@ -230,7 +252,9 @@ public final class FootballClient {
                     new PlayersEndpoint(executor, codec),
                     new CoachesEndpoint(executor, codec),
                     new SquadsEndpoint(executor, codec),
-                    new TransfersEndpoint(executor, codec));
+                    new TransfersEndpoint(executor, codec),
+                    new StandingsEndpoint(executor, codec),
+                    new TopscorersEndpoint(executor, codec));
         }
     }
 }
