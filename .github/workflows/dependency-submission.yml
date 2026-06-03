@@ -27,3 +27,9 @@ jobs:
 
       - name: Generate and submit dependency graph
         uses: gradle/actions/dependency-submission@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.3
+        with:
+          # Only track what the published artifacts actually ship (runtime classpaths).
+          # Test-only tooling (WireMock -> Jetty, JUnit, AssertJ) is never published, so it
+          # must not pollute the dependency graph nor fail Dependency Review on test-scope
+          # advisories we can't act on (e.g. Jetty 11.x is EOL with no fix).
+          dependency-graph-exclude-configurations: '.*[Tt]est(Compile|Runtime)Classpath'
