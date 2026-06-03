@@ -1,9 +1,9 @@
 [versions]
-jackson = "2.18.2"
+jackson = "2.22.0"
 junit = "5.11.4"
 junit-platform = "1.11.4"
-assertj = "3.27.3"
-wiremock = "3.10.0"
+assertj = "3.27.7"
+wiremock = "3.13.2"
 
 [libraries]
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
