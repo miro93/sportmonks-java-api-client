@@ -240,6 +240,11 @@ All endpoints are accessed via `FootballClient`:
 | `transfers()` | `TransfersEndpoint` | `all()`, `latest()`, `byTeam(teamId)`, `byPlayer(playerId)`, `byDateRange(start, end)` |
 | `standings()` | `StandingsEndpoint` | `all()`, `bySeason(seasonId)`, `byRound(roundId)`, `correctionsBySeason(seasonId)`, `liveByLeague(leagueId)` |
 | `topscorers()` | `TopscorersEndpoint` | `bySeason(seasonId)`, `byStage(stageId)` |
+| `states()` | `StatesEndpoint` | `all()`, `byId(id)` |
+| `venues()` | `VenuesEndpoint` | `all()`, `byId(id)`, `bySeason(seasonId)`, `search(name)` |
+| `referees()` | `RefereesEndpoint` | `all()`, `byId(id)`, `byCountry(countryId)`, `bySeason(seasonId)`, `search(name)` |
+| `tvStations()` | `TvStationsEndpoint` | `all()`, `byId(id)`, `byFixture(fixtureId)` |
+| `commentaries()` | `CommentariesEndpoint` | `all()`, `byFixture(fixtureId)` |
 
 The Core API reference resources are reachable via `CoreClient` (standalone) or
 `FootballClient.core()`:
