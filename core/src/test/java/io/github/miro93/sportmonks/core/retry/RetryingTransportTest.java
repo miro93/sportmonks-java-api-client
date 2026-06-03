@@ -6,6 +6,7 @@ import io.github.miro93.sportmonks.core.http.RawResponse;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayDeque;
 import java.util.List;
@@ -22,11 +23,15 @@ class RetryingTransportTest {
     private final Sleeper recordingSleeper = slept::add;
     private final URI uri = URI.create("https://api.test/x");
 
+    private static byte[] body(String s) {
+        return s.getBytes(StandardCharsets.UTF_8);
+    }
+
     @Test
     void retriesOn503ThenReturnsSuccess() {
         Queue<RawResponse> responses = new ArrayDeque<>(List.of(
-                new RawResponse(503, "down", Map.of()),
-                new RawResponse(200, "ok", Map.of())));
+                new RawResponse(503, body("down"), Map.of()),
+                new RawResponse(200, body("ok"), Map.of())));
         AtomicInteger calls = new AtomicInteger();
         HttpTransport delegate = (u, h) -> {
             calls.incrementAndGet();
@@ -46,7 +51,7 @@ class RetryingTransportTest {
         AtomicInteger calls = new AtomicInteger();
         HttpTransport delegate = (u, h) -> {
             calls.incrementAndGet();
-            return new RawResponse(404, "nope", Map.of());
+            return new RawResponse(404, body("nope"), Map.of());
         };
 
         RawResponse response = new RetryingTransport(delegate, RetryPolicy.defaults(), recordingSleeper)
@@ -60,8 +65,8 @@ class RetryingTransportTest {
     @Test
     void honorsRetryAfterHeaderOn429() {
         Queue<RawResponse> responses = new ArrayDeque<>(List.of(
-                new RawResponse(429, "slow", Map.of("Retry-After", List.of("7"))),
-                new RawResponse(200, "ok", Map.of())));
+                new RawResponse(429, body("slow"), Map.of("Retry-After", List.of("7"))),
+                new RawResponse(200, body("ok"), Map.of())));
         HttpTransport delegate = (u, h) -> responses.poll();
 
         new RetryingTransport(delegate, RetryPolicy.defaults(), recordingSleeper).get(uri, Map.of());
@@ -71,7 +76,7 @@ class RetryingTransportTest {
 
     @Test
     void exhaustsAttemptsAndReturnsLastFailure() {
-        HttpTransport delegate = (u, h) -> new RawResponse(500, "boom", Map.of());
+        HttpTransport delegate = (u, h) -> new RawResponse(500, body("boom"), Map.of());
 
         RawResponse response = new RetryingTransport(delegate, RetryPolicy.defaults(), recordingSleeper)
                 .get(uri, Map.of());

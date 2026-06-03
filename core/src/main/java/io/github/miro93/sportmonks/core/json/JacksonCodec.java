@@ -50,6 +50,16 @@ public final class JacksonCodec {
         }
     }
 
+    /// Decode a SportMonks JSON envelope directly from raw UTF-8 bytes (the transport's
+    /// preferred path: Jackson parses bytes faster and avoids an intermediate `String`).
+    public <T> ApiResponse<T> decode(byte[] json, DataType<T> dataType) {
+        try {
+            return dataType.reader().readValue(json);
+        } catch (JacksonException e) {
+            throw new CodecException("Failed to decode SportMonks response", e);
+        }
+    }
+
     /// Resolves the full `ApiResponse<dataType>` envelope type once and pre-builds a
     /// reusable, thread-safe {@link tools.jackson.databind.ObjectReader} for it, so the
     /// parametric type and value deserializer are not rebuilt on every {@link #decode}.
