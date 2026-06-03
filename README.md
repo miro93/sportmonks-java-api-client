@@ -5,6 +5,7 @@ A type-safe Java 25 client for the [SportMonks v3 API](https://sportmonks.com/).
 ![CI](https://github.com/miro93/sportmonks-java-api-client/actions/workflows/ci.yml/badge.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/miro93/sportmonks-java-api-client/badge)](https://scorecard.dev/viewer/?uri=github.com/miro93/sportmonks-java-api-client)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.miro93.sportmonks/sportmonks-football)](https://central.sonatype.com/artifact/io.github.miro93.sportmonks/sportmonks-football)
 
 ---
 
@@ -23,7 +24,7 @@ pulls `sportmonks-core` transitively, so you only need one dependency.
 
 ```kotlin
 dependencies {
-    implementation("io.github.miro93.sportmonks:sportmonks-football:0.1.0")
+    implementation("io.github.miro93.sportmonks:sportmonks-football:0.2.0")
 }
 ```
 
@@ -31,7 +32,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'io.github.miro93.sportmonks:sportmonks-football:0.1.0'
+    implementation 'io.github.miro93.sportmonks:sportmonks-football:0.2.0'
 }
 ```
 
@@ -41,7 +42,7 @@ dependencies {
 <dependency>
     <groupId>io.github.miro93.sportmonks</groupId>
     <artifactId>sportmonks-football</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
 </dependency>
 ```
 
