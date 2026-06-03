@@ -245,6 +245,10 @@ All endpoints are accessed via `FootballClient`:
 | `referees()` | `RefereesEndpoint` | `all()`, `byId(id)`, `byCountry(countryId)`, `bySeason(seasonId)`, `search(name)` |
 | `tvStations()` | `TvStationsEndpoint` | `all()`, `byId(id)`, `byFixture(fixtureId)` |
 | `commentaries()` | `CommentariesEndpoint` | `all()`, `byFixture(fixtureId)` |
+| `bookmakers()` | `BookmakersEndpoint` | `all()`, `byId(id)`, `search(name)`, `byFixture(fixtureId)` |
+| `markets()` | `MarketsEndpoint` | `all()`, `byId(id)`, `search(name)` |
+| `preMatchOdds()` | `PreMatchOddsEndpoint` | `all()`, `byFixture(fixtureId)`, `byFixtureAndBookmaker(fixtureId, bookmakerId)`, `byFixtureAndMarket(fixtureId, marketId)`, `latest()` |
+| `inplayOdds()` | `InplayOddsEndpoint` | `all()`, `byFixture(fixtureId)`, `byFixtureAndBookmaker(fixtureId, bookmakerId)`, `byFixtureAndMarket(fixtureId, marketId)`, `latest()` |
 
 The Core API reference resources are reachable via `CoreClient` (standalone) or
 `FootballClient.core()`:
