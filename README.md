@@ -249,6 +249,14 @@ All endpoints are accessed via `FootballClient`:
 | `markets()` | `MarketsEndpoint` | `all()`, `byId(id)`, `search(name)` |
 | `preMatchOdds()` | `PreMatchOddsEndpoint` | `all()`, `byFixture(fixtureId)`, `byFixtureAndBookmaker(fixtureId, bookmakerId)`, `byFixtureAndMarket(fixtureId, marketId)`, `latest()` |
 | `inplayOdds()` | `InplayOddsEndpoint` | `all()`, `byFixture(fixtureId)`, `byFixtureAndBookmaker(fixtureId, bookmakerId)`, `byFixtureAndMarket(fixtureId, marketId)`, `latest()` |
+| `premiumOdds()` | `PremiumOddsEndpoint` | `all()`, `byFixture(fixtureId)`, `byFixtureAndBookmaker(fixtureId, bookmakerId)`, `byFixtureAndMarket(fixtureId, marketId)`, `updatedBetween(fromEpochSeconds, toEpochSeconds)` |
+| `premiumOddsHistory()` | `PremiumOddsHistoryEndpoint` | `all()`, `updatedBetween(fromEpochSeconds, toEpochSeconds)` |
+| `premiumMarkets()` | `PremiumMarketsEndpoint` | `all()` (served from the `/v3/odds` base URL) |
+| `premiumBookmakers()` | `PremiumBookmakersEndpoint` | `all()` (served from the `/v3/odds` base URL) |
+
+Premium markets and bookmakers (`premiumMarkets()`, `premiumBookmakers()`) are served from a
+separate odds base URL (`/v3/odds`), configurable via `oddsBaseUrl(...)` on the builder; all
+other football endpoints — including the premium odds feed itself — use `/v3/football`.
 
 The Core API reference resources are reachable via `CoreClient` (standalone) or
 `FootballClient.core()`:
