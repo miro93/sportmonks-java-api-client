@@ -11,8 +11,8 @@ import io.github.miro93.sportmonks.core.http.HttpTransport;
 import io.github.miro93.sportmonks.core.http.JdkHttpTransport;
 import io.github.miro93.sportmonks.core.json.JacksonCodec;
 import io.github.miro93.sportmonks.core.retry.RetryPolicy;
-import io.github.miro93.sportmonks.core.retry.RetryingTransport;
-import io.github.miro93.sportmonks.core.retry.Sleeper;
+import io.github.miro93.sportmonks.core.retry.internal.RetryingTransport;
+import io.github.miro93.sportmonks.core.retry.internal.Sleeper;
 
 import java.net.http.HttpClient;
 import java.time.Duration;
