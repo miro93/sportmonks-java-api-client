@@ -117,9 +117,11 @@ javadoc du setter `httpClient()` distingue explicitement les deux.
 1. `JdkHttpTransport.newDefaultClient()` → `connectTimeout()` == `Optional.of(Duration.ofSeconds(10))`
    et `followRedirects()` == `HttpClient.Redirect.NORMAL`.
 2. `CoreClient.Builder.httpClient(null)` et `FootballClient.Builder.httpClient(null)` → `NullPointerException`.
-3. **Injection effective** : un `HttpClient` custom pointant sur un `com.sun.net.httpserver.HttpServer`
-   local (réutilise le pattern de `JdkHttpTransportTest`) reçoit bien l'appel, prouvant que le client
-   injecté est utilisé — vérifié sur `CoreClient` **et** `FootballClient`.
+3. **Injection effective** (WireMock, pattern existant) : on injecte un `HttpClient` configuré avec un
+   **proxy mort** (`localhost:1`) et `retryPolicy(RetryPolicy.none())`. Si l'injection est câblée,
+   l'appel échoue en `TransportException` (le proxy refuse) ; si elle était ignorée, le client par
+   défaut atteindrait WireMock et réussirait. Prouve sans ambiguïté que le client injecté est utilisé
+   — vérifié sur `CoreClient` **et** `FootballClient`.
 
 ## Docs
 
