@@ -5,6 +5,18 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0](https://github.com/miro93/sportmonks-java-api-client/compare/v1.0.0...v2.0.0) (2026-06-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* previously-public internal types are now encapsulated and unavailable to consumers; the artifacts are now named JPMS modules (io.github.miro93.sportmonks.core / .football).
+
+### Features
+
+* GraalVM native-image readiness ([#79](https://github.com/miro93/sportmonks-java-api-client/issues/79)) ([8680532](https://github.com/miro93/sportmonks-java-api-client/commit/8680532b82af717cf113e9be2d8c2e3f043ba9f7))
+* JPMS modularization (max encapsulation) — 2.0.0 ([#77](https://github.com/miro93/sportmonks-java-api-client/issues/77)) ([95acda8](https://github.com/miro93/sportmonks-java-api-client/commit/95acda80e08ec64d2bea6a690e4bea30b0817611))
+
 ## [1.0.0](https://github.com/miro93/sportmonks-java-api-client/compare/v0.6.0...v1.0.0) (2026-06-04)
 
 
