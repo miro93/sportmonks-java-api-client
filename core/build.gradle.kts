@@ -19,7 +19,6 @@ repositories {
 
 dependencies {
     api(libs.jackson.databind)
-    implementation(libs.jackson.blackbird)
 
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.assertj)
