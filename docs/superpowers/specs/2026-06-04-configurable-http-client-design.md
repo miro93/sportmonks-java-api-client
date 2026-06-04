@@ -58,12 +58,18 @@ Factory statique dans `core.http` (déjà accessible à football → **zéro dup
 builders), portant les valeurs **en dur sous forme de constantes nommées**. Les **deux** timeouts
 (connect ET request) sont regroupés ici, prêts pour une externalisation commune en properties :
 
-```java
-// dans JdkHttpTransport (ou un petit helper du même package core.http)
-static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
-static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(30); // extrait du magic value inline
+Visibilité : **`public static`** (et pas package-private) — `JdkHttpTransport` est une classe
+`public` d'un package exporté *de façon qualifiée* à football. Comme football est un **autre
+module/package**, l'export ne lui donne accès qu'aux **membres `public`** ; du package-private
+resterait invisible à `FootballClient.Builder` et casserait `:football:compileJava`. Le `public`
+reste néanmoins **invisible aux utilisateurs finaux** (l'export n'est pas non-qualifié).
 
-static HttpClient newDefaultClient() {
+```java
+// dans JdkHttpTransport (package core.http, exporté qualifié vers football)
+public static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
+public static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(30); // extrait du magic value inline
+
+public static HttpClient newDefaultClient() {
     return HttpClient.newBuilder()
             .connectTimeout(DEFAULT_CONNECT_TIMEOUT)
             .followRedirects(HttpClient.Redirect.NORMAL)
