@@ -154,6 +154,37 @@ FootballClient football = FootballClient.builder()
 Country country = football.core().countries().byId(320L).get().data();
 ```
 
+### Configuring the HTTP transport
+
+Both `CoreClient.Builder` and `FootballClient.Builder` accept a custom
+`java.net.http.HttpClient`, letting you set a proxy, SSL context, authenticator,
+HTTP version preference, or executor:
+
+```java
+HttpClient httpClient = HttpClient.newBuilder()
+        .connectTimeout(Duration.ofSeconds(5))
+        .proxy(ProxySelector.getDefault())
+        .build();
+
+FootballClient client = FootballClient.builder()
+        .apiToken(ApiToken.of(System.getenv("SPORTMONKS_TOKEN")))
+        .httpClient(httpClient)
+        .build();
+```
+
+When no client is supplied, a default one is used: a 10-second connect timeout and
+`NORMAL` redirect following, with the JDK's default HTTP/2 (falling back to HTTP/1.1).
+
+Two timeout dimensions apply, mirroring the JDK client:
+
+- **connect timeout** — on the `HttpClient`, bounds connection establishment.
+- **request timeout** — `requestTimeout(Duration)` on the builder (default 30s), the
+  request→response deadline (`HttpTimeoutException` if exceeded).
+
+Connection pooling is automatic (keep-alive plus HTTP/2 multiplexing). The JDK exposes
+no builder-level pool sizing; tune it via the `jdk.httpclient.*` system properties if
+needed.
+
 ---
 
 ## Java Module System (JPMS)
