@@ -1,3 +1,3 @@
 rootProject.name = "sportmonks-java-api-client"
 
-include("core", "football")
+include("core", "football", "native-smoke")

@@ -5,6 +5,7 @@ import com.vanniktech.maven.publish.SourcesJar
 plugins {
     `java-library`
     alias(libs.plugins.vanniktech.mavenPublish)
+    alias(libs.plugins.graalvm.native)
 }
 
 java {
@@ -19,7 +20,6 @@ repositories {
 
 dependencies {
     api(libs.jackson.databind)
-    implementation(libs.jackson.blackbird)
 
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.assertj)
@@ -37,6 +37,14 @@ tasks.named<Javadoc>("javadoc") {
         addStringOption("tag", "apiNote:a:API Note:")
         addStringOption("tag", "implSpec:a:Implementation Requirements:")
         addStringOption("tag", "implNote:a:Implementation Note:")
+    }
+}
+
+// Use the agent's "standard" mode so the generated reachability metadata is
+// unconditional (correct for a library that ships metadata for its own types).
+graalvmNative {
+    agent {
+        defaultMode = "standard"
     }
 }
 

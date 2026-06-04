@@ -5,22 +5,20 @@ import tools.jackson.databind.DeserializationFeature;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.json.JsonMapper;
-import tools.jackson.module.blackbird.BlackbirdModule;
 import io.github.miro93.sportmonks.core.response.ApiResponse;
 
 import java.util.List;
 
-/// Wraps a snake_case-aware Jackson {@link JsonMapper} (with the Blackbird module)
-/// and decodes the SportMonks envelope into a typed {@link ApiResponse}.
+/// Wraps a snake_case-aware Jackson {@link JsonMapper} and decodes the SportMonks
+/// envelope into a typed {@link ApiResponse}.
 public final class JacksonCodec {
 
     private final JsonMapper mapper;
 
-    /// Creates a codec with a snake_case naming strategy, the Blackbird module,
-    /// and lenient handling of unknown properties and of `null`/absent primitives.
+    /// Creates a codec with a snake_case naming strategy and lenient handling of
+    /// unknown properties and of `null`/absent primitives.
     public JacksonCodec() {
         this.mapper = JsonMapper.builder()
-                .addModule(new BlackbirdModule())
                 .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 // Jackson 3 flipped this default to true; keep the lenient v2 behaviour so an
