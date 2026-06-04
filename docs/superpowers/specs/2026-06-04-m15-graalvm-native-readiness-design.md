@@ -51,9 +51,9 @@ domine le parsing). Vérifiable en local : la suite de tests JVM reste verte san
   export JAVA_HOME=~/.sdkman/candidates/java/25-graal
   ./gradlew -Pagent test
   ./gradlew :core:metadataCopy --task test \
-      --dir core/src/main/resources/META-INF/native-image/io.github.miro93/sportmonks-core
+      --dir core/src/main/resources/META-INF/native-image/io.github.miro93.sportmonks/core
   ./gradlew :football:metadataCopy --task test \
-      --dir football/src/main/resources/META-INF/native-image/io.github.miro93/sportmonks-football
+      --dir football/src/main/resources/META-INF/native-image/io.github.miro93.sportmonks/football
   ```
 - La métadonnée générée (`reachability-metadata.json` ou `reflect-config.json` + co.) est
   **commitée** sous `src/main/resources/META-INF/native-image/<group>/<artifact>/` de chaque

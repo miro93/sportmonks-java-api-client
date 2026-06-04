@@ -22,7 +22,9 @@ def keep(entry: dict) -> bool:
     t = entry.get("type")
     if not isinstance(t, str):
         return False
-    if not t.startswith(PREFIX):
+    # Match the package boundary so sibling namespaces (e.g. io.github.miro93.sportmonksX)
+    # are not over-included.
+    if t != PREFIX and not t.startswith(PREFIX + "."):
         return False
     # Drop test classes (e.g. *DecodingTest, *EndpointTest, FootballClient*Test)
     # and their nested helper types (e.g. ApiExecutorTest$Team).
