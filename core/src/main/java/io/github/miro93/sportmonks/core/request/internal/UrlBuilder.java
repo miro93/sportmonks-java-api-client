@@ -1,4 +1,4 @@
-package io.github.miro93.sportmonks.core.request;
+package io.github.miro93.sportmonks.core.request.internal;
 
 import java.net.URI;
 import java.net.URLEncoder;
