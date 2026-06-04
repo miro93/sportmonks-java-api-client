@@ -19,6 +19,7 @@ import io.github.miro93.sportmonks.football.endpoint.LeaguesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.LivescoresEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.MarketsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.PlayersEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.PredictionsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.PreMatchOddsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.PremiumBookmakersEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.PremiumMarketsEndpoint;
@@ -80,6 +81,7 @@ public final class FootballClient {
     private final PremiumMarketsEndpoint premiumMarkets;
     private final PremiumBookmakersEndpoint premiumBookmakers;
     private final ExpectedLineupsEndpoint expectedLineups;
+    private final PredictionsEndpoint predictions;
     private final CoreClient core;
 
     private FootballClient(
@@ -111,6 +113,7 @@ public final class FootballClient {
             PremiumMarketsEndpoint premiumMarkets,
             PremiumBookmakersEndpoint premiumBookmakers,
             ExpectedLineupsEndpoint expectedLineups,
+            PredictionsEndpoint predictions,
             CoreClient core) {
         this.fixtures = fixtures;
         this.livescores = livescores;
@@ -140,6 +143,7 @@ public final class FootballClient {
         this.premiumMarkets = premiumMarkets;
         this.premiumBookmakers = premiumBookmakers;
         this.expectedLineups = expectedLineups;
+        this.predictions = predictions;
         this.core = core;
     }
 
@@ -346,6 +350,13 @@ public final class FootballClient {
         return expectedLineups;
     }
 
+    /// Returns the predictions endpoint.
+    ///
+    /// @return the {@code /predictions} endpoint accessor
+    public PredictionsEndpoint predictions() {
+        return predictions;
+    }
+
     /// Returns the SportMonks Core API client (continents, countries, regions,
     /// cities, types) backed by the same credentials and transport.
     ///
@@ -465,6 +476,7 @@ public final class FootballClient {
                     new PremiumMarketsEndpoint(oddsExecutor, codec),
                     new PremiumBookmakersEndpoint(oddsExecutor, codec),
                     new ExpectedLineupsEndpoint(executor, codec),
+                    new PredictionsEndpoint(executor, codec),
                     core);
         }
     }
