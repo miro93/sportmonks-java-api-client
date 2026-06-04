@@ -1,5 +1,11 @@
-package io.github.miro93.sportmonks.core.error;
+package io.github.miro93.sportmonks.core.error.internal;
 
+import io.github.miro93.sportmonks.core.error.AuthenticationException;
+import io.github.miro93.sportmonks.core.error.NotFoundException;
+import io.github.miro93.sportmonks.core.error.RateLimitException;
+import io.github.miro93.sportmonks.core.error.ServerException;
+import io.github.miro93.sportmonks.core.error.SportmonksException;
+import io.github.miro93.sportmonks.core.error.ValidationException;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;

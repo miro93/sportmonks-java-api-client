@@ -1,7 +1,7 @@
 package io.github.miro93.sportmonks.core;
 
 import io.github.miro93.sportmonks.core.auth.ApiToken;
-import io.github.miro93.sportmonks.core.error.ErrorMapper;
+import io.github.miro93.sportmonks.core.error.internal.ErrorMapper;
 import io.github.miro93.sportmonks.core.error.ServerException;
 import io.github.miro93.sportmonks.core.http.HttpTransport;
 import io.github.miro93.sportmonks.core.http.RawResponse;
