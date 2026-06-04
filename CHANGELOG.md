@@ -5,6 +5,14 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0](https://github.com/miro93/sportmonks-java-api-client/compare/v0.4.0...v0.5.0) (2026-06-04)
+
+
+### Features
+
+* premium odds feed (Premium pre-match/History/Markets/Bookmakers) ([#71](https://github.com/miro93/sportmonks-java-api-client/issues/71)) ([72d07a2](https://github.com/miro93/sportmonks-java-api-client/commit/72d07a2cf4be168b1f20067c1b5001ff403561d7))
+* standard odds feed (Bookmakers/Markets/Pre-match/Inplay odds) ([#69](https://github.com/miro93/sportmonks-java-api-client/issues/69)) ([fa4b7ef](https://github.com/miro93/sportmonks-java-api-client/commit/fa4b7ef9a2d1789fe96e6692642c0188a554c3e6))
+
 ## [0.4.0](https://github.com/miro93/sportmonks-java-api-client/compare/v0.3.0...v0.4.0) (2026-06-03)
 
 
