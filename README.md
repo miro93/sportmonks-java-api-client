@@ -176,6 +176,16 @@ encapsulated and not part of the public API. The library also works unchanged on
 
 ---
 
+## GraalVM native-image
+
+The library is native-image ready: it ships Jackson reachability metadata under
+`META-INF/native-image`, so an application that depends on it compiles to a native image
+without extra reflection configuration. JSON decoding uses standard Jackson reflection (the
+Blackbird module is intentionally not used, as its runtime code generation is unfriendly to
+GraalVM's closed-world analysis).
+
+---
+
 ## Includes / Filters / Select / Sort / Pagination
 
 Both request types (`CollectionRequest` and `SingleResourceRequest`) share the
