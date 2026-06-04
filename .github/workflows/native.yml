@@ -1,0 +1,44 @@
+name: Native
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  native-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Set up GraalVM 25
+        uses: graalvm/setup-graalvm@329c42c5f4c343bceb505f0b28cc8499bc2bf174 # v1.5.4
+        with:
+          java-version: '25'
+          distribution: graalvm
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
+
+      - name: Build native smoke image
+        run: ./gradlew :native-smoke:nativeCompile --no-daemon
+
+      - name: Run native smoke binary
+        run: ./native-smoke/build/native/nativeCompile/native-smoke
+
+      - name: Check reachability metadata is up to date
+        run: |
+          ./gradlew -Pagent test --tests "*DecodingTest" --rerun-tasks --no-daemon
+          ./gradlew :core:metadataCopy --task test \
+              --dir src/main/resources/META-INF/native-image/io.github.miro93.sportmonks/core --no-daemon
+          ./gradlew :football:metadataCopy --task test \
+              --dir src/main/resources/META-INF/native-image/io.github.miro93.sportmonks/football --no-daemon
+          python3 gradle/filter-native-metadata.py \
+              core/src/main/resources/META-INF/native-image/io.github.miro93.sportmonks/core/reachability-metadata.json
+          python3 gradle/filter-native-metadata.py \
+              football/src/main/resources/META-INF/native-image/io.github.miro93.sportmonks/football/reachability-metadata.json
+          git diff --exit-code -- core/src/main/resources/META-INF football/src/main/resources/META-INF \
+            || (echo "Reachability metadata is stale — regenerate with the agent + filter and commit." && exit 1)
