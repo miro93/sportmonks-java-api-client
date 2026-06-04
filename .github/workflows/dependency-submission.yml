@@ -31,5 +31,7 @@ jobs:
           # Only track what the published artifacts actually ship (runtime classpaths).
           # Test-only tooling (WireMock -> Jetty, JUnit, AssertJ) is never published, so it
           # must not pollute the dependency graph nor fail Dependency Review on test-scope
-          # advisories we can't act on (e.g. Jetty 11.x is EOL with no fix).
-          dependency-graph-exclude-configurations: '.*[Tt]est(Compile|Runtime)Classpath'
+          # advisories we can't act on (e.g. Jetty 11.x is EOL with no fix). This covers the
+          # standard test classpaths and the GraalVM plugin's native test classpaths
+          # (nativeImageTestClasspath[Internal]), which also pull the WireMock/Jetty test tree.
+          dependency-graph-exclude-configurations: '.*[Tt]est.*Classpath.*'
