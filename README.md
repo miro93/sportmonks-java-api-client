@@ -253,6 +253,7 @@ All endpoints are accessed via `FootballClient`:
 | `premiumOddsHistory()` | `PremiumOddsHistoryEndpoint` | `all()`, `updatedBetween(fromEpochSeconds, toEpochSeconds)` |
 | `premiumMarkets()` | `PremiumMarketsEndpoint` | `all()` (served from the `/v3/odds` base URL) |
 | `premiumBookmakers()` | `PremiumBookmakersEndpoint` | `all()` (served from the `/v3/odds` base URL) |
+| `expectedLineups()` | `ExpectedLineupsEndpoint` | `byTeam(teamId)`, `byPlayer(playerId)` |
 
 Premium markets and bookmakers (`premiumMarkets()`, `premiumBookmakers()`) are served from a
 separate odds base URL (`/v3/odds`), configurable via `oddsBaseUrl(...)` on the builder; all
