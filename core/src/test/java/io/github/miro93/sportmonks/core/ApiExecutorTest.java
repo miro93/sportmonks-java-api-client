@@ -8,7 +8,7 @@ import io.github.miro93.sportmonks.core.error.ServerException;
 import io.github.miro93.sportmonks.core.http.JdkHttpTransport;
 import io.github.miro93.sportmonks.core.json.CodecException;
 import io.github.miro93.sportmonks.core.json.JacksonCodec;
-import io.github.miro93.sportmonks.core.request.RequestSpec;
+import io.github.miro93.sportmonks.core.request.internal.RequestSpec;
 import io.github.miro93.sportmonks.core.response.ApiResponse;
 import org.junit.jupiter.api.Test;
 

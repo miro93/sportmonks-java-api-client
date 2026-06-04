@@ -5,7 +5,7 @@ import io.github.miro93.sportmonks.core.coreapi.model.Country;
 import io.github.miro93.sportmonks.core.json.DataType;
 import io.github.miro93.sportmonks.core.json.JacksonCodec;
 import io.github.miro93.sportmonks.core.request.CollectionRequest;
-import io.github.miro93.sportmonks.core.request.RequestSpec;
+import io.github.miro93.sportmonks.core.request.internal.RequestSpec;
 import io.github.miro93.sportmonks.core.request.SingleResourceRequest;
 
 import java.util.List;

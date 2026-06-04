@@ -1,8 +1,9 @@
-package io.github.miro93.sportmonks.core.retry;
+package io.github.miro93.sportmonks.core.retry.internal;
 
 import io.github.miro93.sportmonks.core.error.TransportException;
 import io.github.miro93.sportmonks.core.http.HttpTransport;
 import io.github.miro93.sportmonks.core.http.RawResponse;
+import io.github.miro93.sportmonks.core.retry.RetryPolicy;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;

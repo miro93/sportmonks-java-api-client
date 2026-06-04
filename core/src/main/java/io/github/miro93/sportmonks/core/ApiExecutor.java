@@ -1,15 +1,15 @@
 package io.github.miro93.sportmonks.core;
 
 import io.github.miro93.sportmonks.core.auth.ApiToken;
-import io.github.miro93.sportmonks.core.error.ErrorMapper;
+import io.github.miro93.sportmonks.core.error.internal.ErrorMapper;
 import io.github.miro93.sportmonks.core.error.ServerException;
 import io.github.miro93.sportmonks.core.http.HttpTransport;
 import io.github.miro93.sportmonks.core.http.RawResponse;
 import io.github.miro93.sportmonks.core.json.CodecException;
 import io.github.miro93.sportmonks.core.json.DataType;
 import io.github.miro93.sportmonks.core.json.JacksonCodec;
-import io.github.miro93.sportmonks.core.request.RequestSpec;
-import io.github.miro93.sportmonks.core.request.UrlBuilder;
+import io.github.miro93.sportmonks.core.request.internal.RequestSpec;
+import io.github.miro93.sportmonks.core.request.internal.UrlBuilder;
 import io.github.miro93.sportmonks.core.response.ApiResponse;
 
 import java.time.Duration;
