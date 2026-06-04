@@ -19,6 +19,10 @@ import io.github.miro93.sportmonks.football.endpoint.LivescoresEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.MarketsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.PlayersEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.PreMatchOddsEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.PremiumBookmakersEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.PremiumMarketsEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.PremiumOddsEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.PremiumOddsHistoryEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.RefereesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.RoundsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.SchedulesEndpoint;
@@ -41,6 +45,11 @@ import java.util.Objects;
 public final class FootballClient {
 
     public static final String DEFAULT_BASE_URL = "https://api.sportmonks.com/v3/football";
+
+    /// The default base URL for the SportMonks odds resources (premium markets
+    /// and bookmakers), which live under {@code /v3/odds} rather than
+    /// {@code /v3/football}.
+    public static final String ODDS_BASE_URL = "https://api.sportmonks.com/v3/odds";
 
     private final FixturesEndpoint fixtures;
     private final LivescoresEndpoint livescores;
@@ -65,6 +74,10 @@ public final class FootballClient {
     private final MarketsEndpoint markets;
     private final PreMatchOddsEndpoint preMatchOdds;
     private final InplayOddsEndpoint inplayOdds;
+    private final PremiumOddsEndpoint premiumOdds;
+    private final PremiumOddsHistoryEndpoint premiumOddsHistory;
+    private final PremiumMarketsEndpoint premiumMarkets;
+    private final PremiumBookmakersEndpoint premiumBookmakers;
     private final CoreClient core;
 
     private FootballClient(
@@ -91,6 +104,10 @@ public final class FootballClient {
             MarketsEndpoint markets,
             PreMatchOddsEndpoint preMatchOdds,
             InplayOddsEndpoint inplayOdds,
+            PremiumOddsEndpoint premiumOdds,
+            PremiumOddsHistoryEndpoint premiumOddsHistory,
+            PremiumMarketsEndpoint premiumMarkets,
+            PremiumBookmakersEndpoint premiumBookmakers,
             CoreClient core) {
         this.fixtures = fixtures;
         this.livescores = livescores;
@@ -115,6 +132,10 @@ public final class FootballClient {
         this.markets = markets;
         this.preMatchOdds = preMatchOdds;
         this.inplayOdds = inplayOdds;
+        this.premiumOdds = premiumOdds;
+        this.premiumOddsHistory = premiumOddsHistory;
+        this.premiumMarkets = premiumMarkets;
+        this.premiumBookmakers = premiumBookmakers;
         this.core = core;
     }
 
@@ -286,6 +307,34 @@ public final class FootballClient {
         return inplayOdds;
     }
 
+    /// Returns the premium pre-match odds endpoint.
+    ///
+    /// @return the {@code /odds/premium} endpoint accessor
+    public PremiumOddsEndpoint premiumOdds() {
+        return premiumOdds;
+    }
+
+    /// Returns the premium pre-match odds history endpoint.
+    ///
+    /// @return the {@code /odds/premium/history} endpoint accessor
+    public PremiumOddsHistoryEndpoint premiumOddsHistory() {
+        return premiumOddsHistory;
+    }
+
+    /// Returns the premium markets endpoint (served from the odds base URL).
+    ///
+    /// @return the {@code /markets/premium} endpoint accessor
+    public PremiumMarketsEndpoint premiumMarkets() {
+        return premiumMarkets;
+    }
+
+    /// Returns the premium bookmakers endpoint (served from the odds base URL).
+    ///
+    /// @return the {@code /bookmakers/premium} endpoint accessor
+    public PremiumBookmakersEndpoint premiumBookmakers() {
+        return premiumBookmakers;
+    }
+
     /// Returns the SportMonks Core API client (continents, countries, regions,
     /// cities, types) backed by the same credentials and transport.
     ///
@@ -301,6 +350,7 @@ public final class FootballClient {
         private RetryPolicy retryPolicy = RetryPolicy.defaults();
         private String baseUrl = DEFAULT_BASE_URL;
         private String coreBaseUrl = CoreClient.DEFAULT_BASE_URL;
+        private String oddsBaseUrl = ODDS_BASE_URL;
         private Duration requestTimeout = Duration.ofSeconds(30);
 
         private Builder() {
@@ -343,6 +393,16 @@ public final class FootballClient {
             return this;
         }
 
+        /// Overrides the base URL for premium markets and bookmakers, which are
+        /// served from {@link #ODDS_BASE_URL} rather than the football base URL.
+        ///
+        /// @param oddsBaseUrl the odds base URL
+        /// @return this builder
+        public Builder oddsBaseUrl(String oddsBaseUrl) {
+            this.oddsBaseUrl = Objects.requireNonNull(oddsBaseUrl, "oddsBaseUrl");
+            return this;
+        }
+
         /// Overrides the per-request timeout (defaults to 30 seconds).
         ///
         /// @param requestTimeout the request timeout
@@ -363,6 +423,7 @@ public final class FootballClient {
             JacksonCodec codec = new JacksonCodec();
             ApiExecutor executor = new ApiExecutor(transport, codec, apiToken, baseUrl);
             ApiExecutor coreExecutor = new ApiExecutor(transport, codec, apiToken, coreBaseUrl);
+            ApiExecutor oddsExecutor = new ApiExecutor(transport, codec, apiToken, oddsBaseUrl);
             CoreClient core = new CoreClient(coreExecutor, codec);
             return new FootballClient(
                     new FixturesEndpoint(executor, codec),
@@ -388,6 +449,10 @@ public final class FootballClient {
                     new MarketsEndpoint(executor, codec),
                     new PreMatchOddsEndpoint(executor, codec),
                     new InplayOddsEndpoint(executor, codec),
+                    new PremiumOddsEndpoint(executor, codec),
+                    new PremiumOddsHistoryEndpoint(executor, codec),
+                    new PremiumMarketsEndpoint(oddsExecutor, codec),
+                    new PremiumBookmakersEndpoint(oddsExecutor, codec),
                     core);
         }
     }
