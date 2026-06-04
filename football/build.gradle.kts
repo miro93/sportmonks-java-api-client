@@ -5,6 +5,7 @@ import com.vanniktech.maven.publish.SourcesJar
 plugins {
     `java-library`
     alias(libs.plugins.vanniktech.mavenPublish)
+    alias(libs.plugins.graalvm.native)
 }
 
 java {
