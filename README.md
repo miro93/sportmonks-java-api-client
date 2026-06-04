@@ -156,6 +156,26 @@ Country country = football.core().countries().byId(320L).get().data();
 
 ---
 
+## Java Module System (JPMS)
+
+The library ships as named modules:
+
+- `io.github.miro93.sportmonks.core`
+- `io.github.miro93.sportmonks.football`
+
+If your application is modular, require the football module (it transitively requires core):
+
+```java
+module your.app {
+    requires io.github.miro93.sportmonks.football;
+}
+```
+
+Internal plumbing (HTTP transport, JSON codec, request building, retry internals) is
+encapsulated and not part of the public API. The library also works unchanged on the classpath.
+
+---
+
 ## Includes / Filters / Select / Sort / Pagination
 
 Both request types (`CollectionRequest` and `SingleResourceRequest`) share the
