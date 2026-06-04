@@ -12,6 +12,7 @@ import io.github.miro93.sportmonks.core.retry.Sleeper;
 import io.github.miro93.sportmonks.football.endpoint.BookmakersEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.CoachesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.CommentariesEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.ExpectedEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.ExpectedLineupsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.FixturesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.InplayOddsEndpoint;
@@ -33,6 +34,7 @@ import io.github.miro93.sportmonks.football.endpoint.SquadsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.StagesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.StandingsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.StatesEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.StatisticsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.TeamsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.TopscorersEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.TransfersEndpoint;
@@ -82,6 +84,8 @@ public final class FootballClient {
     private final PremiumBookmakersEndpoint premiumBookmakers;
     private final ExpectedLineupsEndpoint expectedLineups;
     private final PredictionsEndpoint predictions;
+    private final StatisticsEndpoint statistics;
+    private final ExpectedEndpoint expected;
     private final CoreClient core;
 
     private FootballClient(
@@ -114,6 +118,8 @@ public final class FootballClient {
             PremiumBookmakersEndpoint premiumBookmakers,
             ExpectedLineupsEndpoint expectedLineups,
             PredictionsEndpoint predictions,
+            StatisticsEndpoint statistics,
+            ExpectedEndpoint expected,
             CoreClient core) {
         this.fixtures = fixtures;
         this.livescores = livescores;
@@ -144,6 +150,8 @@ public final class FootballClient {
         this.premiumBookmakers = premiumBookmakers;
         this.expectedLineups = expectedLineups;
         this.predictions = predictions;
+        this.statistics = statistics;
+        this.expected = expected;
         this.core = core;
     }
 
@@ -357,6 +365,20 @@ public final class FootballClient {
         return predictions;
     }
 
+    /// Returns the statistics endpoint.
+    ///
+    /// @return the {@code /statistics} endpoint accessor
+    public StatisticsEndpoint statistics() {
+        return statistics;
+    }
+
+    /// Returns the expected-goals (xG) endpoint.
+    ///
+    /// @return the {@code /expected} endpoint accessor
+    public ExpectedEndpoint expected() {
+        return expected;
+    }
+
     /// Returns the SportMonks Core API client (continents, countries, regions,
     /// cities, types) backed by the same credentials and transport.
     ///
@@ -477,6 +499,8 @@ public final class FootballClient {
                     new PremiumBookmakersEndpoint(oddsExecutor, codec),
                     new ExpectedLineupsEndpoint(executor, codec),
                     new PredictionsEndpoint(executor, codec),
+                    new StatisticsEndpoint(executor, codec),
+                    new ExpectedEndpoint(executor, codec),
                     core);
         }
     }
