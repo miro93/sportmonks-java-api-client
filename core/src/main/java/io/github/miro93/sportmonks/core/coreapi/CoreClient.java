@@ -96,7 +96,8 @@ public final class CoreClient {
         private ApiToken apiToken;
         private RetryPolicy retryPolicy = RetryPolicy.defaults();
         private String baseUrl = DEFAULT_BASE_URL;
-        private Duration requestTimeout = Duration.ofSeconds(30);
+        private HttpClient httpClient;
+        private Duration requestTimeout = JdkHttpTransport.DEFAULT_REQUEST_TIMEOUT;
 
         private Builder() {
         }
@@ -137,13 +138,26 @@ public final class CoreClient {
             return this;
         }
 
+        /// Overrides the underlying JDK {@link HttpClient} used for all requests.
+        /// When not set, a default client is used (explicit 10s connect timeout, NORMAL redirects).
+        /// This is distinct from {@link #requestTimeout(Duration)}: the client's connect timeout
+        /// bounds connection establishment, while requestTimeout bounds the request→response deadline.
+        ///
+        /// @param httpClient the HTTP client to use
+        /// @return this builder
+        public Builder httpClient(HttpClient httpClient) {
+            this.httpClient = Objects.requireNonNull(httpClient, "httpClient");
+            return this;
+        }
+
         /// Builds the configured {@link CoreClient}.
         ///
         /// @return a ready-to-use client
         /// @throws NullPointerException if no API token was set
         public CoreClient build() {
             Objects.requireNonNull(apiToken, "apiToken is required");
-            HttpTransport base = new JdkHttpTransport(HttpClient.newHttpClient(), requestTimeout);
+            HttpClient client = (httpClient != null) ? httpClient : JdkHttpTransport.newDefaultClient();
+            HttpTransport base = new JdkHttpTransport(client, requestTimeout);
             HttpTransport transport = new RetryingTransport(base, retryPolicy, Sleeper.REAL);
             JacksonCodec codec = new JacksonCodec();
             ApiExecutor executor = new ApiExecutor(transport, codec, apiToken, baseUrl);
