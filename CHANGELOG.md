@@ -5,6 +5,19 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0](https://github.com/miro93/sportmonks-java-api-client/compare/v0.6.0...v1.0.0) (2026-06-04)
+
+
+### Features
+
+* predictions (probabilities / value bets / predictability) ([#74](https://github.com/miro93/sportmonks-java-api-client/issues/74)) ([97fce59](https://github.com/miro93/sportmonks-java-api-client/commit/97fce59b871e8f7d364bca1128c38c2bde12caf9))
+* statistics + expected (xG) ([#76](https://github.com/miro93/sportmonks-java-api-client/issues/76)) ([d72d65f](https://github.com/miro93/sportmonks-java-api-client/commit/d72d65f643c50918f73cda65cc23fb7549698504))
+
+
+### Miscellaneous Chores
+
+* release 1.0.0 ([c1443bd](https://github.com/miro93/sportmonks-java-api-client/commit/c1443bd96cd4d1fd9d707a3a77244c1bcba715a1))
+
 ## [0.6.0](https://github.com/miro93/sportmonks-java-api-client/compare/v0.5.0...v0.6.0) (2026-06-04)
 
 
