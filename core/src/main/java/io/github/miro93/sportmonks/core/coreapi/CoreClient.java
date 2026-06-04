@@ -91,7 +91,7 @@ public final class CoreClient {
     }
 
     /// Fluent builder for {@link CoreClient}. The API token is required; the
-    /// retry policy, base URL and request timeout default to sensible values.
+    /// retry policy, base URL, request timeout, and HTTP client default to sensible values.
     public static final class Builder {
         private ApiToken apiToken;
         private RetryPolicy retryPolicy = RetryPolicy.defaults();
@@ -129,7 +129,7 @@ public final class CoreClient {
             return this;
         }
 
-        /// Overrides the per-request timeout (defaults to 30 seconds).
+        /// Overrides the per-request timeout (defaults to {@link JdkHttpTransport#DEFAULT_REQUEST_TIMEOUT}).
         ///
         /// @param requestTimeout the request timeout
         /// @return this builder

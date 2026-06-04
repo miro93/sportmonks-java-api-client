@@ -47,10 +47,14 @@ class CoreClientTest {
 
     @Test
     void injectedHttpClientIsActuallyUsed(WireMockRuntimeInfo wm) {
-        // Would succeed via the default client; a dead proxy proves the injected client is used.
+        // Deliberate guard, not dead code: if httpClient() injection ever regressed, the default
+        // client would reach this stub and return 200, making the test fail clearly with "nothing
+        // thrown" rather than an unrelated 404/NotFoundException.
         stubFor(get(urlPathEqualTo("/continents")).willReturn(okJson("""
                 { "data": [ { "id": 1, "name": "Europe", "code": "EU" } ] }
                 """)));
+        // Port 1 is never bound in this JVM; connecting through it yields an immediate
+        // ECONNREFUSED that JdkHttpTransport wraps as TransportException — fast and deterministic.
         HttpClient deadProxyClient = HttpClient.newBuilder()
                 .proxy(ProxySelector.of(new InetSocketAddress("localhost", 1)))
                 .build();
