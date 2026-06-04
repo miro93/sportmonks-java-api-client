@@ -1,0 +1,758 @@
+{
+  "reflection": [
+    {
+      "type": "io.github.miro93.sportmonks.core.response.ApiResponse",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.Object",
+            "io.github.miro93.sportmonks.core.response.Pagination",
+            "io.github.miro93.sportmonks.core.response.RateLimit",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.core.response.Pagination"
+    },
+    {
+      "type": "io.github.miro93.sportmonks.core.response.RateLimit"
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Bookmaker",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Coach",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.Integer",
+            "java.lang.Integer",
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Commentary",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.String",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.Integer",
+            "java.lang.Integer",
+            "java.lang.Boolean",
+            "java.lang.Boolean",
+            "java.lang.Integer"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Event",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.Integer",
+            "java.lang.Integer",
+            "java.lang.Boolean",
+            "java.lang.Boolean",
+            "java.lang.Long",
+            "java.lang.Integer"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Expected",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.util.Map"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.ExpectedLineup",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.Integer",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Fixture",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Integer",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.Integer",
+            "boolean",
+            "boolean",
+            "java.lang.Long",
+            "java.util.List",
+            "java.util.List",
+            "io.github.miro93.sportmonks.football.model.State",
+            "java.util.List"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.HistoricalOdd",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.League",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.Boolean",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.Integer",
+            "java.lang.Boolean",
+            "java.util.List"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Market",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.Boolean"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Odd",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.Integer",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.Boolean",
+            "java.lang.Boolean",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Participant",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.Integer",
+            "java.lang.String",
+            "boolean",
+            "java.lang.String",
+            "io.github.miro93.sportmonks.football.model.ParticipantMeta"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.ParticipantMeta",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.String",
+            "java.lang.Boolean",
+            "java.lang.Integer"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Player",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.Integer",
+            "java.lang.Integer",
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Predictability",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.util.Map"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Prediction",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.util.Map"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.PremiumOdd",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.Boolean",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Referee",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.Integer",
+            "java.lang.Integer",
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Round",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.Boolean",
+            "java.lang.Boolean",
+            "java.lang.Boolean",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.Boolean",
+            "java.util.List"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Score",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "io.github.miro93.sportmonks.football.model.ScoreDetail",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.ScoreDetail",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.Integer",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Season",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.Boolean",
+            "java.lang.Boolean",
+            "java.lang.Boolean",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.Boolean",
+            "java.lang.String",
+            "io.github.miro93.sportmonks.football.model.League",
+            "java.util.List"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Squad",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Integer",
+            "java.lang.String",
+            "java.lang.String",
+            "io.github.miro93.sportmonks.football.model.Player"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Stage",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.Integer",
+            "java.lang.Boolean",
+            "java.lang.Boolean",
+            "java.lang.Boolean",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.Boolean",
+            "java.util.List"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Standing",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Integer",
+            "java.lang.String",
+            "java.lang.Integer",
+            "io.github.miro93.sportmonks.football.model.Team",
+            "java.util.List"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.StandingDetail",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.String",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Integer"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.State",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Statistic",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Boolean",
+            "java.lang.Long",
+            "java.lang.Integer",
+            "java.util.List"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.StatisticDetail",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.util.Map"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Team",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.Integer",
+            "java.lang.String",
+            "boolean",
+            "java.lang.String",
+            "java.util.List"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Topscorer",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Integer",
+            "java.lang.Integer",
+            "io.github.miro93.sportmonks.football.model.Player",
+            "io.github.miro93.sportmonks.football.model.Team"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Transfer",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.Boolean",
+            "java.lang.Boolean",
+            "java.lang.String",
+            "java.lang.String",
+            "io.github.miro93.sportmonks.football.model.Player",
+            "io.github.miro93.sportmonks.football.model.Team",
+            "io.github.miro93.sportmonks.football.model.Team"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.TvStation",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.ValueBet",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "io.github.miro93.sportmonks.football.model.ValueBetPrediction"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.ValueBetPrediction",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.Boolean",
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Venue",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.Integer",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.Boolean"
+          ]
+        }
+      ]
+    }
+  ]
+}

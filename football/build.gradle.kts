@@ -31,6 +31,14 @@ tasks.test {
     useJUnitPlatform()
 }
 
+// Use the agent's "standard" mode so the generated reachability metadata is
+// unconditional (correct for a library that ships metadata for its own types).
+graalvmNative {
+    agent {
+        defaultMode = "standard"
+    }
+}
+
 mavenPublishing {
     configure(JavaLibrary(javadocJar = JavadocJar.Javadoc(), sourcesJar = SourcesJar.Sources()))
 }

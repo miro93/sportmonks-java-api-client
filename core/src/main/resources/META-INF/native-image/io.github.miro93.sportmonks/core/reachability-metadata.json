@@ -1,0 +1,106 @@
+{
+  "reflection": [
+    {
+      "type": "io.github.miro93.sportmonks.core.coreapi.model.City",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.Long"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.core.coreapi.model.Continent",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.core.coreapi.model.Country",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.core.coreapi.model.Region",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.core.coreapi.model.Type",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "java.lang.Long",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.core.response.ApiResponse",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.Object",
+            "io.github.miro93.sportmonks.core.response.Pagination",
+            "io.github.miro93.sportmonks.core.response.RateLimit",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.core.response.Pagination"
+    },
+    {
+      "type": "io.github.miro93.sportmonks.core.response.RateLimit"
+    }
+  ]
+}
