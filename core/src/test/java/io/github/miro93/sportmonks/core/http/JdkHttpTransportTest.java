@@ -77,9 +77,8 @@ class JdkHttpTransportTest {
     }
 
     @Test
-    void noArgNewDefaultClientStillUses10sConnectTimeout() {
-        HttpClient client = JdkHttpTransport.newDefaultClient();
-
-        assertThat(client.connectTimeout()).contains(Duration.ofSeconds(10));
+    void noArgNewDefaultClientDelegatesToDefaultConstant() {
+        assertThat(JdkHttpTransport.newDefaultClient().connectTimeout())
+                .contains(JdkHttpTransport.DEFAULT_CONNECT_TIMEOUT);
     }
 }

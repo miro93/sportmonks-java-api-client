@@ -35,6 +35,7 @@ public final class JdkHttpTransport implements HttpTransport {
     /// @param connectTimeout the connection-establishment timeout
     /// @return a new default HTTP client
     public static HttpClient newDefaultClient(Duration connectTimeout) {
+        Objects.requireNonNull(connectTimeout, "connectTimeout");
         return HttpClient.newBuilder()
                 .connectTimeout(connectTimeout)
                 .followRedirects(HttpClient.Redirect.NORMAL)
