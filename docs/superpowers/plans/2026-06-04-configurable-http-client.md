@@ -4,7 +4,7 @@
 
 **Goal:** Let users inject their own `java.net.http.HttpClient` on both client builders, with a sensibly-configured default, while keeping `HttpTransport` internal (M14 encapsulation intact).
 
-**Architecture:** Add a shared, package-public factory + two timeout constants to `JdkHttpTransport` (the package `core.http` is already a qualified export to football, so both modules reach it with zero duplication). Add a `httpClient(HttpClient)` setter to `CoreClient.Builder` and `FootballClient.Builder`; their `build()` methods use the injected client or fall back to the factory default, and source the `requestTimeout` default from the new constant.
+**Architecture:** Add a shared, `public static` factory + two timeout constants to `JdkHttpTransport` (the package `core.http` is already a qualified export to football, so both modules reach it with zero duplication — the members must be `public` because the qualified export only grants football access to `public` members of public types). Add a `httpClient(HttpClient)` setter to `CoreClient.Builder` and `FootballClient.Builder`; their `build()` methods use the injected client or fall back to the factory default, and source the `requestTimeout` default from the new constant.
 
 **Tech Stack:** Java 25, JPMS, JUnit 5, WireMock, AssertJ. Spec: `docs/superpowers/specs/2026-06-04-configurable-http-client-design.md`.
 
@@ -20,7 +20,7 @@
 - **Modify** `football/src/test/java/io/github/miro93/sportmonks/football/FootballClientTest.java` — null-check + injection-effective tests.
 - **Modify** `README.md` — transport tuning section.
 
-Constants/factory are **package-public** on `JdkHttpTransport` (already a `public final class`). Because `core.http` is exported **only** to football (not unqualified), end users never see them — encapsulation preserved.
+Constants/factory are **`public static`** on `JdkHttpTransport` (already a `public final class`). They **must** be `public` so `FootballClient.Builder` — a different module/package — can reach them across the qualified export (which only exposes `public` members); package-private would not compile against `:football`. Because `core.http` is exported **only** to football (not unqualified), end users never see them — encapsulation preserved.
 
 ---
 
@@ -32,7 +32,7 @@ Constants/factory are **package-public** on `JdkHttpTransport` (already a `publi
 
 - [ ] **Step 1: Write the failing tests**
 
-Add to `JdkHttpTransportTest` (same package `io.github.miro93.sportmonks.core.http`, so package-public members are visible). Add imports `java.net.http.HttpClient.Redirect` is not needed — use `HttpClient.Redirect.NORMAL` (class `HttpClient` already imported). Ensure `java.time.Duration` and `org.assertj.core.api.Assertions.assertThat` are imported (they already are).
+Add to `JdkHttpTransportTest` (same package `io.github.miro93.sportmonks.core.http`, so the `public static` members are visible). Add imports `java.net.http.HttpClient.Redirect` is not needed — use `HttpClient.Redirect.NORMAL` (class `HttpClient` already imported). Ensure `java.time.Duration` and `org.assertj.core.api.Assertions.assertThat` are imported (they already are).
 
 ```java
     @Test
