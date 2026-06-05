@@ -133,7 +133,7 @@ import io.github.miro93.sportmonks.core.coreapi.model.Type;
 import java.util.List;
 
 CoreClient core = CoreClient.builder()
-        .apiToken(ApiToken.of(System.getenv("SPORTMONKS_TOKEN")))
+        .apiToken(ApiToken.of(System.getenv("SPORTMONKS_API_TOKEN")))
         .build();
 
 List<Country> countries = core.countries().search("Scot").get().data();
@@ -148,7 +148,7 @@ import io.github.miro93.sportmonks.core.coreapi.model.Country;
 import io.github.miro93.sportmonks.football.FootballClient;
 
 FootballClient football = FootballClient.builder()
-        .apiToken(ApiToken.of(System.getenv("SPORTMONKS_TOKEN")))
+        .apiToken(ApiToken.of(System.getenv("SPORTMONKS_API_TOKEN")))
         .build();
 
 Country country = football.core().countries().byId(320L).get().data();
@@ -167,7 +167,7 @@ HttpClient httpClient = HttpClient.newBuilder()
         .build();
 
 FootballClient client = FootballClient.builder()
-        .apiToken(ApiToken.of(System.getenv("SPORTMONKS_TOKEN")))
+        .apiToken(ApiToken.of(System.getenv("SPORTMONKS_API_TOKEN")))
         .httpClient(httpClient)
         .build();
 ```
