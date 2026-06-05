@@ -213,7 +213,7 @@ JVM system properties, so map your framework's config to the builder setters wit
 
 ```java
 @ConfigurationProperties("sportmonks")
-record SportmonksProps(Duration connectTimeout, Duration requestTimeout, int maxRetries) {}
+record SportmonksProps(Duration connectTimeout, Duration requestTimeout, int maxAttempts) {}
 
 @Bean
 FootballClient footballClient(SportmonksProps props) {
@@ -221,7 +221,8 @@ FootballClient footballClient(SportmonksProps props) {
             .apiToken(ApiToken.fromEnv())
             .connectTimeout(props.connectTimeout())
             .requestTimeout(props.requestTimeout())
-            .retryPolicy(RetryPolicy.builder().maxAttempts(props.maxRetries()).build())
+            // maxAttempts is total tries (e.g. 3 = 1 initial + 2 retries)
+            .retryPolicy(RetryPolicy.builder().maxAttempts(props.maxAttempts()).build())
             .build();
 }
 ```

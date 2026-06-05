@@ -673,4 +673,3 @@ Expected: BUILD SUCCESSFUL, all modules compile, all tests pass (the existing 35
 - [ ] **Confirm additive-only public API**
 
 Manually confirm no existing public signature changed: `RetryPolicy(int, Backoff)`, `defaults()`, `none()`, `isRetryableStatus(int)`, `JdkHttpTransport.newDefaultClient()` all still exist with the same signatures. Only additions: `newDefaultClient(Duration)`, the 3-arg `RetryPolicy` ctor, `RetryPolicy.builder()`/`Builder`, and `connectTimeout(Duration)` on both builders. → release-please will pick a **minor** bump (2.2.0).
-```
