@@ -22,12 +22,21 @@ public final class JdkHttpTransport implements HttpTransport {
     /// Hard-coded for now; a later ticket may externalise this to a property.
     public static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(30);
 
-    /// Builds the default {@link HttpClient}: an explicit connect timeout and NORMAL redirect
-    /// following. The HTTP version is left at the JDK default (HTTP/2 with HTTP/1.1 fallback);
-    /// connection pooling is automatic (keep-alive + HTTP/2 multiplexing) and not builder-tunable.
+    /// Builds the default {@link HttpClient} using {@link #DEFAULT_CONNECT_TIMEOUT}.
+    /// See {@link #newDefaultClient(Duration)} for the configuration details.
     public static HttpClient newDefaultClient() {
+        return newDefaultClient(DEFAULT_CONNECT_TIMEOUT);
+    }
+
+    /// Builds the default {@link HttpClient} with the given connect timeout: NORMAL redirect
+    /// following and the JDK-default HTTP version (HTTP/2 with HTTP/1.1 fallback). Connection
+    /// pooling is automatic (keep-alive + HTTP/2 multiplexing) and not builder-tunable.
+    ///
+    /// @param connectTimeout the connection-establishment timeout
+    /// @return a new default HTTP client
+    public static HttpClient newDefaultClient(Duration connectTimeout) {
         return HttpClient.newBuilder()
-                .connectTimeout(DEFAULT_CONNECT_TIMEOUT)
+                .connectTimeout(connectTimeout)
                 .followRedirects(HttpClient.Redirect.NORMAL)
                 .build();
     }
