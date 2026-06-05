@@ -5,6 +5,14 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0](https://github.com/miro93/sportmonks-java-api-client/compare/v2.0.0...v2.1.0) (2026-06-05)
+
+
+### Features
+
+* complete builder configuration (connectTimeout + retryable statuses) ([#83](https://github.com/miro93/sportmonks-java-api-client/issues/83)) ([5c5a07f](https://github.com/miro93/sportmonks-java-api-client/commit/5c5a07f8943ab9b686f952510621e6cadb750318))
+* expose configurable HttpClient on client builders ([#81](https://github.com/miro93/sportmonks-java-api-client/issues/81)) ([484f9ac](https://github.com/miro93/sportmonks-java-api-client/commit/484f9ac6bb373f7fad0daae97d14415608c99643))
+
 ## [2.0.0](https://github.com/miro93/sportmonks-java-api-client/compare/v1.0.0...v2.0.0) (2026-06-04)
 
 
