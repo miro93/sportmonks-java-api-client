@@ -168,6 +168,7 @@ public final class CoreClient {
         ///
         /// @return a ready-to-use client
         /// @throws NullPointerException if no API token was set
+        /// @throws IllegalStateException if both {@link #connectTimeout(Duration)} and {@link #httpClient(HttpClient)} are set
         public CoreClient build() {
             Objects.requireNonNull(apiToken, "apiToken is required");
             if (httpClient != null && connectTimeout != null) {
