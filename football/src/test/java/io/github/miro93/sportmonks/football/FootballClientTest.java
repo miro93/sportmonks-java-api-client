@@ -4,7 +4,13 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import io.github.miro93.sportmonks.core.auth.ApiToken;
 import io.github.miro93.sportmonks.core.error.NotFoundException;
+import io.github.miro93.sportmonks.core.error.TransportException;
+import io.github.miro93.sportmonks.core.retry.RetryPolicy;
 import org.junit.jupiter.api.Test;
+
+import java.net.InetSocketAddress;
+import java.net.ProxySelector;
+import java.net.http.HttpClient;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,5 +65,36 @@ class FootballClientTest {
 
         assertThatThrownBy(() -> client(wm.getHttpBaseUrl()).fixtures().byId(999L).get())
                 .isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void httpClientRejectsNull() {
+        assertThatThrownBy(() -> FootballClient.builder().httpClient(null))
+                .isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    void injectedHttpClientIsActuallyUsed(WireMockRuntimeInfo wm) {
+        // Deliberate guard, not dead code: if httpClient() injection ever regressed, the default
+        // client would reach this stub and return 200, making the test fail clearly with "nothing
+        // thrown" rather than an unrelated 404/NotFoundException.
+        stubFor(get(urlPathEqualTo("/fixtures/1")).willReturn(okJson("""
+                { "data": { "id": 1, "name": "A vs B" } }
+                """)));
+        // Port 1 is never bound in this JVM; connecting through it yields an immediate
+        // ECONNREFUSED that JdkHttpTransport wraps as TransportException — fast and deterministic.
+        HttpClient deadProxyClient = HttpClient.newBuilder()
+                .proxy(ProxySelector.of(new InetSocketAddress("localhost", 1)))
+                .build();
+
+        var client = FootballClient.builder()
+                .apiToken(ApiToken.of("tok-77"))
+                .baseUrl(wm.getHttpBaseUrl())
+                .httpClient(deadProxyClient)
+                .retryPolicy(RetryPolicy.none())
+                .build();
+
+        assertThatThrownBy(() -> client.fixtures().byId(1L).get())
+                .isInstanceOf(TransportException.class);
     }
 }

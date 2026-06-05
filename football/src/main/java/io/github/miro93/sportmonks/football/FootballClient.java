@@ -388,14 +388,15 @@ public final class FootballClient {
     }
 
     /// Fluent builder for {@link FootballClient}. The API token is required; the
-    /// retry policy, base URL and request timeout default to sensible values.
+    /// retry policy, base URL, request timeout, and HTTP client default to sensible values.
     public static final class Builder {
         private ApiToken apiToken;
         private RetryPolicy retryPolicy = RetryPolicy.defaults();
         private String baseUrl = DEFAULT_BASE_URL;
         private String coreBaseUrl = CoreClient.DEFAULT_BASE_URL;
         private String oddsBaseUrl = ODDS_BASE_URL;
-        private Duration requestTimeout = Duration.ofSeconds(30);
+        private HttpClient httpClient;
+        private Duration requestTimeout = JdkHttpTransport.DEFAULT_REQUEST_TIMEOUT;
 
         private Builder() {
         }
@@ -447,12 +448,25 @@ public final class FootballClient {
             return this;
         }
 
-        /// Overrides the per-request timeout (defaults to 30 seconds).
+        /// Overrides the per-request timeout (defaults to {@link JdkHttpTransport#DEFAULT_REQUEST_TIMEOUT}).
         ///
         /// @param requestTimeout the request timeout
         /// @return this builder
         public Builder requestTimeout(Duration requestTimeout) {
             this.requestTimeout = Objects.requireNonNull(requestTimeout, "requestTimeout");
+            return this;
+        }
+
+        /// Overrides the underlying JDK {@link HttpClient} used for all requests (football, core,
+        /// and odds executors share it). When not set, a default client is used (explicit 10s
+        /// connect timeout, NORMAL redirects). This is distinct from {@link #requestTimeout(Duration)}:
+        /// the client's connect timeout bounds connection establishment, while requestTimeout bounds
+        /// the request→response deadline.
+        ///
+        /// @param httpClient the HTTP client to use
+        /// @return this builder
+        public Builder httpClient(HttpClient httpClient) {
+            this.httpClient = Objects.requireNonNull(httpClient, "httpClient");
             return this;
         }
 
@@ -462,7 +476,8 @@ public final class FootballClient {
         /// @throws NullPointerException if no API token was set
         public FootballClient build() {
             Objects.requireNonNull(apiToken, "apiToken is required");
-            HttpTransport base = new JdkHttpTransport(HttpClient.newHttpClient(), requestTimeout);
+            HttpClient client = (httpClient != null) ? httpClient : JdkHttpTransport.newDefaultClient();
+            HttpTransport base = new JdkHttpTransport(client, requestTimeout);
             HttpTransport transport = new RetryingTransport(base, retryPolicy, Sleeper.REAL);
             JacksonCodec codec = new JacksonCodec();
             ApiExecutor executor = new ApiExecutor(transport, codec, apiToken, baseUrl);

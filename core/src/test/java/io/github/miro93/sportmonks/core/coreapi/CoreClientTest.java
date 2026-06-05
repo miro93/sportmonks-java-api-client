@@ -3,7 +3,13 @@ package io.github.miro93.sportmonks.core.coreapi;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import io.github.miro93.sportmonks.core.auth.ApiToken;
+import io.github.miro93.sportmonks.core.error.TransportException;
+import io.github.miro93.sportmonks.core.retry.RetryPolicy;
 import org.junit.jupiter.api.Test;
+
+import java.net.InetSocketAddress;
+import java.net.ProxySelector;
+import java.net.http.HttpClient;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,6 +37,37 @@ class CoreClientTest {
         assertThat(client.regions()).isNotNull();
         assertThat(client.cities()).isNotNull();
         assertThat(client.types()).isNotNull();
+    }
+
+    @Test
+    void httpClientRejectsNull() {
+        assertThatThrownBy(() -> CoreClient.builder().httpClient(null))
+                .isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    void injectedHttpClientIsActuallyUsed(WireMockRuntimeInfo wm) {
+        // Deliberate guard, not dead code: if httpClient() injection ever regressed, the default
+        // client would reach this stub and return 200, making the test fail clearly with "nothing
+        // thrown" rather than an unrelated 404/NotFoundException.
+        stubFor(get(urlPathEqualTo("/continents")).willReturn(okJson("""
+                { "data": [ { "id": 1, "name": "Europe", "code": "EU" } ] }
+                """)));
+        // Port 1 is never bound in this JVM; connecting through it yields an immediate
+        // ECONNREFUSED that JdkHttpTransport wraps as TransportException — fast and deterministic.
+        HttpClient deadProxyClient = HttpClient.newBuilder()
+                .proxy(ProxySelector.of(new InetSocketAddress("localhost", 1)))
+                .build();
+
+        var client = CoreClient.builder()
+                .apiToken(ApiToken.of("tok"))
+                .baseUrl(wm.getHttpBaseUrl())
+                .httpClient(deadProxyClient)
+                .retryPolicy(RetryPolicy.none())
+                .build();
+
+        assertThatThrownBy(() -> client.continents().all().get())
+                .isInstanceOf(TransportException.class);
     }
 
     @Test

@@ -54,4 +54,17 @@ class JdkHttpTransportTest {
                 URI.create("http://localhost:1/nope"), Map.of()))
                 .isInstanceOf(TransportException.class);
     }
+
+    @Test
+    void defaultRequestTimeoutConstantIs30s() {
+        assertThat(JdkHttpTransport.DEFAULT_REQUEST_TIMEOUT).isEqualTo(Duration.ofSeconds(30));
+    }
+
+    @Test
+    void newDefaultClientHasConnectTimeoutAndFollowsRedirects() {
+        HttpClient client = JdkHttpTransport.newDefaultClient();
+
+        assertThat(client.connectTimeout()).contains(Duration.ofSeconds(10));
+        assertThat(client.followRedirects()).isEqualTo(HttpClient.Redirect.NORMAL);
+    }
 }
