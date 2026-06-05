@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.net.InetSocketAddress;
 import java.net.ProxySelector;
 import java.net.http.HttpClient;
+import java.time.Duration;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -71,6 +72,39 @@ class FootballClientTest {
     void httpClientRejectsNull() {
         assertThatThrownBy(() -> FootballClient.builder().httpClient(null))
                 .isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    void connectTimeoutRejectsNull() {
+        assertThatThrownBy(() -> FootballClient.builder().connectTimeout(null))
+                .isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    void connectTimeoutAndHttpClientAreMutuallyExclusive() {
+        HttpClient anyClient = HttpClient.newHttpClient();
+        assertThatThrownBy(() -> FootballClient.builder()
+                .apiToken(ApiToken.of("tok-77"))
+                .connectTimeout(Duration.ofSeconds(5))
+                .httpClient(anyClient)
+                .build())
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("mutually exclusive");
+    }
+
+    @Test
+    void connectTimeoutOnDefaultClientStillReachesServer(WireMockRuntimeInfo wm) {
+        stubFor(get(urlPathEqualTo("/fixtures/1")).willReturn(okJson("""
+                { "data": { "id": 1, "name": "A vs B" } }
+                """)));
+
+        var client = FootballClient.builder()
+                .apiToken(ApiToken.of("tok-77"))
+                .baseUrl(wm.getHttpBaseUrl())
+                .connectTimeout(Duration.ofSeconds(5))
+                .build();
+
+        assertThat(client.fixtures().byId(1L).get().data().name()).isEqualTo("A vs B");
     }
 
     @Test
