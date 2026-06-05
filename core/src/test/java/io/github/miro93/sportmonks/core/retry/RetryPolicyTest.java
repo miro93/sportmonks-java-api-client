@@ -2,6 +2,8 @@ package io.github.miro93.sportmonks.core.retry;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.function.IntPredicate;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -34,6 +36,7 @@ class RetryPolicyTest {
         assertThat(policy.maxAttempts()).isEqualTo(3);
         assertThat(policy.isRetryableStatus(429)).isTrue();
         assertThat(policy.isRetryableStatus(500)).isTrue();
+        assertThat(policy.isRetryableStatus(404)).isFalse();
     }
 
     @Test
@@ -66,5 +69,14 @@ class RetryPolicyTest {
     void builderRejectsMaxAttemptsBelowOne() {
         assertThatThrownBy(() -> RetryPolicy.builder().maxAttempts(0).build())
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void threeArgCtorUsesCustomPredicate() {
+        IntPredicate onlyTeapot = status -> status == 418;
+        RetryPolicy policy = new RetryPolicy(2, Backoff.defaults(), onlyTeapot);
+
+        assertThat(policy.isRetryableStatus(418)).isTrue();
+        assertThat(policy.isRetryableStatus(503)).isFalse();
     }
 }

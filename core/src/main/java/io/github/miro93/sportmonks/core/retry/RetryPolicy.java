@@ -25,7 +25,7 @@ public final class RetryPolicy {
             throw new IllegalArgumentException("maxAttempts must be >= 1");
         }
         this.maxAttempts = maxAttempts;
-        this.backoff = backoff;
+        this.backoff = Objects.requireNonNull(backoff, "backoff");
         this.retryableStatus = Objects.requireNonNull(retryableStatus, "retryableStatus");
     }
 
@@ -88,6 +88,10 @@ public final class RetryPolicy {
             return this;
         }
 
+        /// Builds the configured {@link RetryPolicy}.
+        ///
+        /// @return a new {@code RetryPolicy}
+        /// @throws IllegalArgumentException if {@code maxAttempts} is less than 1
         public RetryPolicy build() {
             return new RetryPolicy(maxAttempts, backoff, retryableStatus);
         }
