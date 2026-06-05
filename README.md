@@ -185,6 +185,74 @@ Connection pooling is automatic (keep-alive plus HTTP/2 multiplexing). The JDK e
 no builder-level pool sizing; tune it via the `jdk.httpclient.*` system properties if
 needed.
 
+If you only need to change the connection-establishment timeout (and not the whole client),
+use `connectTimeout(...)` instead — it tunes the built-in default client:
+
+```java
+FootballClient client = FootballClient.builder()
+        .apiToken(ApiToken.fromEnv())
+        .connectTimeout(Duration.ofSeconds(5))   // default: 10s
+        .build();
+```
+
+`connectTimeout(...)` and `httpClient(...)` are **mutually exclusive**: a client you supply
+already carries its own connect timeout, so setting both throws `IllegalStateException` at
+`build()`. `connectTimeout` bounds connection establishment; `requestTimeout` bounds the
+request→response deadline.
+
+---
+
+### Configuring from Spring, Quarkus or Helidon
+
+This library reads **no implicit configuration source** — every option is set explicitly on the
+builder. Framework config files (`application.properties` / `application.yaml`) are not exposed as
+JVM system properties, so map your framework's config to the builder setters with a few lines.
+(JVM `-D` system properties, e.g. `-Dhttp.proxyHost`, still apply at the JDK level.)
+
+**Spring Boot** — bind properties and expose the client as a bean:
+
+```java
+@ConfigurationProperties("sportmonks")
+record SportmonksProps(Duration connectTimeout, Duration requestTimeout, int maxRetries) {}
+
+@Bean
+FootballClient footballClient(SportmonksProps props) {
+    return FootballClient.builder()
+            .apiToken(ApiToken.fromEnv())
+            .connectTimeout(props.connectTimeout())
+            .requestTimeout(props.requestTimeout())
+            .retryPolicy(RetryPolicy.builder().maxAttempts(props.maxRetries()).build())
+            .build();
+}
+```
+
+**Quarkus** — inject MicroProfile config and produce a CDI bean:
+
+```java
+@Produces
+@ApplicationScoped
+FootballClient footballClient(
+        @ConfigProperty(name = "sportmonks.connect-timeout") Duration connectTimeout,
+        @ConfigProperty(name = "sportmonks.request-timeout") Duration requestTimeout) {
+    return FootballClient.builder()
+            .apiToken(ApiToken.fromEnv())
+            .connectTimeout(connectTimeout)
+            .requestTimeout(requestTimeout)
+            .build();
+}
+```
+
+**Helidon** — read from `Config` and build:
+
+```java
+Config cfg = Config.global().get("sportmonks");
+FootballClient client = FootballClient.builder()
+        .apiToken(ApiToken.fromEnv())
+        .connectTimeout(cfg.get("connect-timeout").as(Duration.class).orElse(Duration.ofSeconds(10)))
+        .requestTimeout(cfg.get("request-timeout").as(Duration.class).orElse(Duration.ofSeconds(30)))
+        .build();
+```
+
 ---
 
 ## Java Module System (JPMS)
@@ -246,6 +314,30 @@ Optional<RateLimit>  rateLimitOpt()
 ```
 
 `Pagination` fields: `count`, `perPage`, `currentPage`, `nextPage`, `hasMore`.
+
+---
+
+### Retry policy
+
+By default the client retries `429` and all `5xx` responses, up to 3 attempts, with jittered
+exponential backoff. Override any of these via `RetryPolicy.builder()`:
+
+```java
+import io.github.miro93.sportmonks.core.retry.RetryPolicy;
+
+RetryPolicy retry = RetryPolicy.builder()
+        .maxAttempts(5)
+        .retryableStatuses(429, 502, 503, 504)   // replaces the default 429-and-all-5xx rule
+        .build();
+
+FootballClient client = FootballClient.builder()
+        .apiToken(ApiToken.fromEnv())
+        .retryPolicy(retry)
+        .build();
+```
+
+`retryableStatuses(...)` replaces the default rule entirely with exact membership of the codes
+you list.
 
 ---
 
