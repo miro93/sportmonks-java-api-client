@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.net.InetSocketAddress;
 import java.net.ProxySelector;
 import java.net.http.HttpClient;
+import java.time.Duration;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -68,6 +69,40 @@ class CoreClientTest {
 
         assertThatThrownBy(() -> client.continents().all().get())
                 .isInstanceOf(TransportException.class);
+    }
+
+    @Test
+    void connectTimeoutRejectsNull() {
+        assertThatThrownBy(() -> CoreClient.builder().connectTimeout(null))
+                .isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    void connectTimeoutAndHttpClientAreMutuallyExclusive() {
+        HttpClient anyClient = HttpClient.newHttpClient();
+        assertThatThrownBy(() -> CoreClient.builder()
+                .apiToken(ApiToken.of("tok"))
+                .connectTimeout(Duration.ofSeconds(5))
+                .httpClient(anyClient)
+                .build())
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("mutually exclusive");
+    }
+
+    @Test
+    void connectTimeoutOnDefaultClientStillReachesServer(WireMockRuntimeInfo wm) {
+        // Proves the connectTimeout path builds a working default client (no httpClient supplied).
+        stubFor(get(urlPathEqualTo("/continents")).willReturn(okJson("""
+                { "data": [ { "id": 1, "name": "Europe", "code": "EU" } ] }
+                """)));
+
+        var client = CoreClient.builder()
+                .apiToken(ApiToken.of("tok"))
+                .baseUrl(wm.getHttpBaseUrl())
+                .connectTimeout(Duration.ofSeconds(5))
+                .build();
+
+        assertThat(client.continents().all().get().data()).hasSize(1);
     }
 
     @Test

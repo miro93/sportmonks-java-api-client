@@ -67,4 +67,18 @@ class JdkHttpTransportTest {
         assertThat(client.connectTimeout()).contains(Duration.ofSeconds(10));
         assertThat(client.followRedirects()).isEqualTo(HttpClient.Redirect.NORMAL);
     }
+
+    @Test
+    void newDefaultClientWithCustomConnectTimeoutHonoursIt() {
+        HttpClient client = JdkHttpTransport.newDefaultClient(Duration.ofSeconds(5));
+
+        assertThat(client.connectTimeout()).contains(Duration.ofSeconds(5));
+        assertThat(client.followRedirects()).isEqualTo(HttpClient.Redirect.NORMAL);
+    }
+
+    @Test
+    void noArgNewDefaultClientDelegatesToDefaultConstant() {
+        assertThat(JdkHttpTransport.newDefaultClient().connectTimeout())
+                .contains(JdkHttpTransport.DEFAULT_CONNECT_TIMEOUT);
+    }
 }

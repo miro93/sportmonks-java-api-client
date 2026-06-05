@@ -396,6 +396,7 @@ public final class FootballClient {
         private String coreBaseUrl = CoreClient.DEFAULT_BASE_URL;
         private String oddsBaseUrl = ODDS_BASE_URL;
         private HttpClient httpClient;
+        private Duration connectTimeout;
         private Duration requestTimeout = JdkHttpTransport.DEFAULT_REQUEST_TIMEOUT;
 
         private Builder() {
@@ -470,13 +471,35 @@ public final class FootballClient {
             return this;
         }
 
+        /// Sets the connection-establishment timeout for the built-in default {@link HttpClient}.
+        /// Only meaningful when no custom {@link #httpClient(HttpClient)} is supplied — a
+        /// user-provided client carries its own (immutable) connect timeout. Supplying BOTH is
+        /// rejected at {@link #build()}. When unset, defaults to
+        /// {@link JdkHttpTransport#DEFAULT_CONNECT_TIMEOUT}.
+        ///
+        /// @param connectTimeout the connect timeout (non-null)
+        /// @return this builder
+        public Builder connectTimeout(Duration connectTimeout) {
+            this.connectTimeout = Objects.requireNonNull(connectTimeout, "connectTimeout");
+            return this;
+        }
+
         /// Builds the configured {@link FootballClient}.
         ///
         /// @return a ready-to-use client
         /// @throws NullPointerException if no API token was set
+        /// @throws IllegalStateException if both {@link #connectTimeout(Duration)} and {@link #httpClient(HttpClient)} are set
         public FootballClient build() {
             Objects.requireNonNull(apiToken, "apiToken is required");
-            HttpClient client = (httpClient != null) ? httpClient : JdkHttpTransport.newDefaultClient();
+            if (httpClient != null && connectTimeout != null) {
+                throw new IllegalStateException(
+                        "connectTimeout() and httpClient() are mutually exclusive: a supplied "
+                        + "HttpClient carries its own connect timeout");
+            }
+            HttpClient client = (httpClient != null)
+                    ? httpClient
+                    : JdkHttpTransport.newDefaultClient(
+                          connectTimeout != null ? connectTimeout : JdkHttpTransport.DEFAULT_CONNECT_TIMEOUT);
             HttpTransport base = new JdkHttpTransport(client, requestTimeout);
             HttpTransport transport = new RetryingTransport(base, retryPolicy, Sleeper.REAL);
             JacksonCodec codec = new JacksonCodec();
