@@ -317,7 +317,7 @@ Optional<RateLimit>  rateLimitOpt()
 
 ---
 
-### Retry policy
+## Retry policy
 
 By default the client retries `429` and all `5xx` responses, up to 3 attempts, with jittered
 exponential backoff. Override any of these via `RetryPolicy.builder()`:
