@@ -5,18 +5,18 @@ types, producing stable, publishable metadata.
 The GraalVM tracing agent runs inside a JUnit/Gradle JVM, so its raw output also
 records reflection on test classes, JUnit/AssertJ/slf4j service resources, and JDK
 internals. None of that belongs in the published jar. This keeps only reflection
-entries for `io.github.miro93.sportmonks.*` types that are NOT test classes.
-Everything else is safe to drop: JDK/test-framework internals aren't ours to ship,
-and Helidon's own jars are not a gap here either — `helidon-json-binding` ships no
-`META-INF/native-image` metadata at all (its decode path beyond our record
-constructors is compile-time generated, not reflective), and
-`helidon-service-registry` ships its own `native-image.properties` +
-`resource-config.json` covering whatever it needs — with one exception:
-no Helidon 4.5.4 jar registers `META-INF/helidon/**/feature-registry.json`,
-although every Helidon manifest lists it and MetadataDiscovery hard-fails on a
-manifest entry missing from the image. Core ships a one-pattern
+entries for `io.github.miro93.sportmonks.*` types that are NOT test classes,
+plus `io.helidon.*` entries: Helidon 4.5.4's service registry resolves its
+service.loader / service-registry descriptors via runtime Class.forName, but no
+Helidon jar ships the reflect-config for it — without these entries the native
+image dies at JsonBinding.create() with ClassNotFoundException (e.g.
+io.helidon.config.spi.ConfigParser). Helidon's own native-image configs cover
+only resources (manifests, service-registry.json, service.loader) — and even
+there miss `META-INF/helidon/**/feature-registry.json`, which every manifest
+lists and MetadataDiscovery hard-fails on; core ships a one-pattern
 `resource-config.json` (core-helidon-feature-registry-workaround/) closing that
-gap; drop it when Helidon fixes their packaging. This keeps the file scoped to
+gap. Drop both workarounds when Helidon fixes its packaging.
+JDK/test-framework internals are still safe to drop: they aren't ours to ship. This keeps the file scoped to
 what only this library's own decode path requires — confirmed by the
 `native-smoke` CI job (.github/workflows/native.yml), which compiles a native
 image against this filtered metadata and runs it. This also drops the `resources`
@@ -35,6 +35,9 @@ def keep(entry: dict) -> bool:
     t = entry.get("type")
     if not isinstance(t, str):
         return False
+    # Helidon runtime service discovery needs its own types reflectively (see module doc).
+    if t.startswith("io.helidon."):
+        return True
     # Match the package boundary so sibling namespaces (e.g. io.github.miro93.sportmonksX)
     # are not over-included.
     if t != PREFIX and not t.startswith(PREFIX + "."):
@@ -66,7 +69,7 @@ def main(path: str) -> None:
         json.dump(filtered, f, indent=2)
         f.write("\n")
 
-    print(f"filtered {path}: kept {len(reflection)} reflection entries for {PREFIX}.* (dropped resources + non-library + test types)")
+    print(f"filtered {path}: kept {len(reflection)} reflection entries for {PREFIX}.* + io.helidon.* (dropped resources + non-library + test types)")
 
 
 if __name__ == "__main__":
