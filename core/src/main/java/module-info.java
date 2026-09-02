@@ -23,4 +23,8 @@ module io.github.miro93.sportmonks.core {
     exports io.github.miro93.sportmonks.core.request.internal to io.github.miro93.sportmonks.football;
     exports io.github.miro93.sportmonks.core.retry.internal to io.github.miro93.sportmonks.football;
     exports io.github.miro93.sportmonks.core.error.internal to io.github.miro93.sportmonks.football;
+
+    // helidon-service-codegen reflects into the generated *__ServiceDescriptor classes to
+    // register @Json.Entity converters at JsonBinding.create() time.
+    opens io.github.miro93.sportmonks.core.json to io.helidon.service.registry;
 }

@@ -16,6 +16,15 @@ import java.util.List;
 /// The envelope is parsed generically first, via {@link Envelope} (`data` held as a
 /// raw {@code JsonValue}), and the payload is then decoded separately into `T`/
 /// `List<T>` — see {@link Envelope} for why `ApiResponse<T>` is not decoded directly.
+///
+/// ponytail: the `data` subtree is re-serialized to a `String` and re-parsed once per
+/// decode (see {@link #toResponse}) instead of binding straight from the captured
+/// {@code JsonValue} — `JsonBinding.deserialize(JsonValue, GenericType)` exists but
+/// throws `JsonException` ("Expected ',' or '}'" / "No more JSON Values available") on
+/// both objects and arrays in Helidon 4.5.4; its `JsonValueParser` doesn't correctly
+/// re-walk an already-parsed tree. Switch to that call directly if a later Helidon
+/// version fixes it, or once the generic-record codegen bug is fixed and `ApiResponse<T>`
+/// can be decoded in one pass.
 public final class HelidonJsonCodec {
 
     private final JsonBinding binding;
