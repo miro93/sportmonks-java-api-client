@@ -88,4 +88,34 @@ class HelidonJsonCodecTest {
         ApiResponse<List<Team>> response = codec.decode(json, codec.listType(Team.class));
         assertThat(response.pagination().hasMore()).isFalse();
     }
+
+    @Test
+    void explicitNullDataDecodesToNullData() {
+        String json = """
+                { "data": null, "timezone": "UTC" }
+                """;
+        ApiResponse<Team> response = codec.decode(json, codec.type(Team.class));
+        assertThat(response.data()).isNull();
+    }
+
+    @Test
+    void missingDataKeyDecodesToNullData() {
+        String json = """
+                { "timezone": "UTC" }
+                """;
+        ApiResponse<Team> response = codec.decode(json, codec.type(Team.class));
+        assertThat(response.data()).isNull();
+    }
+
+    @Test
+    void roundTripsQuotesEscapesAndUnicodeExactly() {
+        // Pins the data-subtree re-serialization (see HelidonJsonCodec's ponytail note) against
+        // JsonValue.toString() semantics changes: quotes, backslash escapes, a real newline and
+        // non-ASCII text must all survive the parse -> toString() -> re-parse round trip intact.
+        String json = """
+                { "data": { "id": 1, "name": "caf\\u00e9 \\"quoted\\"\\nline" } }
+                """;
+        ApiResponse<Team> response = codec.decode(json, codec.type(Team.class));
+        assertThat(response.data().name()).isEqualTo("café \"quoted\"\nline");
+    }
 }

@@ -117,7 +117,7 @@
             "java.lang.Long",
             "java.lang.Long",
             "java.lang.String",
-            "java.util.Map"
+            "io.helidon.json.JsonValue"
           ]
         }
       ]
@@ -338,7 +338,7 @@
             "long",
             "java.lang.Long",
             "java.lang.Long",
-            "java.util.Map"
+            "io.helidon.json.JsonValue"
           ]
         }
       ]
@@ -352,7 +352,7 @@
             "long",
             "java.lang.Long",
             "java.lang.Long",
-            "java.util.Map"
+            "io.helidon.json.JsonValue"
           ]
         }
       ]
