@@ -5,10 +5,18 @@ types, producing stable, publishable metadata.
 The GraalVM tracing agent runs inside a JUnit/Gradle JVM, so its raw output also
 records reflection on test classes, JUnit/AssertJ/slf4j service resources, and JDK
 internals. None of that belongs in the published jar. This keeps only reflection
-entries for `io.github.miro93.sportmonks.*` types that are NOT test classes
-(Jackson 3 ships its own metadata; the JDK/Jackson internals are covered there),
-drops the `resources` section entirely, and sorts everything for deterministic
-output (so the CI drift check is a meaningful `git diff`).
+entries for `io.github.miro93.sportmonks.*` types that are NOT test classes.
+Everything else is safe to drop: JDK/test-framework internals aren't ours to ship,
+and Helidon's own jars are not a gap here either — `helidon-json-binding` ships no
+`META-INF/native-image` metadata at all (its decode path beyond our record
+constructors is compile-time generated, not reflective), and
+`helidon-service-registry` ships its own `native-image.properties` +
+`resource-config.json` covering whatever it needs. This keeps the file scoped to
+what only this library's own decode path requires — confirmed by the
+`native-smoke` CI job (.github/workflows/native.yml), which compiles a native
+image against this filtered metadata and runs it. This also drops the `resources`
+section entirely, and sorts everything for deterministic output (so the CI drift
+check is a meaningful `git diff`).
 
 Usage: filter-native-metadata.py <reachability-metadata.json>
 """
