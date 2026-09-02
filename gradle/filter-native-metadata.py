@@ -11,7 +11,12 @@ and Helidon's own jars are not a gap here either — `helidon-json-binding` ship
 `META-INF/native-image` metadata at all (its decode path beyond our record
 constructors is compile-time generated, not reflective), and
 `helidon-service-registry` ships its own `native-image.properties` +
-`resource-config.json` covering whatever it needs. This keeps the file scoped to
+`resource-config.json` covering whatever it needs — with one exception:
+no Helidon 4.5.4 jar registers `META-INF/helidon/**/feature-registry.json`,
+although every Helidon manifest lists it and MetadataDiscovery hard-fails on a
+manifest entry missing from the image. Core ships a one-pattern
+`resource-config.json` (core-helidon-feature-registry-workaround/) closing that
+gap; drop it when Helidon fixes their packaging. This keeps the file scoped to
 what only this library's own decode path requires — confirmed by the
 `native-smoke` CI job (.github/workflows/native.yml), which compiles a native
 image against this filtered metadata and runs it. This also drops the `resources`
