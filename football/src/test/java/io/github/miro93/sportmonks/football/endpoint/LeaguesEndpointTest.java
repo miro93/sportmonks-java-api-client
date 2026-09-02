@@ -5,7 +5,7 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import io.github.miro93.sportmonks.core.ApiExecutor;
 import io.github.miro93.sportmonks.core.auth.ApiToken;
 import io.github.miro93.sportmonks.core.http.JdkHttpTransport;
-import io.github.miro93.sportmonks.core.json.JacksonCodec;
+import io.github.miro93.sportmonks.core.json.HelidonJsonCodec;
 import io.github.miro93.sportmonks.football.model.League;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @WireMockTest
 class LeaguesEndpointTest {
 
-    private final JacksonCodec codec = new JacksonCodec();
+    private final HelidonJsonCodec codec = new HelidonJsonCodec();
 
     private LeaguesEndpoint leagues(String baseUrl) {
         var transport = new JdkHttpTransport(HttpClient.newHttpClient(), Duration.ofSeconds(5));

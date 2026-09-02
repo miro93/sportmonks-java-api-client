@@ -1,5 +1,7 @@
 package io.github.miro93.sportmonks.football.model;
 
+import io.helidon.json.binding.Json;
+
 /// A single premium betting odd from the SportMonks Premium Odds Feed. Mirrors
 /// {@link Odd} but, per the API, premium odds have no {@code winning} or
 /// {@code original_label} fields. {@code id} is always present; every other
@@ -7,15 +9,16 @@ package io.github.miro93.sportmonks.football.model;
 /// {@code probability}, {@code dp3}, {@code fractional}, {@code american},
 /// {@code total} and {@code handicap} — are {@code String} because the API
 /// returns them as strings (e.g. {@code "1.48"}, {@code "67.57%"}).
+@Json.Entity
 public record PremiumOdd(
         long id,
-        Long fixtureId,
-        Long marketId,
-        Long bookmakerId,
+        @Json.Property("fixture_id") Long fixtureId,
+        @Json.Property("market_id") Long marketId,
+        @Json.Property("bookmaker_id") Long bookmakerId,
         String label,
         String value,
         String name,
-        String marketDescription,
+        @Json.Property("market_description") String marketDescription,
         String probability,
         String dp3,
         String fractional,
@@ -24,5 +27,5 @@ public record PremiumOdd(
         String total,
         String handicap,
         String participants,
-        String latestBookmakerUpdate) {
+        @Json.Property("latest_bookmaker_update") String latestBookmakerUpdate) {
 }

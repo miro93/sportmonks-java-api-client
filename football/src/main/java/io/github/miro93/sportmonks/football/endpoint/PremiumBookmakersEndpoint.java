@@ -2,7 +2,7 @@ package io.github.miro93.sportmonks.football.endpoint;
 
 import io.github.miro93.sportmonks.core.ApiExecutor;
 import io.github.miro93.sportmonks.core.json.DataType;
-import io.github.miro93.sportmonks.core.json.JacksonCodec;
+import io.github.miro93.sportmonks.core.json.HelidonJsonCodec;
 import io.github.miro93.sportmonks.core.request.CollectionRequest;
 import io.github.miro93.sportmonks.core.request.internal.RequestSpec;
 import io.github.miro93.sportmonks.football.model.Bookmaker;
@@ -21,7 +21,7 @@ public final class PremiumBookmakersEndpoint {
     ///
     /// @param executor the executor used to run requests (configured with the odds base URL)
     /// @param codec    the codec used to derive the list response type
-    public PremiumBookmakersEndpoint(ApiExecutor executor, JacksonCodec codec) {
+    public PremiumBookmakersEndpoint(ApiExecutor executor, HelidonJsonCodec codec) {
         this.executor = Objects.requireNonNull(executor, "executor");
         Objects.requireNonNull(codec, "codec");
         this.list = codec.listType(Bookmaker.class);

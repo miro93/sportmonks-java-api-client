@@ -1,5 +1,6 @@
 package io.github.miro93.sportmonks.football.model;
 
+import io.helidon.json.binding.Json;
 import java.util.Map;
 
 /// An expected-goals (xG) record from the SportMonks expected endpoints
@@ -9,11 +10,12 @@ import java.util.Map;
 /// {@code data} is a free-form object (typically {@code {value}}) whose shape
 /// depends on {@code typeId}, exposed as a raw {@code Map<String, Object>};
 /// numeric values decode as {@code Double}/{@code Integer}.
+@Json.Entity
 public record Expected(
         long id,
-        Long fixtureId,
-        Long typeId,
-        Long participantId,
+        @Json.Property("fixture_id") Long fixtureId,
+        @Json.Property("type_id") Long typeId,
+        @Json.Property("participant_id") Long participantId,
         String location,
         Map<String, Object> data) {
 }

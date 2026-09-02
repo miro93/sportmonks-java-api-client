@@ -1,5 +1,7 @@
 package io.github.miro93.sportmonks.football.model;
 
+import io.helidon.json.binding.Json;
+
 /// A historical premium odd record from the SportMonks Premium Odds Feed
 /// (entity {@code PremiumOddHistory}): one snapshot of a premium odd's value
 /// over time. {@code id} is always present; every other field may be
@@ -7,13 +9,14 @@ package io.github.miro93.sportmonks.football.model;
 /// numeric-looking fields — {@code value}, {@code probability}, {@code dp3},
 /// {@code fractional} and {@code american} — are {@code String} because the API
 /// returns them as strings.
+@Json.Entity
 public record HistoricalOdd(
         long id,
-        Long oddId,
+        @Json.Property("odd_id") Long oddId,
         String value,
         String probability,
         String dp3,
         String fractional,
         String american,
-        String bookmakerUpdate) {
+        @Json.Property("bookmaker_update") String bookmakerUpdate) {
 }

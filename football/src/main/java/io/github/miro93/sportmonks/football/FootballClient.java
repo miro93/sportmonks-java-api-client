@@ -5,7 +5,7 @@ import io.github.miro93.sportmonks.core.auth.ApiToken;
 import io.github.miro93.sportmonks.core.coreapi.CoreClient;
 import io.github.miro93.sportmonks.core.http.HttpTransport;
 import io.github.miro93.sportmonks.core.http.JdkHttpTransport;
-import io.github.miro93.sportmonks.core.json.JacksonCodec;
+import io.github.miro93.sportmonks.core.json.HelidonJsonCodec;
 import io.github.miro93.sportmonks.core.retry.RetryPolicy;
 import io.github.miro93.sportmonks.core.retry.internal.RetryingTransport;
 import io.github.miro93.sportmonks.core.retry.internal.Sleeper;
@@ -502,7 +502,7 @@ public final class FootballClient {
                           connectTimeout != null ? connectTimeout : JdkHttpTransport.DEFAULT_CONNECT_TIMEOUT);
             HttpTransport base = new JdkHttpTransport(client, requestTimeout);
             HttpTransport transport = new RetryingTransport(base, retryPolicy, Sleeper.REAL);
-            JacksonCodec codec = new JacksonCodec();
+            HelidonJsonCodec codec = new HelidonJsonCodec();
             ApiExecutor executor = new ApiExecutor(transport, codec, apiToken, baseUrl);
             ApiExecutor coreExecutor = new ApiExecutor(transport, codec, apiToken, coreBaseUrl);
             ApiExecutor oddsExecutor = new ApiExecutor(transport, codec, apiToken, oddsBaseUrl);
