@@ -613,7 +613,7 @@
           "parameterTypes": [
             "long",
             "java.lang.Long",
-            "java.util.Map"
+            "io.helidon.json.JsonValue"
           ]
         }
       ]
