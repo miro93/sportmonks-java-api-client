@@ -81,7 +81,7 @@ class HelidonJsonCodecTest {
     @Test
     void absentPrimitiveDecodesToDefault() {
         // Pagination.hasMore (boolean) missing from JSON must decode to false,
-        // matching Jackson's previous lenient FAIL_ON_NULL_FOR_PRIMITIVES=false.
+        // matching the library's previous lenient handling of absent primitives.
         String json = """
                 { "data": [], "pagination": { "count": 0, "per_page": 25, "current_page": 1 } }
                 """;
