@@ -1,756 +1,956 @@
 {
   "reflection": [
     {
-      "type": "io.github.miro93.sportmonks.core.response.ApiResponse",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.core.coreapi.model.City__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.Object",
-            "io.github.miro93.sportmonks.core.response.Pagination",
-            "io.github.miro93.sportmonks.core.response.RateLimit",
-            "java.lang.String"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.core.response.Pagination"
-    },
-    {
-      "type": "io.github.miro93.sportmonks.core.response.RateLimit"
-    },
-    {
-      "type": "io.github.miro93.sportmonks.football.model.Bookmaker",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.core.coreapi.model.Continent__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.String"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Coach",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.core.coreapi.model.Country__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.Integer",
-            "java.lang.Integer",
-            "java.lang.String",
-            "java.lang.String"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Commentary",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.core.coreapi.model.Region__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.String",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.Integer",
-            "java.lang.Integer",
-            "java.lang.Boolean",
-            "java.lang.Boolean",
-            "java.lang.Integer"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Event",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.core.coreapi.model.Type__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.Integer",
-            "java.lang.Integer",
-            "java.lang.Boolean",
-            "java.lang.Boolean",
-            "java.lang.Long",
-            "java.lang.Integer"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Expected",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.core.json.Envelope__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.util.Map"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.ExpectedLineup",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.core.response.Pagination__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.Integer",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.String"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Fixture",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.core.response.RateLimit__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Integer",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.Integer",
-            "boolean",
-            "boolean",
-            "java.lang.Long",
-            "java.util.List",
-            "java.util.List",
-            "io.github.miro93.sportmonks.football.model.State",
-            "java.util.List"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.HistoricalOdd",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.Bookmaker__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.League",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.Coach__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.Boolean",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.Integer",
-            "java.lang.Boolean",
-            "java.util.List"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Market",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.Commentary__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.Boolean"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Odd",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.Event__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.Integer",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.Boolean",
-            "java.lang.Boolean",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Participant",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.ExpectedLineup__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.Integer",
-            "java.lang.String",
-            "boolean",
-            "java.lang.String",
-            "io.github.miro93.sportmonks.football.model.ParticipantMeta"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.ParticipantMeta",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.Expected__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.String",
-            "java.lang.Boolean",
-            "java.lang.Integer"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Player",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.Fixture__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.Integer",
-            "java.lang.Integer",
-            "java.lang.String",
-            "java.lang.String"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Predictability",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.HistoricalOdd__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.util.Map"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Prediction",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.League__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.util.Map"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.PremiumOdd",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.Market__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.Boolean",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Referee",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.Odd__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.Integer",
-            "java.lang.Integer",
-            "java.lang.String",
-            "java.lang.String"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Round",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.ParticipantMeta__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.Boolean",
-            "java.lang.Boolean",
-            "java.lang.Boolean",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.Boolean",
-            "java.util.List"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Score",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.Participant__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "io.github.miro93.sportmonks.football.model.ScoreDetail",
-            "java.lang.String"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.ScoreDetail",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.Player__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.Integer",
-            "java.lang.String"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Season",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.Predictability__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.Boolean",
-            "java.lang.Boolean",
-            "java.lang.Boolean",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.Boolean",
-            "java.lang.String",
-            "io.github.miro93.sportmonks.football.model.League",
-            "java.util.List"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Squad",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.Prediction__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Integer",
-            "java.lang.String",
-            "java.lang.String",
-            "io.github.miro93.sportmonks.football.model.Player"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Stage",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.PremiumOdd__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.Integer",
-            "java.lang.Boolean",
-            "java.lang.Boolean",
-            "java.lang.Boolean",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.Boolean",
-            "java.util.List"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Standing",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.Referee__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Integer",
-            "java.lang.String",
-            "java.lang.Integer",
-            "io.github.miro93.sportmonks.football.model.Team",
-            "java.util.List"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.StandingDetail",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.Round__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.String",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Integer"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.State",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.ScoreDetail__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Statistic",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.Score__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Boolean",
-            "java.lang.Long",
-            "java.lang.Integer",
-            "java.util.List"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.StatisticDetail",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.Season__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.util.Map"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Team",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.Squad__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.Integer",
-            "java.lang.String",
-            "boolean",
-            "java.lang.String",
-            "java.util.List"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Topscorer",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.Stage__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Integer",
-            "java.lang.Integer",
-            "io.github.miro93.sportmonks.football.model.Player",
-            "io.github.miro93.sportmonks.football.model.Team"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Transfer",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.StandingDetail__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.Boolean",
-            "java.lang.Boolean",
-            "java.lang.String",
-            "java.lang.String",
-            "io.github.miro93.sportmonks.football.model.Player",
-            "io.github.miro93.sportmonks.football.model.Team",
-            "io.github.miro93.sportmonks.football.model.Team"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.TvStation",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.Standing__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.ValueBet",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.State__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "io.github.miro93.sportmonks.football.model.ValueBetPrediction"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.ValueBetPrediction",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.StatisticDetail__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.Boolean",
-            "java.lang.String",
-            "java.lang.String"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.football.model.Venue",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.football.model.Statistic__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.Integer",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.Boolean"
-          ]
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Team__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Topscorer__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Transfer__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.TvStation__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.ValueBetPrediction__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.ValueBet__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Venue__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.common.LazyValueImpl",
+      "fields": [
+        {
+          "name": "loaded"
+        },
+        {
+          "name": "theLock"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.common.config.ConfigFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.common.mapper.DefaultMapperProvider__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.common.mapper.DefaultResolverService__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.common.mapper.MappersFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.common.mapper.spi.MapperProvider"
+    },
+    {
+      "type": "io.helidon.config.ConfigProvider__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.config.ConfigurationValueFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.config.MetaConfigFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.config.PropertiesConfigParser"
+    },
+    {
+      "type": "io.helidon.config.spi.ConfigFilter"
+    },
+    {
+      "type": "io.helidon.config.spi.ConfigParser"
+    },
+    {
+      "type": "io.helidon.config.spi.ConfigSourceProvider"
+    },
+    {
+      "type": "io.helidon.json.binding.JsonBindingConfigProvider__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.JsonBindingProvider__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.BigDecimalConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.BigIntegerConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.BinaryDataConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.BooleanArrayConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.BooleanConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.ByteArrayConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.ByteConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.CalendarConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.CharArrayConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.CharacterConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.DateConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.DoubleArrayConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.DoubleConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.DurationConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.FloatArrayConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.FloatConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.GregorianCalendarConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.InstantConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.IntArrayConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.IntegerConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.JsonArrayConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.JsonBooleanConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.JsonNullConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.JsonNumberConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.JsonObjectConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.JsonStringConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.JsonValueConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.LocalDateConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.LocalDateTimeConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.LocalTimeConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.LongArrayConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.LongConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.ObjectConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.OffsetDateTimeConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.OptionalDoubleConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.OptionalIntConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.OptionalLongConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.PeriodConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.PrimitiveBooleanConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.PrimitiveByteConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.PrimitiveCharConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.PrimitiveDoubleConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.PrimitiveFloatConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.PrimitiveIntegerConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.PrimitiveLongConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.PrimitiveShortConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.ShortArrayConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.ShortConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.StringConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.UuidConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.ZonedDateTimeConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.factories.ArrayBindingFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.factories.EnumBindingFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.factories.LinkedListBindingFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.factories.ListBindingFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.factories.MapBindingFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.factories.OptionalBindingFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.factories.SetBindingFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.service.registry.EventManagerImpl__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.service.registry.InterceptionMetadata__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.service.registry.PerRequestScopeHandler__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.service.registry.Scopes__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.service.registry.ServiceRegistry__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
         }
       ]
     }

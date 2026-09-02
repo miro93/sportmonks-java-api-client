@@ -1,106 +1,735 @@
 {
   "reflection": [
     {
-      "type": "io.github.miro93.sportmonks.core.coreapi.model.City",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.core.ApiExecutorTest_Team__GeneratedConverter"
+    },
+    {
+      "type": "io.github.miro93.sportmonks.core.ApiExecutorTest_Team__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.Long"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.core.coreapi.model.Continent",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.core.coreapi.model.City__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.String",
-            "java.lang.String"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.core.coreapi.model.Country",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.core.coreapi.model.Continent__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.String"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.core.coreapi.model.Region",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.core.coreapi.model.Country__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.String"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.core.coreapi.model.Type",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.core.coreapi.model.Region__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "java.lang.Long",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.core.response.ApiResponse",
-      "methods": [
+      "type": "io.github.miro93.sportmonks.core.coreapi.model.Type__GeneratedConverter__ServiceDescriptor",
+      "fields": [
         {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.Object",
-            "io.github.miro93.sportmonks.core.response.Pagination",
-            "io.github.miro93.sportmonks.core.response.RateLimit",
-            "java.lang.String"
-          ]
+          "name": "INSTANCE"
         }
       ]
     },
     {
-      "type": "io.github.miro93.sportmonks.core.response.Pagination"
+      "type": "io.github.miro93.sportmonks.core.json.Envelope__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
     },
     {
-      "type": "io.github.miro93.sportmonks.core.response.RateLimit"
+      "type": "io.github.miro93.sportmonks.core.json.HelidonJsonCodecTest_Team__GeneratedConverter"
+    },
+    {
+      "type": "io.github.miro93.sportmonks.core.json.HelidonJsonCodecTest_Team__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.core.request.CollectionRequestTest_Team__GeneratedConverter"
+    },
+    {
+      "type": "io.github.miro93.sportmonks.core.request.CollectionRequestTest_Team__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.core.request.SingleResourceRequestTest_Team__GeneratedConverter"
+    },
+    {
+      "type": "io.github.miro93.sportmonks.core.request.SingleResourceRequestTest_Team__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.core.response.Pagination__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.core.response.RateLimit__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.common.LazyValueImpl",
+      "fields": [
+        {
+          "name": "loaded"
+        },
+        {
+          "name": "theLock"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.common.Weighted"
+    },
+    {
+      "type": "io.helidon.common.config.ConfigFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.common.mapper.DefaultMapperProvider__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.common.mapper.DefaultResolverService__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.common.mapper.MappersFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.common.mapper.spi.MapperProvider"
+    },
+    {
+      "type": "io.helidon.config.ConfigProvider__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.config.ConfigurationValueFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.config.MetaConfigFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.config.PropertiesConfigParser"
+    },
+    {
+      "type": "io.helidon.config.spi.ConfigFilter"
+    },
+    {
+      "type": "io.helidon.config.spi.ConfigParser"
+    },
+    {
+      "type": "io.helidon.config.spi.ConfigSourceProvider"
+    },
+    {
+      "type": "io.helidon.json.binding.JsonBindingConfigProvider__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.JsonBindingProvider__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.JsonComponent"
+    },
+    {
+      "type": "io.helidon.json.binding.JsonConverter"
+    },
+    {
+      "type": "io.helidon.json.binding.JsonDeserializer"
+    },
+    {
+      "type": "io.helidon.json.binding.JsonSerializer"
+    },
+    {
+      "type": "io.helidon.json.binding.converters.BigDecimalConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.BigIntegerConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.BinaryDataConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.BooleanArrayConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.BooleanConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.ByteArrayConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.ByteConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.CalendarConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.CharArrayConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.CharacterConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.DateConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.DoubleArrayConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.DoubleConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.DurationConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.FloatArrayConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.FloatConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.GregorianCalendarConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.InstantConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.IntArrayConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.IntegerConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.JsonArrayConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.JsonBooleanConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.JsonNullConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.JsonNumberConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.JsonObjectConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.JsonStringConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.JsonValueConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.LocalDateConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.LocalDateTimeConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.LocalTimeConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.LongArrayConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.LongConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.ObjectConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.OffsetDateTimeConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.OptionalDoubleConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.OptionalIntConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.OptionalLongConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.PeriodConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.PrimitiveBooleanConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.PrimitiveByteConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.PrimitiveCharConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.PrimitiveDoubleConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.PrimitiveFloatConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.PrimitiveIntegerConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.PrimitiveLongConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.PrimitiveShortConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.ShortArrayConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.ShortConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.StringConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.UuidConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.converters.ZonedDateTimeConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.factories.ArrayBindingFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.factories.EnumBindingFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.factories.LinkedListBindingFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.factories.ListBindingFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.factories.MapBindingFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.factories.OptionalBindingFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.json.binding.factories.SetBindingFactory__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.service.registry.EventManagerImpl__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.service.registry.InterceptionMetadata__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.service.registry.PerRequestScopeHandler__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.service.registry.Scopes__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.helidon.service.registry.ServiceDescriptor"
+    },
+    {
+      "type": "io.helidon.service.registry.ServiceInfo"
+    },
+    {
+      "type": "io.helidon.service.registry.ServiceRegistry__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
     }
   ]
 }

@@ -1,12 +1,15 @@
 [versions]
-jackson = "3.2.0"
+helidon = "4.5.4"
 junit = "6.1.1"
 junit-platform = "6.1.1"
 assertj = "3.27.7"
 wiremock = "3.13.2"
 
 [libraries]
-jackson-databind = { module = "tools.jackson.core:jackson-databind", version.ref = "jackson" }
+helidon-json-binding = { module = "io.helidon.json:helidon-json-binding", version.ref = "helidon" }
+helidon-json-codegen = { module = "io.helidon.json:helidon-json-codegen", version.ref = "helidon" }
+helidon-codegen-apt = { module = "io.helidon.codegen:helidon-codegen-apt", version.ref = "helidon" }
+helidon-service-codegen = { module = "io.helidon.service:helidon-service-codegen", version.ref = "helidon" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
 junit-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform" }
 assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }

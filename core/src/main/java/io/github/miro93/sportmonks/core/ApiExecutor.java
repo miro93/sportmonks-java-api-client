@@ -7,7 +7,7 @@ import io.github.miro93.sportmonks.core.http.HttpTransport;
 import io.github.miro93.sportmonks.core.http.RawResponse;
 import io.github.miro93.sportmonks.core.json.CodecException;
 import io.github.miro93.sportmonks.core.json.DataType;
-import io.github.miro93.sportmonks.core.json.JacksonCodec;
+import io.github.miro93.sportmonks.core.json.HelidonJsonCodec;
 import io.github.miro93.sportmonks.core.request.internal.RequestSpec;
 import io.github.miro93.sportmonks.core.request.internal.UrlBuilder;
 import io.github.miro93.sportmonks.core.response.ApiResponse;
@@ -32,7 +32,7 @@ import java.util.concurrent.Executors;
 public final class ApiExecutor {
 
     private final HttpTransport transport;
-    private final JacksonCodec codec;
+    private final HelidonJsonCodec codec;
     private final ApiToken token;
     private final String baseUrl;
     private final Executor asyncExecutor;
@@ -43,7 +43,7 @@ public final class ApiExecutor {
     /// @param codec     the JSON codec
     /// @param token     the API token applied to every request
     /// @param baseUrl   the API base URL
-    public ApiExecutor(HttpTransport transport, JacksonCodec codec, ApiToken token, String baseUrl) {
+    public ApiExecutor(HttpTransport transport, HelidonJsonCodec codec, ApiToken token, String baseUrl) {
         this(transport, codec, token, baseUrl,
                 Executors.newVirtualThreadPerTaskExecutor());
     }
@@ -55,7 +55,7 @@ public final class ApiExecutor {
     /// @param token         the API token applied to every request
     /// @param baseUrl       the API base URL
     /// @param asyncExecutor the executor backing {@link #executeAsync}
-    public ApiExecutor(HttpTransport transport, JacksonCodec codec, ApiToken token,
+    public ApiExecutor(HttpTransport transport, HelidonJsonCodec codec, ApiToken token,
                        String baseUrl, Executor asyncExecutor) {
         this.transport = Objects.requireNonNull(transport, "transport");
         this.codec = Objects.requireNonNull(codec, "codec");

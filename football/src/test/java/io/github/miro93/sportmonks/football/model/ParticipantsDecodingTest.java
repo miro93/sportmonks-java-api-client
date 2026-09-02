@@ -1,6 +1,6 @@
 package io.github.miro93.sportmonks.football.model;
 
-import io.github.miro93.sportmonks.core.json.JacksonCodec;
+import io.github.miro93.sportmonks.core.json.HelidonJsonCodec;
 import io.github.miro93.sportmonks.core.response.ApiResponse;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ParticipantsDecodingTest {
 
-    private final JacksonCodec codec = new JacksonCodec();
+    private final HelidonJsonCodec codec = new HelidonJsonCodec();
 
     // -------------------------------------------------------------------------
     // 1. Single Team with squad included, each squad member has player included

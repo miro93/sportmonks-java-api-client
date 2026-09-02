@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 /// Self-contained native-image smoke test: serves a canned SportMonks envelope
 /// from an in-process JDK HTTP server, fetches and decodes it through
 /// {@link FootballClient}, and asserts the result. Exits 0 on success, 1 on failure.
-/// Proves that JDK HttpClient and Jackson decoding work in a native image with the
+/// Proves that JDK HttpClient and Helidon JSON decoding work in a native image with the
 /// reachability metadata shipped by the library.
 public final class NativeSmoke {
 

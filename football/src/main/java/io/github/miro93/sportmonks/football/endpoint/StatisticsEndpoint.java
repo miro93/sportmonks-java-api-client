@@ -2,7 +2,7 @@ package io.github.miro93.sportmonks.football.endpoint;
 
 import io.github.miro93.sportmonks.core.ApiExecutor;
 import io.github.miro93.sportmonks.core.json.DataType;
-import io.github.miro93.sportmonks.core.json.JacksonCodec;
+import io.github.miro93.sportmonks.core.json.HelidonJsonCodec;
 import io.github.miro93.sportmonks.core.request.CollectionRequest;
 import io.github.miro93.sportmonks.core.request.internal.RequestSpec;
 import io.github.miro93.sportmonks.football.model.Statistic;
@@ -22,7 +22,7 @@ public final class StatisticsEndpoint {
     ///
     /// @param executor the executor used to run requests
     /// @param codec    the codec used to derive the list response type
-    public StatisticsEndpoint(ApiExecutor executor, JacksonCodec codec) {
+    public StatisticsEndpoint(ApiExecutor executor, HelidonJsonCodec codec) {
         this.executor = Objects.requireNonNull(executor, "executor");
         Objects.requireNonNull(codec, "codec");
         this.list = codec.listType(Statistic.class);

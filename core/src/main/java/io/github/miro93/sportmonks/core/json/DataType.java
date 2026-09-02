@@ -1,24 +1,24 @@
 package io.github.miro93.sportmonks.core.json;
 
-import tools.jackson.databind.ObjectReader;
+import io.helidon.common.GenericType;
 
 /// An opaque, type-safe token describing the `data` payload type of a SportMonks
-/// response. Obtain instances from {@link JacksonCodec#type(Class)} or
-/// {@link JacksonCodec#listType(Class)} — the wrapped Jackson {@link ObjectReader} is an
-/// internal detail and is not part of the public API.
+/// response. Obtain instances from {@link HelidonJsonCodec#type(Class)} or
+/// {@link HelidonJsonCodec#listType(Class)} — the wrapped {@link GenericType} is an
+/// internal detail and not part of the public API.
 ///
-/// The reader for the full `ApiResponse<T>` envelope is resolved once, when the token is
-/// created, and reused for every decode. Instances are immutable and thread-safe; create
+/// The payload's {@link GenericType} is resolved once, when the token is created,
+/// and reused for every decode. Instances are immutable and thread-safe; create
 /// one per endpoint and reuse it across requests.
 public final class DataType<T> {
 
-    private final ObjectReader reader;
+    private final GenericType<T> genericType;
 
-    DataType(ObjectReader reader) {
-        this.reader = reader;
+    DataType(GenericType<T> genericType) {
+        this.genericType = genericType;
     }
 
-    ObjectReader reader() {
-        return reader;
+    GenericType<T> genericType() {
+        return genericType;
     }
 }

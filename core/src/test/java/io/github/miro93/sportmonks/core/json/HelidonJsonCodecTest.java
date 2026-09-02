@@ -1,5 +1,6 @@
 package io.github.miro93.sportmonks.core.json;
 
+import io.helidon.json.binding.Json;
 import io.github.miro93.sportmonks.core.response.ApiResponse;
 import org.junit.jupiter.api.Test;
 
@@ -8,12 +9,13 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class JacksonCodecTest {
+class HelidonJsonCodecTest {
 
+    @Json.Entity
     record Team(long id, String name) {
     }
 
-    private final JacksonCodec codec = new JacksonCodec();
+    private final HelidonJsonCodec codec = new HelidonJsonCodec();
 
     @Test
     void decodesSingleResourceWithEnvelope() {
@@ -65,5 +67,55 @@ class JacksonCodecTest {
     void throwsCodecExceptionOnMalformedJson() {
         assertThatThrownBy(() -> codec.decode("{ not json", codec.type(Team.class)))
                 .isInstanceOf(CodecException.class);
+    }
+
+    @Test
+    void ignoresUnknownProperties() {
+        String json = """
+                { "data": { "id": 1, "name": "Ajax", "brand_new_field": 42 }, "timezone": "UTC" }
+                """;
+        ApiResponse<Team> response = codec.decode(json, codec.type(Team.class));
+        assertThat(response.data().name()).isEqualTo("Ajax");
+    }
+
+    @Test
+    void absentPrimitiveDecodesToDefault() {
+        // Pagination.hasMore (boolean) missing from JSON must decode to false,
+        // matching the library's previous lenient handling of absent primitives.
+        String json = """
+                { "data": [], "pagination": { "count": 0, "per_page": 25, "current_page": 1 } }
+                """;
+        ApiResponse<List<Team>> response = codec.decode(json, codec.listType(Team.class));
+        assertThat(response.pagination().hasMore()).isFalse();
+    }
+
+    @Test
+    void explicitNullDataDecodesToNullData() {
+        String json = """
+                { "data": null, "timezone": "UTC" }
+                """;
+        ApiResponse<Team> response = codec.decode(json, codec.type(Team.class));
+        assertThat(response.data()).isNull();
+    }
+
+    @Test
+    void missingDataKeyDecodesToNullData() {
+        String json = """
+                { "timezone": "UTC" }
+                """;
+        ApiResponse<Team> response = codec.decode(json, codec.type(Team.class));
+        assertThat(response.data()).isNull();
+    }
+
+    @Test
+    void roundTripsQuotesEscapesAndUnicodeExactly() {
+        // Pins the data-subtree re-serialization (see HelidonJsonCodec's ponytail note) against
+        // JsonValue.toString() semantics changes: quotes, backslash escapes, a real newline and
+        // non-ASCII text must all survive the parse -> toString() -> re-parse round trip intact.
+        String json = """
+                { "data": { "id": 1, "name": "caf\\u00e9 \\"quoted\\"\\nline" } }
+                """;
+        ApiResponse<Team> response = codec.decode(json, codec.type(Team.class));
+        assertThat(response.data().name()).isEqualTo("café \"quoted\"\nline");
     }
 }

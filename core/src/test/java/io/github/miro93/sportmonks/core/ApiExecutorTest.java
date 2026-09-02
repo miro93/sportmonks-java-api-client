@@ -2,12 +2,13 @@ package io.github.miro93.sportmonks.core;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import io.helidon.json.binding.Json;
 import io.github.miro93.sportmonks.core.auth.ApiToken;
 import io.github.miro93.sportmonks.core.error.NotFoundException;
 import io.github.miro93.sportmonks.core.error.ServerException;
 import io.github.miro93.sportmonks.core.http.JdkHttpTransport;
 import io.github.miro93.sportmonks.core.json.CodecException;
-import io.github.miro93.sportmonks.core.json.JacksonCodec;
+import io.github.miro93.sportmonks.core.json.HelidonJsonCodec;
 import io.github.miro93.sportmonks.core.request.internal.RequestSpec;
 import io.github.miro93.sportmonks.core.response.ApiResponse;
 import org.junit.jupiter.api.Test;
@@ -24,10 +25,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @WireMockTest
 class ApiExecutorTest {
 
+    @Json.Entity
     record Team(long id, String name) {
     }
 
-    private final JacksonCodec codec = new JacksonCodec();
+    private final HelidonJsonCodec codec = new HelidonJsonCodec();
 
     private ApiExecutor executor(String baseUrl) {
         var transport = new JdkHttpTransport(HttpClient.newHttpClient(), Duration.ofSeconds(5));

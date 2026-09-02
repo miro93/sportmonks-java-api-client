@@ -27,13 +27,14 @@ A type-safe Java 25 client for the [SportMonks v3 football API](https://docs.spo
 ## Installation
 
 Available on Maven Central. Add the `sportmonks-football` artifact to your build — it
-pulls `sportmonks-core` transitively, so you only need one dependency.
+pulls `sportmonks-core` transitively, so you only need one dependency. The snippets below
+pin `3.0.0`; check the Maven Central badge at the top of this file for the latest version.
 
 ### Gradle (Kotlin DSL)
 
 ```kotlin
 dependencies {
-    implementation("io.github.miro93.sportmonks:sportmonks-football:0.2.0")
+    implementation("io.github.miro93.sportmonks:sportmonks-football:3.0.0")
 }
 ```
 
@@ -41,7 +42,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'io.github.miro93.sportmonks:sportmonks-football:0.2.0'
+    implementation 'io.github.miro93.sportmonks:sportmonks-football:3.0.0'
 }
 ```
 
@@ -51,9 +52,26 @@ dependencies {
 <dependency>
     <groupId>io.github.miro93.sportmonks</groupId>
     <artifactId>sportmonks-football</artifactId>
-    <version>0.2.0</version>
+    <version>3.0.0</version>
 </dependency>
 ```
+
+---
+
+## Migrating from 2.x
+
+`3.0.0` replaces Jackson with Helidon's compile-time JSON binding. Breaking changes:
+
+- Jackson is gone from both the public API surface and the module graph — `sportmonks-football`
+  and `sportmonks-core` no longer depend on `tools.jackson.core`/`tools.jackson.databind`, and
+  neither `module-info.java` opens packages to them anymore.
+- `JacksonCodec` is renamed to `HelidonJsonCodec` (same package, same public methods).
+- The free-form-payload records — `StatisticDetail`, `Prediction`, `Expected`, and
+  `Predictability` — now take an `io.helidon.json.JsonValue` (an `@Api.Preview` Helidon type) in
+  their canonical constructor instead of `java.util.Map`. Their public accessors
+  (`StatisticDetail.value()`, `Prediction.predictions()`, `Expected.data()`,
+  `Predictability.data()`) are unchanged and still return `Map<String, Object>` — only code that
+  constructed these records directly (rather than decoding them) is affected.
 
 ---
 
@@ -278,11 +296,14 @@ encapsulated and not part of the public API. The library also works unchanged on
 
 ## GraalVM native-image
 
-The library is native-image ready: it ships Jackson reachability metadata under
+The library is native-image ready: it ships reachability metadata under
 `META-INF/native-image`, so an application that depends on it compiles to a native image
-without extra reflection configuration. JSON decoding uses standard Jackson reflection (the
-Blackbird module is intentionally not used, as its runtime code generation is unfriendly to
-GraalVM's closed-world analysis).
+without adding any reflection configuration of its own. JSON decoding goes through Helidon
+JSON's compile-time-generated binding — no runtime class scanning, dynamic proxies, or
+reflective field access — and the shipped metadata only covers the record-constructor
+reflection Helidon's runtime performs during decode. That metadata is generated with the
+GraalVM tracing agent against the library's own decoding tests and checked for staleness
+in CI on every change.
 
 ---
 
