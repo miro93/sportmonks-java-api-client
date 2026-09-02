@@ -1,5 +1,6 @@
 package io.github.miro93.sportmonks.core.json;
 
+import io.helidon.json.binding.Json;
 import io.github.miro93.sportmonks.core.response.ApiResponse;
 import org.junit.jupiter.api.Test;
 
@@ -8,12 +9,13 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class JacksonCodecTest {
+class HelidonJsonCodecTest {
 
+    @Json.Entity
     record Team(long id, String name) {
     }
 
-    private final JacksonCodec codec = new JacksonCodec();
+    private final HelidonJsonCodec codec = new HelidonJsonCodec();
 
     @Test
     void decodesSingleResourceWithEnvelope() {
@@ -65,5 +67,25 @@ class JacksonCodecTest {
     void throwsCodecExceptionOnMalformedJson() {
         assertThatThrownBy(() -> codec.decode("{ not json", codec.type(Team.class)))
                 .isInstanceOf(CodecException.class);
+    }
+
+    @Test
+    void ignoresUnknownProperties() {
+        String json = """
+                { "data": { "id": 1, "name": "Ajax", "brand_new_field": 42 }, "timezone": "UTC" }
+                """;
+        ApiResponse<Team> response = codec.decode(json, codec.type(Team.class));
+        assertThat(response.data().name()).isEqualTo("Ajax");
+    }
+
+    @Test
+    void absentPrimitiveDecodesToDefault() {
+        // Pagination.hasMore (boolean) missing from JSON must decode to false,
+        // matching Jackson's previous lenient FAIL_ON_NULL_FOR_PRIMITIVES=false.
+        String json = """
+                { "data": [], "pagination": { "count": 0, "per_page": 25, "current_page": 1 } }
+                """;
+        ApiResponse<List<Team>> response = codec.decode(json, codec.listType(Team.class));
+        assertThat(response.pagination().hasMore()).isFalse();
     }
 }

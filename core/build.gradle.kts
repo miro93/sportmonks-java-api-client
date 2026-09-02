@@ -19,11 +19,17 @@ repositories {
 }
 
 dependencies {
-    api(libs.jackson.databind)
+    api(libs.helidon.json.binding)
+    annotationProcessor(libs.helidon.codegen.apt)
+    annotationProcessor(libs.helidon.json.codegen)
+    annotationProcessor(libs.helidon.service.codegen)
 
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.assertj)
     testImplementation(libs.wiremock)
+    testAnnotationProcessor(libs.helidon.codegen.apt)
+    testAnnotationProcessor(libs.helidon.json.codegen)
+    testAnnotationProcessor(libs.helidon.service.codegen)
     testRuntimeOnly(libs.junit.launcher)
 }
 

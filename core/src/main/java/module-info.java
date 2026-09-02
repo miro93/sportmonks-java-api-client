@@ -1,6 +1,8 @@
 module io.github.miro93.sportmonks.core {
-    requires transitive tools.jackson.databind;
-    requires tools.jackson.core;
+    requires transitive io.helidon.json.binding;
+    requires io.helidon.common;
+    requires io.helidon.common.buffers;
+    requires io.helidon.service.registry;
     requires java.net.http;
 
     // Public API
@@ -21,8 +23,4 @@ module io.github.miro93.sportmonks.core {
     exports io.github.miro93.sportmonks.core.request.internal to io.github.miro93.sportmonks.football;
     exports io.github.miro93.sportmonks.core.retry.internal to io.github.miro93.sportmonks.football;
     exports io.github.miro93.sportmonks.core.error.internal to io.github.miro93.sportmonks.football;
-
-    // Jackson reflects into decoded types
-    opens io.github.miro93.sportmonks.core.response to tools.jackson.databind;
-    opens io.github.miro93.sportmonks.core.coreapi.model to tools.jackson.databind;
 }

@@ -6,7 +6,7 @@ import io.github.miro93.sportmonks.core.ApiExecutor;
 import io.github.miro93.sportmonks.core.auth.ApiToken;
 import io.github.miro93.sportmonks.core.coreapi.model.Type;
 import io.github.miro93.sportmonks.core.http.JdkHttpTransport;
-import io.github.miro93.sportmonks.core.json.JacksonCodec;
+import io.github.miro93.sportmonks.core.json.HelidonJsonCodec;
 import org.junit.jupiter.api.Test;
 
 import java.net.http.HttpClient;
@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @WireMockTest
 class TypesEndpointTest {
 
-    private final JacksonCodec codec = new JacksonCodec();
+    private final HelidonJsonCodec codec = new HelidonJsonCodec();
 
     private TypesEndpoint types(String baseUrl) {
         var transport = new JdkHttpTransport(HttpClient.newHttpClient(), Duration.ofSeconds(5));
