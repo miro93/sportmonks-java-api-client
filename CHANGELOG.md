@@ -5,6 +5,17 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0](https://github.com/miro93/sportmonks-java-api-client/compare/v2.1.0...v3.0.0) (2026-09-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* replace Jackson with Helidon JSON ([#96](https://github.com/miro93/sportmonks-java-api-client/issues/96))
+
+### Features
+
+* replace Jackson with Helidon JSON ([#96](https://github.com/miro93/sportmonks-java-api-client/issues/96)) ([29dfe55](https://github.com/miro93/sportmonks-java-api-client/commit/29dfe55f4ee59b17bb3786def9d850b0d3411905))
+
 ## [2.1.0](https://github.com/miro93/sportmonks-java-api-client/compare/v2.0.0...v2.1.0) (2026-06-05)
 
 
