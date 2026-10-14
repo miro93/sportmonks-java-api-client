@@ -34,7 +34,21 @@ dependencies {
 }
 
 tasks.test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        excludeTags("live")
+    }
+}
+
+// Smoke calls against the real API; needs SPORTMONKS_API_TOKEN (skipped otherwise).
+val liveTest by tasks.registering(Test::class) {
+    description = "Runs the live SportMonks API smoke tests (requires SPORTMONKS_API_TOKEN)."
+    group = "verification"
+    testClassesDirs = sourceSets["test"].output.classesDirs
+    classpath = sourceSets["test"].runtimeClasspath
+    useJUnitPlatform {
+        includeTags("live")
+    }
+    outputs.upToDateWhen { false }
 }
 
 // Drop doclint's "missing" group: records are documented in prose, not with one
