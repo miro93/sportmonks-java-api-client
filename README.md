@@ -336,9 +336,10 @@ The library is native-image ready: it ships reachability metadata under
 without adding any reflection configuration of its own. JSON decoding goes through Helidon
 JSON's compile-time-generated binding — no runtime class scanning, dynamic proxies, or
 reflective field access — and the shipped metadata only covers the record-constructor
-reflection Helidon's runtime performs during decode. That metadata is generated with the
-GraalVM tracing agent against the library's own decoding tests and checked for staleness
-in CI on every change.
+reflection Helidon's runtime performs during decode. That metadata is generated at build
+time from the compiled classes (one entry per `@Json.Entity` converter descriptor, plus the
+fixed set of Helidon runtime types), so it can never drift from the code; the `native-smoke`
+CI job compiles a native image against it and decodes every entity.
 
 ---
 
