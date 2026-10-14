@@ -73,6 +73,30 @@
       ]
     },
     {
+      "type": "io.github.miro93.sportmonks.football.model.BracketEdge__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.BracketStage__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Bracket__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
       "type": "io.github.miro93.sportmonks.football.model.Coach__GeneratedConverter__ServiceDescriptor",
       "fields": [
         {

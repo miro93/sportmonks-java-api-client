@@ -119,4 +119,19 @@ class SeasonsEndpointTest {
         assertThat(response.data()).hasSize(2);
         assertThat(response.data().get(0).id()).isEqualTo(19686L);
     }
+
+    @Test
+    void bracketsHitsBracketsPath(WireMockRuntimeInfo wm) {
+        stubFor(get(urlPathEqualTo("/seasons/26618/brackets")).willReturn(okJson("""
+                { "data": { "stages": [ { "stage_id": 1, "stage_name": "Final", "fixtures": [ { "id": 7 } ] } ],
+                            "edges": [ { "id": 9, "child_fixture_id": 7, "child_slot": "away",
+                                         "parent_fixture_id": 6, "parent_outcome": "loser" } ] } }
+                """)));
+
+        var bracket = seasons(wm.getHttpBaseUrl()).brackets(26618L).get().data();
+
+        assertThat(bracket.stages()).hasSize(1);
+        assertThat(bracket.stages().getFirst().fixtures().getFirst().id()).isEqualTo(7L);
+        assertThat(bracket.edges().getFirst().parentOutcome()).isEqualTo("loser");
+    }
 }
