@@ -37,6 +37,12 @@ tasks.test {
     useJUnitPlatform()
 }
 
+// Drop doclint's "missing" group: records are documented in prose, not with one
+// @param per component (~100 "no @param" warnings otherwise).
+tasks.named<Javadoc>("javadoc") {
+    (options as StandardJavadocDocletOptions).addBooleanOption("Xdoclint:all,-missing", true)
+}
+
 // Use the agent's "standard" mode so the generated reachability metadata is
 // unconditional (correct for a library that ships metadata for its own types).
 graalvmNative {
