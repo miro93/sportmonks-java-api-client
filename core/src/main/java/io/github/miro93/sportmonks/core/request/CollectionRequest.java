@@ -164,10 +164,12 @@ public final class CollectionRequest<T> {
 
     /// Lazily walks every page, following {@code pagination.has_more}. After the first page
     /// the walk follows {@code pagination.next_cursor} when the server returns one, and falls
-    /// back to incrementing {@code page} otherwise.
+    /// back to incrementing {@code page} otherwise. The next page is requested on the
+    /// executor's async pool while the current one is consumed (one-page lookahead), so a
+    /// consumer that stops early may have triggered at most one extra request.
     public Stream<T> stream() {
         RequestSpec base = spec.build();
-        return Pages.stream((page, cursor) -> executor.execute(
+        return Pages.streamPrefetching((page, cursor) -> executor.executeAsync(
                 cursor != null ? base.withCursor(cursor) : base.withPage(page), listType));
     }
 }
