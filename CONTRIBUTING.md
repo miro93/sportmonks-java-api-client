@@ -19,7 +19,11 @@ dependency (Dependabot included) fails the build until the file is refreshed:
 
 `--refresh-dependencies` matters: without it Gradle only records what it downloads, and
 metadata files already in the local cache (BOM `.module` files, for example) are left out,
-which then fails on a clean CI runner. Review the diff (only the bumped coordinates should
+which then fails on a clean CI runner. One artifact is only resolved by the Native job
+(`org.graalvm.buildtools:graalvm-reachability-metadata:<plugin version>`, `-repository.zip`
+and `.pom`): without a local GraalVM the write command cannot see it, so after bumping the
+`graalvm-native` plugin copy its SHA-256 from Maven Central (`<artifact url>.sha256`) into
+the file by hand. Review the diff (only the bumped coordinates should
 change) and commit it with the bump.
 
 ## Native-image metadata
