@@ -15,6 +15,7 @@ repositories {
 
 dependencies {
     implementation(project(":football"))
+    implementation(project(":motorsport"))
 }
 
 application {
@@ -37,13 +38,13 @@ graalvmNative {
 // Fails when a `@Json.Entity` gained a generated converter but is missing from
 // NativeSmoke.ENTITIES, so the native image keeps exercising every converter.
 val checkSmokeEntities by tasks.registering {
-    val classesDirs = listOf(":core", ":football").map { p ->
+    val classesDirs = listOf(":core", ":football", ":motorsport").map { p ->
         project(p).extensions.getByType<SourceSetContainer>()["main"].output.classesDirs
     }
     val smokeSource = layout.projectDirectory.file("src/main/java/io/github/miro93/sportmonks/smoke/NativeSmoke.java")
     inputs.files(classesDirs)
     inputs.file(smokeSource)
-    dependsOn(":core:classes", ":football:classes")
+    dependsOn(":core:classes", ":football:classes", ":motorsport:classes")
     doLast {
         val internal = setOf("Envelope", "ApiResponse")
         val converters = classesDirs.flatMap { it.asFileTree.files }

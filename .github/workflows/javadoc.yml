@@ -32,9 +32,10 @@ jobs:
 
       - name: Assemble site
         run: |
-          mkdir -p site/core site/football
+          mkdir -p site/core site/football site/motorsport
           cp -r core/build/docs/javadoc/. site/core/
           cp -r football/build/docs/javadoc/. site/football/
+          cp -r motorsport/build/docs/javadoc/. site/motorsport/
           cat > site/index.html <<'EOF'
           <!DOCTYPE html>
           <html lang="en">
@@ -47,6 +48,7 @@ jobs:
             <ul>
               <li><a href="core/">core</a></li>
               <li><a href="football/">football</a></li>
+              <li><a href="motorsport/">motorsport</a></li>
             </ul>
           </body>
           </html>

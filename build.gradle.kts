@@ -16,7 +16,7 @@ plugins {
 // agent on Helidon 4.5.4) because Helidon ships no reflect-config for them. The file lands in the jar
 // under META-INF/native-image/<group>/<module>/ where native-image auto-detects it; the
 // native-smoke job proves it is sufficient.
-configure(listOf(project(":core"), project(":football"))) {
+configure(listOf(project(":core"), project(":football"), project(":motorsport"))) {
     plugins.withId("java-library") {
         val sourceSets = extensions.getByType<SourceSetContainer>()
         val helidonFragment = rootProject.layout.projectDirectory.file("gradle/helidon-reachability-metadata.json")

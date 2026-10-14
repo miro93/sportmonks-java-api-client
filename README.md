@@ -27,7 +27,9 @@ A type-safe Java 25 client for the [SportMonks v3 football API](https://docs.spo
 ## Installation
 
 Available on Maven Central. Add the `sportmonks-football` artifact to your build — it
-pulls `sportmonks-core` transitively, so you only need one dependency. The snippets below
+pulls `sportmonks-core` transitively, so you only need one dependency. For the Motorsport
+API (Formula 1), add `sportmonks-motorsport` instead (or as well); see
+[Motorsport API](#motorsport-api). The snippets below
 pin `3.0.0`; check the Maven Central badge at the top of this file for the latest version.
 
 ### Gradle (Kotlin DSL)
@@ -529,14 +531,57 @@ The Core API reference resources are reachable via `CoreClient` (standalone) or
 
 ---
 
+## Motorsport API
+
+`sportmonks-motorsport` covers the SportMonks Motorsport API v3 (`/v3/motorsport`, Formula 1)
+with the same builder, request options, pagination, retry, rate-limit and listener features
+as the football client:
+
+```java
+import io.github.miro93.sportmonks.core.auth.ApiToken;
+import io.github.miro93.sportmonks.motorsport.MotorsportClient;
+import io.github.miro93.sportmonks.motorsport.model.Stage;
+
+MotorsportClient f1 = MotorsportClient.builder()
+        .apiToken(ApiToken.fromEnv())
+        .build();
+
+List<Stage> weekends = f1.schedules().bySeason(26733L).get().data();   // race weekends + sessions
+var standings = f1.standings().driversBySeason(26733L).get().data();
+var results = f1.raceResults().bySeasonAndDriver(26733L, 37920800L).get().data(); // lineups + details per race
+```
+
+| Accessor | Example methods |
+|----------|-----------------|
+| `drivers()` | `all()`, `byId(id)`, `byCountry(countryId)`, `bySeason(seasonId)`, `search(name)`, `latest()` |
+| `fixtures()` | `all()`, `byId(id)`, `byMultipleIds(ids...)`, `byDate(date)`, `byDateRange(start, end)`, `latest()` |
+| `laps()`, `pitstops()`, `stints()` | `byFixture(fixtureId)`, `byFixtureAndDriver(fixtureId, driverId)`, `byFixtureAndNumber(fixtureId, n)`, `latestByFixture(fixtureId)` |
+| `livescores()` | `all()` |
+| `leagues()` | `all()`, `byId(id)`, `byCountry(countryId)`, `byDate(date)`, `live()`, `search(name)`, `byTeam(teamId)`, `currentByTeam(teamId)` |
+| `raceResults()` | `bySeasonAndDriver(seasonId, driverId)`, `bySeasonAndTeam(seasonId, teamId)` |
+| `schedules()` | `bySeason(seasonId)` |
+| `seasons()` | `all()`, `byId(id)` |
+| `stages()` | `all()`, `byId(id)`, `bySeason(seasonId)`, `search(name)` |
+| `standings()` | `drivers()`, `teams()`, `driversBySeason(seasonId)`, `teamsBySeason(seasonId)` |
+| `states()` | `all()`, `byId(id)` |
+| `teams()` | `all()`, `byId(id)`, `byCountry(countryId)`, `bySeason(seasonId)`, `search(name)` |
+| `venues()` | `all()`, `byId(id)`, `bySeason(seasonId)`, `search(name)` |
+
+`core()` gives the shared Core API client, as on the football client.
+
+---
+
 ## Modules
 
 | Module | Artifact | Description |
 |--------|----------|-------------|
 | `core` | `sportmonks-core` | Sport-agnostic HTTP transport, authentication, codec, request builders, response types, and error hierarchy |
 | `football` | `sportmonks-football` | Football/soccer endpoints and model classes; depends on `core` |
+| `motorsport` | `sportmonks-motorsport` | Motorsport API v3 (Formula 1) endpoints and model classes; depends on `core` |
 
-To add support for another sport (e.g. cricket), implement a new Gradle module that depends on `sportmonks-core` and follows the same `Endpoint` + model pattern used by the `football` module.
+SportMonks' cricket and legacy Formula One APIs are v2 APIs with a different envelope and
+base URL, so they cannot be built on `core`. Any further v3 sport is a new Gradle module
+that depends on `sportmonks-core` and follows the `Endpoint` + model pattern of `football`.
 
 ---
 
