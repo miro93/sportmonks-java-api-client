@@ -3,6 +3,7 @@ package io.github.miro93.sportmonks.core;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import io.github.miro93.sportmonks.core.auth.ApiToken;
+import io.github.miro93.sportmonks.core.cache.CachePolicy;
 import io.github.miro93.sportmonks.core.error.RateLimitException;
 import io.github.miro93.sportmonks.core.http.JdkHttpTransport;
 import io.github.miro93.sportmonks.core.json.HelidonJsonCodec;
@@ -34,7 +35,7 @@ class ApiExecutorRateLimitTest {
     private ApiExecutor executor(String baseUrl, RateLimitPolicy policy) {
         var transport = new JdkHttpTransport(HttpClient.newHttpClient(), Duration.ofSeconds(5));
         return new ApiExecutor(transport, codec, ApiToken.of("tok"), baseUrl,
-                Executors.newVirtualThreadPerTaskExecutor(), new RateLimitTracker(), policy, sleeps::add);
+                Executors.newVirtualThreadPerTaskExecutor(), new RateLimitTracker(), policy, sleeps::add, CachePolicy.NONE);
     }
 
     private static void stubWithRemaining(int remaining) {

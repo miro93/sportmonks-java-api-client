@@ -7,6 +7,7 @@ module io.github.miro93.sportmonks.core {
 
     // Public API
     exports io.github.miro93.sportmonks.core.auth;
+    exports io.github.miro93.sportmonks.core.cache;
     exports io.github.miro93.sportmonks.core.error;
     exports io.github.miro93.sportmonks.core.paging;
     exports io.github.miro93.sportmonks.core.ratelimit;

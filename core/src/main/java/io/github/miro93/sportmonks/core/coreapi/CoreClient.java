@@ -2,6 +2,7 @@ package io.github.miro93.sportmonks.core.coreapi;
 
 import io.github.miro93.sportmonks.core.ApiExecutor;
 import io.github.miro93.sportmonks.core.auth.ApiToken;
+import io.github.miro93.sportmonks.core.cache.CachePolicy;
 import io.github.miro93.sportmonks.core.coreapi.endpoint.CitiesEndpoint;
 import io.github.miro93.sportmonks.core.coreapi.endpoint.ContinentsEndpoint;
 import io.github.miro93.sportmonks.core.coreapi.endpoint.CountriesEndpoint;
@@ -116,6 +117,7 @@ public final class CoreClient {
         private Duration connectTimeout;
         private RequestListener listener = RequestListener.NOOP;
         private RateLimitPolicy rateLimitPolicy = RateLimitPolicy.NONE;
+        private CachePolicy cachePolicy = CachePolicy.NONE;
         private Duration requestTimeout = JdkHttpTransport.DEFAULT_REQUEST_TIMEOUT;
         private long maxResponseSize = JdkHttpTransport.DEFAULT_MAX_RESPONSE_SIZE;
 
@@ -203,6 +205,16 @@ public final class CoreClient {
             return this;
         }
 
+        /// Serves the listed entities from a cache for their TTL instead of calling the API
+        /// (reference data such as types, states, countries). Defaults to {@link CachePolicy#NONE}.
+        ///
+        /// @param cachePolicy the policy
+        /// @return this builder
+        public Builder cachePolicy(CachePolicy cachePolicy) {
+            this.cachePolicy = Objects.requireNonNull(cachePolicy, "cachePolicy");
+            return this;
+        }
+
         /// Sets the connection-establishment timeout for the built-in default {@link HttpClient}.
         /// Only meaningful when no custom {@link #httpClient(HttpClient)} is supplied — a
         /// user-provided client carries its own (immutable) connect timeout. Supplying BOTH is
@@ -237,7 +249,7 @@ public final class CoreClient {
                     new ListeningTransport(base, listener), retryPolicy, Sleeper.REAL);
             HelidonJsonCodec codec = new HelidonJsonCodec();
             ApiExecutor executor = new ApiExecutor(transport, codec, apiToken, baseUrl,
-                    new RateLimitTracker(), rateLimitPolicy);
+                    new RateLimitTracker(), rateLimitPolicy, cachePolicy);
             return new CoreClient(executor, codec);
         }
     }
