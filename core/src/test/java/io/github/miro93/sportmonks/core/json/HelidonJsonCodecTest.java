@@ -41,7 +41,7 @@ class HelidonJsonCodecTest {
                 {
                   "data": [ { "id": 1, "name": "Ajax" }, { "id": 2, "name": "PSV" } ],
                   "pagination": { "count": 2, "per_page": 25, "current_page": 1,
-                                  "next_page": "https://api/next", "has_more": true }
+                                  "next_page": "https://api/next", "next_cursor": "WzEsMl0", "has_more": true }
                 }
                 """;
 
@@ -50,6 +50,7 @@ class HelidonJsonCodecTest {
         assertThat(response.data()).hasSize(2);
         assertThat(response.pagination().hasMore()).isTrue();
         assertThat(response.pagination().currentPage()).isEqualTo(1);
+        assertThat(response.pagination().nextCursor()).isEqualTo("WzEsMl0");
     }
 
     @Test

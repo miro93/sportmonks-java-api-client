@@ -129,7 +129,8 @@ future.thenAccept(r -> r.data().forEach(f -> System.out.println(f.name())));
 ### Lazy auto-paginated stream
 
 `stream()` automatically fetches subsequent pages on demand — no manual page
-tracking needed.
+tracking needed. It follows the server's `next_cursor` (cursor-based pagination), so it
+is not subject to the 20 000-row offset cap that applies to `page(int)`.
 
 ```java
 import java.util.stream.Stream;
@@ -319,10 +320,11 @@ fluent builder methods `include`, `filter`, `select`, `sort`, `get` and
 | `filter(String name, String... values)` | Filter by an attribute |
 | `select(String... fields)` | Restrict the returned fields |
 | `sort(String... fields)` | Sort order; prefix with `-` for descending |
-| `page(int page)` | 1-based page number (`CollectionRequest` only; ignored by `stream()`) |
+| `page(int page)` | 1-based page number (`CollectionRequest` only; ignored by `stream()`). Offset pagination is rejected by SportMonks beyond 20 000 rows (`(page - 1) × per_page > 20000`, i.e. page 801 at the default `per_page=25`) |
+| `cursor(String cursor)` | Pass back a previous response's `pagination.nextCursor()` to fetch the next page (`CollectionRequest` only; ignored by `stream()`) |
 | `get()` | Execute synchronously, returns `ApiResponse<T>` |
 | `getAsync()` | Execute asynchronously, returns `CompletableFuture<ApiResponse<T>>` |
-| `stream()` | Lazily walk all pages, returns `Stream<T>` (`CollectionRequest` only) |
+| `stream()` | Lazily walk all pages, returns `Stream<T>` (`CollectionRequest` only). Follows `next_cursor` when the server returns one, otherwise increments `page` |
 
 `ApiResponse<T>` is a record with:
 
@@ -335,7 +337,8 @@ Optional<Pagination> paginationOpt()
 Optional<RateLimit>  rateLimitOpt()
 ```
 
-`Pagination` fields: `count`, `perPage`, `currentPage`, `nextPage`, `hasMore`.
+`Pagination` fields: `count`, `perPage`, `currentPage`, `nextPage`, `nextCursor`, `hasMore`.
+`nextCursor` is `null` on the last page; `nextPage` is the legacy offset-based link.
 
 ---
 

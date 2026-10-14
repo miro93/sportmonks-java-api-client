@@ -87,4 +87,36 @@ class CollectionRequestTest {
         verify(1, getRequestedFor(urlEqualTo("/teams")));          // get() hit /teams with NO page param exactly once
         verify(1, getRequestedFor(urlEqualTo("/teams?page=2"))); // stream() page=2 happened exactly once (not leaked by get())
     }
+
+    @Test
+    void streamFollowsNextCursorWhenPresent(WireMockRuntimeInfo wm) {
+        stubFor(get(urlPathEqualTo("/teams")).withQueryParam("page", equalTo("1")).willReturn(okJson("""
+                { "data": [ { "id": 1, "name": "Ajax" } ],
+                  "pagination": { "count": 1, "per_page": 1, "current_page": 1, "next_cursor": "c1", "has_more": true } }
+                """)));
+        stubFor(get(urlPathEqualTo("/teams")).withQueryParam("cursor", equalTo("c1")).willReturn(okJson("""
+                { "data": [ { "id": 2, "name": "PSV" } ],
+                  "pagination": { "count": 1, "per_page": 1, "current_page": 2, "next_cursor": "c2", "has_more": true } }
+                """)));
+        stubFor(get(urlPathEqualTo("/teams")).withQueryParam("cursor", equalTo("c2")).willReturn(okJson("""
+                { "data": [ { "id": 3, "name": "Feyenoord" } ],
+                  "pagination": { "count": 1, "per_page": 1, "current_page": 3, "next_cursor": null, "has_more": false } }
+                """)));
+
+        List<String> names = teams(wm.getHttpBaseUrl()).stream().map(Team::name).toList();
+
+        assertThat(names).containsExactly("Ajax", "PSV", "Feyenoord");
+        verify(0, getRequestedFor(urlPathEqualTo("/teams")).withQueryParam("page", equalTo("2")));
+    }
+
+    @Test
+    void cursorIsSentAsQueryParam(WireMockRuntimeInfo wm) {
+        stubFor(get(urlEqualTo("/teams?cursor=c1")).willReturn(okJson("""
+                { "data": [ { "id": 2, "name": "PSV" } ] }
+                """)));
+
+        ApiResponse<List<Team>> response = teams(wm.getHttpBaseUrl()).cursor("c1").get();
+
+        assertThat(response.data()).extracting(Team::name).containsExactly("PSV");
+    }
 }

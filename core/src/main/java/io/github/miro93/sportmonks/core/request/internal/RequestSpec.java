@@ -6,14 +6,15 @@ import java.util.List;
 import java.util.Map;
 
 /// Immutable description of a SportMonks request: a relative path plus the
-/// optional include/filter/select/sort/page query options. Built via {@link #builder}.
+/// optional include/filter/select/sort/page/cursor query options. Built via {@link #builder}.
 public record RequestSpec(
         String path,
         List<String> includes,
         Map<String, List<String>> filters,
         List<String> select,
         List<String> sort,
-        Integer page) {
+        Integer page,
+        String cursor) {
 
     public RequestSpec {
         includes = List.copyOf(includes);
@@ -31,9 +32,14 @@ public record RequestSpec(
         return new Builder(path);
     }
 
-    /// Returns a copy of this spec with the page number set, leaving this instance unchanged.
+    /// Returns a copy of this spec with the page number set and no cursor, leaving this instance unchanged.
     public RequestSpec withPage(int page) {
-        return new RequestSpec(path, includes, filters, select, sort, page);
+        return new RequestSpec(path, includes, filters, select, sort, page, null);
+    }
+
+    /// Returns a copy of this spec with the cursor set and no page number, leaving this instance unchanged.
+    public RequestSpec withCursor(String cursor) {
+        return new RequestSpec(path, includes, filters, select, sort, null, cursor);
     }
 
     /// Mutable builder that accumulates query options before producing an
@@ -45,6 +51,7 @@ public record RequestSpec(
         private final List<String> select = new ArrayList<>();
         private final List<String> sort = new ArrayList<>();
         private Integer page;
+        private String cursor;
 
         private Builder(String path) {
             this.path = path;
@@ -96,11 +103,20 @@ public record RequestSpec(
             return this;
         }
 
+        /// Sets the pagination cursor (the {@code next_cursor} of a previous response).
+        ///
+        /// @param cursor the opaque cursor token
+        /// @return this builder
+        public Builder cursor(String cursor) {
+            this.cursor = cursor;
+            return this;
+        }
+
         /// Produces the immutable spec from the accumulated options.
         ///
         /// @return the built {@link RequestSpec}
         public RequestSpec build() {
-            return new RequestSpec(path, includes, filters, select, sort, page);
+            return new RequestSpec(path, includes, filters, select, sort, page, cursor);
         }
     }
 }
