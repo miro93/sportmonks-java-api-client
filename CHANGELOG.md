@@ -5,6 +5,13 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.1](https://github.com/miro93/sportmonks-java-api-client/compare/v3.0.0...v3.0.1) (2026-10-14)
+
+
+### Bug Fixes
+
+* **core:** export `java.net.http` transitively (both client builders expose `HttpClient`) and build request headers once per executor ([#100](https://github.com/miro93/sportmonks-java-api-client/issues/100)) ([bc06ef0](https://github.com/miro93/sportmonks-java-api-client/commit/bc06ef0))
+
 ## [3.0.0](https://github.com/miro93/sportmonks-java-api-client/compare/v2.1.0...v3.0.0) (2026-09-03)
 
 
