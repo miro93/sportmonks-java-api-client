@@ -34,5 +34,25 @@ class RequestSpecTest {
         assertThat(spec.select()).isEmpty();
         assertThat(spec.sort()).isEmpty();
         assertThat(spec.page()).isNull();
+        assertThat(spec.cursor()).isNull();
+    }
+
+    @Test
+    void builderAcceptsCursor() {
+        RequestSpec spec = RequestSpec.builder("fixtures").cursor("WzEsMl0").build();
+
+        assertThat(spec.cursor()).isEqualTo("WzEsMl0");
+    }
+
+    @Test
+    void withCursorReplacesPageAndKeepsOtherOptions() {
+        RequestSpec spec = RequestSpec.builder("fixtures").include("scores").page(3).build();
+
+        RequestSpec next = spec.withCursor("c1");
+
+        assertThat(next.cursor()).isEqualTo("c1");
+        assertThat(next.page()).isNull();
+        assertThat(next.includes()).containsExactly("scores");
+        assertThat(spec.page()).isEqualTo(3);
     }
 }

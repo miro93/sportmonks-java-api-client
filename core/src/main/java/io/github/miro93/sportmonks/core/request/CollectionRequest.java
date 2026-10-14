@@ -73,13 +73,25 @@ public final class CollectionRequest<T> {
         return this;
     }
 
-    /// Requests a specific page. Applies to {@link #get()} / {@link #getAsync()} only;
-    /// {@link #stream()} always walks from the first page.
+    /// Requests a specific page (offset pagination, capped by SportMonks at 20 000 rows).
+    /// Applies to {@link #get()} / {@link #getAsync()} only; {@link #stream()} always walks
+    /// from the first page.
     ///
     /// @param page the 1-based page number
     /// @return this request
     public CollectionRequest<T> page(int page) {
         spec.page(page);
+        return this;
+    }
+
+    /// Requests the page identified by a cursor (the {@code next_cursor} of a previous response).
+    /// Applies to {@link #get()} / {@link #getAsync()} only; {@link #stream()} always walks
+    /// from the first page.
+    ///
+    /// @param cursor the opaque cursor token
+    /// @return this request
+    public CollectionRequest<T> cursor(String cursor) {
+        spec.cursor(cursor);
         return this;
     }
 
@@ -97,12 +109,12 @@ public final class CollectionRequest<T> {
         return executor.executeAsync(spec.build(), listType);
     }
 
-    /// Lazily walks every page, following {@code pagination.has_more}.
+    /// Lazily walks every page, following {@code pagination.has_more}. After the first page
+    /// the walk follows {@code pagination.next_cursor} when the server returns one, and falls
+    /// back to incrementing {@code page} otherwise.
     public Stream<T> stream() {
         RequestSpec base = spec.build();
-        return Pages.stream(page -> {
-            ApiResponse<List<T>> response = executor.execute(base.withPage(page), listType);
-            return response;
-        });
+        return Pages.stream((page, cursor) -> executor.execute(
+                cursor != null ? base.withCursor(cursor) : base.withPage(page), listType));
     }
 }

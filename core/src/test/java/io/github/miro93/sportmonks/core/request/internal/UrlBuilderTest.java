@@ -71,4 +71,10 @@ class UrlBuilderTest {
         assertThat(s).contains("sort=starting_at");
         assertThat(s).contains("page=3");
     }
+
+    @Test
+    void encodesCursorParam() {
+        URI uri = UrlBuilder.build(BASE, RequestSpec.builder("fixtures").cursor("a+b=").build());
+        assertThat(uri.toString()).isEqualTo(BASE + "/fixtures?cursor=a%2Bb%3D");
+    }
 }

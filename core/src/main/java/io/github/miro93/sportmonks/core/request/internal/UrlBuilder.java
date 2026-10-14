@@ -51,6 +51,9 @@ public final class UrlBuilder {
         if (spec.page() != null) {
             params.add("page=" + spec.page());
         }
+        if (spec.cursor() != null) {
+            params.add("cursor=" + encode(spec.cursor()));
+        }
 
         if (!params.isEmpty()) {
             url.append('?').append(String.join("&", params));

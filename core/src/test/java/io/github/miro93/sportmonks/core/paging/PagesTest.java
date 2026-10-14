@@ -14,7 +14,7 @@ class PagesTest {
 
     private static ApiResponse<List<Integer>> page(List<Integer> data, int current, boolean hasMore) {
         return new ApiResponse<>(data,
-                new Pagination(data.size(), 2, current, hasMore ? "next" : null, hasMore),
+                new Pagination(data.size(), 2, current, hasMore ? "next" : null, null, hasMore),
                 null, null);
     }
 
@@ -48,5 +48,19 @@ class PagesTest {
     void handlesSinglePageWithNoMore() {
         Stream<Integer> stream = Pages.stream(pageNumber -> page(List.of(7, 8), 1, false));
         assertThat(stream).containsExactly(7, 8);
+    }
+
+    @Test
+    void passesNextCursorToTheFetcher() {
+        List<String> seen = new java.util.ArrayList<>();
+        Stream<Integer> stream = Pages.stream((pageNumber, cursor) -> {
+            seen.add(pageNumber + ":" + cursor);
+            String nextCursor = pageNumber < 3 ? "c" + pageNumber : null;
+            return new ApiResponse<>(List.of(pageNumber),
+                    new Pagination(1, 1, pageNumber, null, nextCursor, nextCursor != null), null, null);
+        });
+
+        assertThat(stream).containsExactly(1, 2, 3);
+        assertThat(seen).containsExactly("1:null", "2:c1", "3:c2");
     }
 }
