@@ -50,4 +50,17 @@ class TypesEndpointTest {
         assertThat(type.id()).isEqualTo(208L);
         assertThat(type.code()).isEqualTo("goals");
     }
+
+    @Test
+    void byEntityHitsEntitiesPath(WireMockRuntimeInfo wm) {
+        stubFor(get(urlEqualTo("/types/entities")).willReturn(okJson("""
+                { "data": { "Event": { "updated_at": "2023-06-30T12:00:31.000000Z",
+                                       "types": [ { "id": 14, "name": "Goal", "code": "goal", "developer_name": "GOAL" } ] } } }
+                """)));
+
+        var response = types(wm.getHttpBaseUrl()).byEntity().get();
+
+        assertThat(response.data()).containsOnlyKeys("Event");
+        assertThat(response.data().get("Event").types().getFirst().name()).isEqualTo("Goal");
+    }
 }

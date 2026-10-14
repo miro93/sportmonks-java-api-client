@@ -8,6 +8,7 @@ import io.github.miro93.sportmonks.core.response.ApiResponse;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
 /// Wraps a Helidon JSON {@link JsonBinding} (compile-time binding, no reflection)
 /// and decodes the SportMonks envelope into a typed {@link ApiResponse}.
@@ -47,6 +48,12 @@ public final class HelidonJsonCodec {
         return new DataType<>(genericListType(dataClass));
     }
 
+    /// Build the {@link DataType} for a `data` payload that is a JSON object keyed by
+    /// arbitrary strings (e.g. the entity-keyed {@code types/entities} response).
+    public <T> DataType<Map<String, T>> mapType(Class<T> valueClass) {
+        return new DataType<>(GenericType.<Map<String, T>>create(parameterized(Map.class, String.class, valueClass)));
+    }
+
     /// Decode a SportMonks JSON envelope using a typed {@link DataType} token.
     public <T> ApiResponse<T> decode(String json, DataType<T> dataType) {
         try {
@@ -74,11 +81,11 @@ public final class HelidonJsonCodec {
         return GenericType.<List<T>>create(parameterized(List.class, dataClass));
     }
 
-    private static ParameterizedType parameterized(Class<?> raw, Type argument) {
+    private static ParameterizedType parameterized(Class<?> raw, Type... arguments) {
         return new ParameterizedType() {
             @Override
             public Type[] getActualTypeArguments() {
-                return new Type[] {argument};
+                return arguments.clone();
             }
 
             @Override

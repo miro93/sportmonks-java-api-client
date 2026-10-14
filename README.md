@@ -157,6 +157,7 @@ CoreClient core = CoreClient.builder()
 
 List<Country> countries = core.countries().search("Scot").get().data();
 List<Type> types = core.types().all().get().data();
+Map<String, EntityTypes> perEntity = core.types().byEntity().get().data(); // keyed by entity name
 ```
 
 …or reach it from a football client, which shares the same credentials:
@@ -405,7 +406,7 @@ All endpoints are accessed via `FootballClient`:
 | Accessor | Endpoint class | Example methods |
 |----------|---------------|-----------------|
 | `fixtures()` | `FixturesEndpoint` | `all()`, `byId(id)`, `byMultipleIds(ids...)`, `byDate(date)`, `byDateRange(start, end)`, `byDateRangeForTeam(start, end, teamId)`, `headToHead(t1, t2)`, `search(name)`, `latest()`, `upcomingByMarket(marketId)`, `upcomingByTvStation(tvStationId)`, `pastByTvStation(tvStationId)` |
-| `livescores()` | `LivescoresEndpoint` | `all()`, `inplay()`, `latest()` |
+| `livescores()` | `LivescoresEndpoint` | `all()`, `inplay()`, `latest()` (since 2026-03-26 the `odds` and `premiumOdds` includes are no longer accepted here) |
 | `leagues()` | `LeaguesEndpoint` | `all()`, `byId(id)`, `byCountry(countryId)`, `live()`, `byDate(date)`, `search(name)` |
 | `seasons()` | `SeasonsEndpoint` | `all()`, `byId(id)`, `byTeam(teamId)`, `brackets(seasonId)`, `search(name)` |
 | `stages()` | `StagesEndpoint` | `all()`, `byId(id)`, `bySeason(seasonId)`, `search(name)` |
@@ -435,8 +436,16 @@ All endpoints are accessed via `FootballClient`:
 | `predictions()` | `PredictionsEndpoint` | `probabilities()`, `probabilitiesByFixture(fixtureId)`, `liveProbabilities()`, `liveProbabilitiesByFixture(fixtureId)`, `valueBets()`, `valueBetsByFixture(fixtureId)`, `predictabilityByLeague(leagueId)` |
 | `statistics()` | `StatisticsEndpoint` | `seasonByTeam(teamId)`, `seasonByPlayer(playerId)`, `seasonByCoach(coachId)`, `seasonByReferee(refereeId)`, `byStage(stageId)`, `byRound(roundId)` |
 | `expected()` | `ExpectedEndpoint` | `fixtures()`, `lineups()` |
+| `matchFacts()` | `MatchFactsEndpoint` | `all()`, `byFixture(fixtureId)`, `byDateRange(start, end)`, `byLeague(leagueId)` |
+| `transferRumours()` | `TransferRumoursEndpoint` | `all()`, `byId(id)`, `byDateRange(start, end)`, `byTeam(teamId)`, `byPlayer(playerId)` |
+| `rivals()` | `RivalsEndpoint` | `all()`, `byTeam(teamId)` |
+| `news()` | `NewsEndpoint` | `preMatch()`, `preMatchBySeason(seasonId)`, `preMatchUpcoming()`, `postMatch()`, `postMatchBySeason(seasonId)` |
+| `teamRankings()` | `TeamRankingsEndpoint` | `all()`, `byTeam(teamId)`, `byDate(date)` (beta) |
+| `teamOfTheWeek()` | `TeamOfTheWeekEndpoint` | `all()`, `byRound(roundId)`, `latestByLeague(leagueId)` (beta) |
+| `bookmakerMappings()` | `BookmakerMappingsEndpoint` | `byFixture(fixtureId)` (served from the `/v3/odds` base URL) |
 
-Premium markets and bookmakers (`premiumMarkets()`, `premiumBookmakers()`) are served from a
+Premium markets and bookmakers (`premiumMarkets()`, `premiumBookmakers()`) and the bookmaker
+match-id mappings (`bookmakerMappings()`) are served from a
 separate odds base URL (`/v3/odds`), configurable via `oddsBaseUrl(...)` on the builder; all
 other football endpoints — including the premium odds feed itself — use `/v3/football`.
 

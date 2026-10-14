@@ -1,6 +1,7 @@
 package io.github.miro93.sportmonks.core.coreapi.endpoint;
 
 import io.github.miro93.sportmonks.core.ApiExecutor;
+import io.github.miro93.sportmonks.core.coreapi.model.EntityTypes;
 import io.github.miro93.sportmonks.core.coreapi.model.Type;
 import io.github.miro93.sportmonks.core.json.DataType;
 import io.github.miro93.sportmonks.core.json.HelidonJsonCodec;
@@ -9,6 +10,7 @@ import io.github.miro93.sportmonks.core.request.internal.RequestSpec;
 import io.github.miro93.sportmonks.core.request.SingleResourceRequest;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /// Access to the SportMonks Core API {@code /types} endpoints.
@@ -17,6 +19,7 @@ public final class TypesEndpoint {
     private final ApiExecutor executor;
     private final DataType<Type> single;
     private final DataType<List<Type>> list;
+    private final DataType<Map<String, EntityTypes>> byEntity;
 
     /// Creates the endpoint, building the {@link Type} decoders from {@code codec}.
     ///
@@ -27,6 +30,7 @@ public final class TypesEndpoint {
         Objects.requireNonNull(codec, "codec");
         this.single = codec.type(Type.class);
         this.list = codec.listType(Type.class);
+        this.byEntity = codec.mapType(EntityTypes.class);
     }
 
     /// Requests every type, paginated.
@@ -42,5 +46,13 @@ public final class TypesEndpoint {
     /// @return a single-resource request for that type
     public SingleResourceRequest<Type> byId(long id) {
         return new SingleResourceRequest<>(executor, RequestSpec.builder("types/" + id), single);
+    }
+
+    /// Requests the types available per entity, keyed by entity name
+    /// (e.g. {@code "CoachStatisticDetail"}). Not paginated; includes are not supported.
+    ///
+    /// @return a single-resource request for the entity-keyed types map
+    public SingleResourceRequest<Map<String, EntityTypes>> byEntity() {
+        return new SingleResourceRequest<>(executor, RequestSpec.builder("types/entities"), byEntity);
     }
 }

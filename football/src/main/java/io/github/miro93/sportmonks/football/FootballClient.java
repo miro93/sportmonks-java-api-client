@@ -9,6 +9,13 @@ import io.github.miro93.sportmonks.core.json.HelidonJsonCodec;
 import io.github.miro93.sportmonks.core.retry.RetryPolicy;
 import io.github.miro93.sportmonks.core.retry.internal.RetryingTransport;
 import io.github.miro93.sportmonks.core.retry.internal.Sleeper;
+import io.github.miro93.sportmonks.football.endpoint.RivalsEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.TransferRumoursEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.NewsEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.TeamRankingsEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.TeamOfTheWeekEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.MatchFactsEndpoint;
+import io.github.miro93.sportmonks.football.endpoint.BookmakerMappingsEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.BookmakersEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.CoachesEndpoint;
 import io.github.miro93.sportmonks.football.endpoint.CommentariesEndpoint;
@@ -86,6 +93,13 @@ public final class FootballClient {
     private final PredictionsEndpoint predictions;
     private final StatisticsEndpoint statistics;
     private final ExpectedEndpoint expected;
+    private final RivalsEndpoint rivals;
+    private final TransferRumoursEndpoint transferRumours;
+    private final NewsEndpoint news;
+    private final TeamRankingsEndpoint teamRankings;
+    private final TeamOfTheWeekEndpoint teamOfTheWeek;
+    private final MatchFactsEndpoint matchFacts;
+    private final BookmakerMappingsEndpoint bookmakerMappings;
     private final CoreClient core;
 
     private FootballClient(
@@ -120,6 +134,13 @@ public final class FootballClient {
             PredictionsEndpoint predictions,
             StatisticsEndpoint statistics,
             ExpectedEndpoint expected,
+            RivalsEndpoint rivals,
+            TransferRumoursEndpoint transferRumours,
+            NewsEndpoint news,
+            TeamRankingsEndpoint teamRankings,
+            TeamOfTheWeekEndpoint teamOfTheWeek,
+            MatchFactsEndpoint matchFacts,
+            BookmakerMappingsEndpoint bookmakerMappings,
             CoreClient core) {
         this.fixtures = fixtures;
         this.livescores = livescores;
@@ -152,6 +173,13 @@ public final class FootballClient {
         this.predictions = predictions;
         this.statistics = statistics;
         this.expected = expected;
+        this.rivals = rivals;
+        this.transferRumours = transferRumours;
+        this.news = news;
+        this.teamRankings = teamRankings;
+        this.teamOfTheWeek = teamOfTheWeek;
+        this.matchFacts = matchFacts;
+        this.bookmakerMappings = bookmakerMappings;
         this.core = core;
     }
 
@@ -379,6 +407,55 @@ public final class FootballClient {
         return expected;
     }
 
+    /// Returns the {@code /rivals} endpoint accessor.
+    ///
+    /// @return the {@link RivalsEndpoint}
+    public RivalsEndpoint rivals() {
+        return rivals;
+    }
+
+    /// Returns the {@code /transfer-rumours} endpoint accessor.
+    ///
+    /// @return the {@link TransferRumoursEndpoint}
+    public TransferRumoursEndpoint transferRumours() {
+        return transferRumours;
+    }
+
+    /// Returns the {@code /news} endpoint accessor.
+    ///
+    /// @return the {@link NewsEndpoint}
+    public NewsEndpoint news() {
+        return news;
+    }
+
+    /// Returns the {@code /team-rankings} endpoint accessor (beta).
+    ///
+    /// @return the {@link TeamRankingsEndpoint}
+    public TeamRankingsEndpoint teamRankings() {
+        return teamRankings;
+    }
+
+    /// Returns the {@code /team-of-the-week} endpoint accessor (beta).
+    ///
+    /// @return the {@link TeamOfTheWeekEndpoint}
+    public TeamOfTheWeekEndpoint teamOfTheWeek() {
+        return teamOfTheWeek;
+    }
+
+    /// Returns the {@code /match-facts} endpoint accessor.
+    ///
+    /// @return the {@link MatchFactsEndpoint}
+    public MatchFactsEndpoint matchFacts() {
+        return matchFacts;
+    }
+
+    /// Returns the bookmaker match-id mappings accessor (served from the {@code /v3/odds} base URL).
+    ///
+    /// @return the {@link BookmakerMappingsEndpoint}
+    public BookmakerMappingsEndpoint bookmakerMappings() {
+        return bookmakerMappings;
+    }
+
     /// Returns the SportMonks Core API client (continents, countries, regions,
     /// cities, types) backed by the same credentials and transport.
     ///
@@ -539,6 +616,13 @@ public final class FootballClient {
                     new PredictionsEndpoint(executor, codec),
                     new StatisticsEndpoint(executor, codec),
                     new ExpectedEndpoint(executor, codec),
+                    new RivalsEndpoint(executor, codec),
+                    new TransferRumoursEndpoint(executor, codec),
+                    new NewsEndpoint(executor, codec),
+                    new TeamRankingsEndpoint(executor, codec),
+                    new TeamOfTheWeekEndpoint(executor, codec),
+                    new MatchFactsEndpoint(executor, codec),
+                    new BookmakerMappingsEndpoint(oddsExecutor, codec),
                     core);
         }
     }
