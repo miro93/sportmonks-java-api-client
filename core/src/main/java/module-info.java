@@ -3,7 +3,7 @@ module io.github.miro93.sportmonks.core {
     requires io.helidon.common;
     requires io.helidon.common.buffers;
     requires io.helidon.service.registry;
-    requires java.net.http;
+    requires transitive java.net.http;
 
     // Public API
     exports io.github.miro93.sportmonks.core.auth;
