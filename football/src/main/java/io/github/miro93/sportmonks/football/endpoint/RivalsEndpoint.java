@@ -27,19 +27,19 @@ public final class RivalsEndpoint {
     }
 
     /// Requests every rivalry within the subscription, paginated.
-///
-/// @return a collection request for all rivalries
-public CollectionRequest<Rival> all() {
-    return collection("rivals");
-}
+    ///
+    /// @return a collection request for all rivalries
+    public CollectionRequest<Rival> all() {
+        return collection("rivals");
+    }
 
     /// Requests the rivals of a given team. Not paginated.
-///
-/// @param teamId the team id
-/// @return a collection request for that team's rivals
-public CollectionRequest<Rival> byTeam(long teamId) {
-    return collection("rivals/teams/" + teamId);
-}
+    ///
+    /// @param teamId the team id
+    /// @return a collection request for that team's rivals
+    public CollectionRequest<Rival> byTeam(long teamId) {
+        return collection("rivals/teams/" + teamId);
+    }
 
     private CollectionRequest<Rival> collection(String path) {
         return new CollectionRequest<>(executor, RequestSpec.builder(path), list);

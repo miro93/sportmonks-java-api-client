@@ -27,27 +27,27 @@ public final class TeamOfTheWeekEndpoint {
     }
 
     /// Requests every team-of-the-week entry, paginated.
-///
-/// @return a collection request for all entries
-public CollectionRequest<TeamOfTheWeekEntry> all() {
-    return collection("team-of-the-week");
-}
+    ///
+    /// @return a collection request for all entries
+    public CollectionRequest<TeamOfTheWeekEntry> all() {
+        return collection("team-of-the-week");
+    }
 
     /// Requests the team of the week of a given round. Not paginated.
-///
-/// @param roundId the round id
-/// @return a collection request for that round's entries
-public CollectionRequest<TeamOfTheWeekEntry> byRound(long roundId) {
-    return collection("team-of-the-week/rounds/" + roundId);
-}
+    ///
+    /// @param roundId the round id
+    /// @return a collection request for that round's entries
+    public CollectionRequest<TeamOfTheWeekEntry> byRound(long roundId) {
+        return collection("team-of-the-week/rounds/" + roundId);
+    }
 
     /// Requests the latest team of the week of a given league. Not paginated.
-///
-/// @param leagueId the league id
-/// @return a collection request for that league's latest entries
-public CollectionRequest<TeamOfTheWeekEntry> latestByLeague(long leagueId) {
-    return collection("team-of-the-week/leagues/" + leagueId + "/latest");
-}
+    ///
+    /// @param leagueId the league id
+    /// @return a collection request for that league's latest entries
+    public CollectionRequest<TeamOfTheWeekEntry> latestByLeague(long leagueId) {
+        return collection("team-of-the-week/leagues/" + leagueId + "/latest");
+    }
 
     private CollectionRequest<TeamOfTheWeekEntry> collection(String path) {
         return new CollectionRequest<>(executor, RequestSpec.builder(path), list);

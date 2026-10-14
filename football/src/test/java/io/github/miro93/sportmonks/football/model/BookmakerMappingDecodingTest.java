@@ -1,15 +1,15 @@
 package io.github.miro93.sportmonks.football.model;
 
-    import io.github.miro93.sportmonks.core.json.HelidonJsonCodec;
-    import org.junit.jupiter.api.Test;
+import io.github.miro93.sportmonks.core.json.HelidonJsonCodec;
+import org.junit.jupiter.api.Test;
 
-    import java.util.List;
+import java.util.List;
 
-    import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
-    class BookmakerMappingDecodingTest {
+class BookmakerMappingDecodingTest {
 
-        private final HelidonJsonCodec codec = new HelidonJsonCodec();
+    private final HelidonJsonCodec codec = new HelidonJsonCodec();
 
     @Test
     void decodesMapping() {
