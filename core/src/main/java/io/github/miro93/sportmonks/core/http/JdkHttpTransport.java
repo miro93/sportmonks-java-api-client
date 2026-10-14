@@ -38,7 +38,7 @@ public final class JdkHttpTransport implements HttpTransport {
         Objects.requireNonNull(connectTimeout, "connectTimeout");
         return HttpClient.newBuilder()
                 .connectTimeout(connectTimeout)
-                .followRedirects(HttpClient.Redirect.NORMAL)
+                .followRedirects(HttpClient.Redirect.NEVER)
                 .build();
     }
 

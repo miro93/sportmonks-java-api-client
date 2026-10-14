@@ -204,8 +204,10 @@ FootballClient client = FootballClient.builder()
         .build();
 ```
 
-When no client is supplied, a default one is used: a 10-second connect timeout and
-`NORMAL` redirect following, with the JDK's default HTTP/2 (falling back to HTTP/1.1).
+When no client is supplied, a default one is used: a 10-second connect timeout, **no**
+redirect following (the API never redirects, and following one to another host could
+replay the `Authorization` header there), with the JDK's default HTTP/2 (falling back to
+HTTP/1.1).
 
 Two timeout dimensions apply, mirroring the JDK client:
 
