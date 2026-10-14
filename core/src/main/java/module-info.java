@@ -17,13 +17,13 @@ module io.github.miro93.sportmonks.core {
     exports io.github.miro93.sportmonks.core.coreapi.endpoint;
     exports io.github.miro93.sportmonks.core.coreapi.model;
 
-    // Internal plumbing — visible only to the football module
-    exports io.github.miro93.sportmonks.core to io.github.miro93.sportmonks.football;
-    exports io.github.miro93.sportmonks.core.http to io.github.miro93.sportmonks.football;
-    exports io.github.miro93.sportmonks.core.json to io.github.miro93.sportmonks.football;
-    exports io.github.miro93.sportmonks.core.request.internal to io.github.miro93.sportmonks.football;
-    exports io.github.miro93.sportmonks.core.retry.internal to io.github.miro93.sportmonks.football;
-    exports io.github.miro93.sportmonks.core.error.internal to io.github.miro93.sportmonks.football;
+    // Internal plumbing — visible only to the sport modules
+    exports io.github.miro93.sportmonks.core to io.github.miro93.sportmonks.football, io.github.miro93.sportmonks.motorsport;
+    exports io.github.miro93.sportmonks.core.http to io.github.miro93.sportmonks.football, io.github.miro93.sportmonks.motorsport;
+    exports io.github.miro93.sportmonks.core.json to io.github.miro93.sportmonks.football, io.github.miro93.sportmonks.motorsport;
+    exports io.github.miro93.sportmonks.core.request.internal to io.github.miro93.sportmonks.football, io.github.miro93.sportmonks.motorsport;
+    exports io.github.miro93.sportmonks.core.retry.internal to io.github.miro93.sportmonks.football, io.github.miro93.sportmonks.motorsport;
+    exports io.github.miro93.sportmonks.core.error.internal to io.github.miro93.sportmonks.football, io.github.miro93.sportmonks.motorsport;
 
     // helidon-service-codegen reflects into the generated *__ServiceDescriptor classes to
     // register @Json.Entity converters at JsonBinding.create() time.

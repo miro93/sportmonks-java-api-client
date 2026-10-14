@@ -4,4 +4,4 @@ plugins {
 
 rootProject.name = "sportmonks-java-api-client"
 
-include("core", "football", "native-smoke")
+include("core", "football", "motorsport", "native-smoke")

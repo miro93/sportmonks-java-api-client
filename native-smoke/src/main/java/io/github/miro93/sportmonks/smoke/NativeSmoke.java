@@ -59,6 +59,12 @@ import io.github.miro93.sportmonks.football.model.TvStation;
 import io.github.miro93.sportmonks.football.model.ValueBet;
 import io.github.miro93.sportmonks.football.model.ValueBetPrediction;
 import io.github.miro93.sportmonks.football.model.Venue;
+import io.github.miro93.sportmonks.motorsport.model.Driver;
+import io.github.miro93.sportmonks.motorsport.model.Lap;
+import io.github.miro93.sportmonks.motorsport.model.Lineup;
+import io.github.miro93.sportmonks.motorsport.model.LineupDetail;
+import io.github.miro93.sportmonks.motorsport.model.Pitstop;
+import io.github.miro93.sportmonks.motorsport.model.Stint;
 
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -76,7 +82,7 @@ import java.util.Map;
 /// an entity missing from {@link #ENTITIES}.
 public final class NativeSmoke {
 
-    /// Every public entity with a generated converter, core then football.
+    /// Every public entity with a generated converter: core, football, then motorsport.
     static final List<Class<?>> ENTITIES = List.of(
             City.class, Continent.class, Country.class, EntityTypes.class, Region.class, Type.class,
             Pagination.class, RateLimit.class,
@@ -88,7 +94,14 @@ public final class NativeSmoke {
             Season.class, Squad.class, Stage.class, Standing.class, StandingDetail.class, State.class,
             Statistic.class, StatisticDetail.class, Team.class, TeamOfTheWeekEntry.class, TeamRanking.class,
             Topscorer.class, Transfer.class, TransferRumour.class, TransferRumourConfig.class,
-            TvStation.class, ValueBet.class, ValueBetPrediction.class, Venue.class);
+            TvStation.class, ValueBet.class, ValueBetPrediction.class, Venue.class,
+            // motorsport (names clashing with football models are fully qualified)
+            Driver.class, io.github.miro93.sportmonks.motorsport.model.Fixture.class, Lap.class,
+            io.github.miro93.sportmonks.motorsport.model.League.class, Lineup.class, LineupDetail.class, Pitstop.class,
+            io.github.miro93.sportmonks.motorsport.model.Season.class, io.github.miro93.sportmonks.motorsport.model.Stage.class,
+            io.github.miro93.sportmonks.motorsport.model.Standing.class, io.github.miro93.sportmonks.motorsport.model.State.class,
+            Stint.class, io.github.miro93.sportmonks.motorsport.model.Team.class,
+            io.github.miro93.sportmonks.motorsport.model.Venue.class);
 
     public static void main(String[] args) throws Exception {
         smokeHttpAndDecode();
