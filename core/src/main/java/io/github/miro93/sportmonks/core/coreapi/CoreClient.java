@@ -9,7 +9,9 @@ import io.github.miro93.sportmonks.core.coreapi.endpoint.RegionsEndpoint;
 import io.github.miro93.sportmonks.core.coreapi.endpoint.TypesEndpoint;
 import io.github.miro93.sportmonks.core.http.HttpTransport;
 import io.github.miro93.sportmonks.core.http.JdkHttpTransport;
+import io.github.miro93.sportmonks.core.http.ListeningTransport;
 import io.github.miro93.sportmonks.core.json.HelidonJsonCodec;
+import io.github.miro93.sportmonks.core.request.RequestListener;
 import io.github.miro93.sportmonks.core.retry.RetryPolicy;
 import io.github.miro93.sportmonks.core.retry.internal.RetryingTransport;
 import io.github.miro93.sportmonks.core.retry.internal.Sleeper;
@@ -98,6 +100,7 @@ public final class CoreClient {
         private String baseUrl = DEFAULT_BASE_URL;
         private HttpClient httpClient;
         private Duration connectTimeout;
+        private RequestListener listener = RequestListener.NOOP;
         private Duration requestTimeout = JdkHttpTransport.DEFAULT_REQUEST_TIMEOUT;
 
         private Builder() {
@@ -151,6 +154,16 @@ public final class CoreClient {
             return this;
         }
 
+        /// Observes every HTTP attempt (each retry separately) for logging or metrics.
+        /// Defaults to {@link RequestListener#NOOP}.
+        ///
+        /// @param listener the listener
+        /// @return this builder
+        public Builder listener(RequestListener listener) {
+            this.listener = Objects.requireNonNull(listener, "listener");
+            return this;
+        }
+
         /// Sets the connection-establishment timeout for the built-in default {@link HttpClient}.
         /// Only meaningful when no custom {@link #httpClient(HttpClient)} is supplied — a
         /// user-provided client carries its own (immutable) connect timeout. Supplying BOTH is
@@ -181,7 +194,8 @@ public final class CoreClient {
                     : JdkHttpTransport.newDefaultClient(
                           connectTimeout != null ? connectTimeout : JdkHttpTransport.DEFAULT_CONNECT_TIMEOUT);
             HttpTransport base = new JdkHttpTransport(client, requestTimeout);
-            HttpTransport transport = new RetryingTransport(base, retryPolicy, Sleeper.REAL);
+            HttpTransport transport = new RetryingTransport(
+                    new ListeningTransport(base, listener), retryPolicy, Sleeper.REAL);
             HelidonJsonCodec codec = new HelidonJsonCodec();
             ApiExecutor executor = new ApiExecutor(transport, codec, apiToken, baseUrl);
             return new CoreClient(executor, codec);

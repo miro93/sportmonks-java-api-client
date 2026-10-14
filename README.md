@@ -229,6 +229,30 @@ already carries its own connect timeout, so setting both throws `IllegalStateExc
 `build()`. `connectTimeout` bounds connection establishment; `requestTimeout` bounds the
 request→response deadline.
 
+### Observing requests (logging, metrics)
+
+`listener(RequestListener)` on either builder receives every HTTP attempt, retries
+included, with the URI, status and elapsed time. Hook it up to SLF4J or Micrometer:
+
+```java
+import io.github.miro93.sportmonks.core.request.RequestListener;
+
+FootballClient client = FootballClient.builder()
+        .apiToken(ApiToken.fromEnv())
+        .listener(new RequestListener() {
+            @Override
+            public void onResponse(URI uri, int status, Duration elapsed) {
+                Timer.builder("sportmonks.request").tag("status", String.valueOf(status))
+                        .register(registry).record(elapsed);
+            }
+            @Override
+            public void onError(URI uri, Throwable error, Duration elapsed) {
+                log.warn("SportMonks call {} failed after {}", uri.getPath(), elapsed, error);
+            }
+        })
+        .build();
+```
+
 ---
 
 ### Configuring from Spring, Quarkus or Helidon
