@@ -1,6 +1,7 @@
 package io.github.miro93.sportmonks.football.model;
 
 import io.helidon.json.binding.Json;
+import java.time.LocalDate;
 
 /// A football player. {@code id} is always present. Foreign-key {@code Long}
 /// fields ({@code sportId}, {@code countryId}, {@code nationalityId},
@@ -33,4 +34,9 @@ public record Player(
         @Json.Property("date_of_birth") String dateOfBirth,
         String gender,
         @Json.Property("in_squad") Boolean inSquad) {
+
+    /// {@code dateOfBirth} as a {@link LocalDate}; {@code null} when absent.
+    public LocalDate dateOfBirthDate() {
+        return ApiDates.date(dateOfBirth);
+    }
 }

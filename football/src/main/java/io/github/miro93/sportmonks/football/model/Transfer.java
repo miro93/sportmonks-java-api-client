@@ -1,6 +1,7 @@
 package io.github.miro93.sportmonks.football.model;
 
 import io.helidon.json.binding.Json;
+import java.time.LocalDate;
 
 /// A player transfer between clubs. {@code id} is always present. Foreign-key
 /// {@code Long} fields ({@code sportId}, {@code playerId}, {@code typeId},
@@ -27,4 +28,9 @@ public record Transfer(
         Player player,
         @Json.Property("from_team") Team fromTeam,
         @Json.Property("to_team") Team toTeam) {
+
+    /// {@code date} as a {@link LocalDate}; {@code null} when absent.
+    public LocalDate localDate() {
+        return ApiDates.date(date);
+    }
 }

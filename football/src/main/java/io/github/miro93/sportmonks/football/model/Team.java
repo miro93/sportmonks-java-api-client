@@ -2,6 +2,7 @@ package io.github.miro93.sportmonks.football.model;
 
 import io.helidon.json.binding.Json;
 import java.util.List;
+import java.time.LocalDateTime;
 
 /// A football team. {@code id} is always present; {@code placeholder} is always
 /// present (defaults to {@code false}). Foreign-key {@code Long} fields
@@ -24,4 +25,9 @@ public record Team(
         boolean placeholder,
         @Json.Property("last_played_at") String lastPlayedAt,
         List<Squad> squad) {
+
+    /// {@code lastPlayedAt} as a {@link LocalDateTime} (in the requested timezone); {@code null} when absent.
+    public LocalDateTime lastPlayedAtDateTime() {
+        return ApiDates.dateTime(lastPlayedAt);
+    }
 }

@@ -2,6 +2,7 @@ package io.github.miro93.sportmonks.football.model;
 
 import io.github.miro93.sportmonks.core.coreapi.model.Type;
 import io.helidon.json.binding.Json;
+import java.time.LocalDate;
 
 /// A transfer rumour. {@code id} is always present; every other scalar may be
 /// {@code null}. {@code probability} is a label such as {@code "HIGH"}; {@code amount}
@@ -33,4 +34,9 @@ public record TransferRumour(
         @Json.Property("toTeam") Team toTeam,
         Type type,
         Type status) {
+
+    /// {@code date} as a {@link LocalDate}; {@code null} when absent.
+    public LocalDate localDate() {
+        return ApiDates.date(date);
+    }
 }
