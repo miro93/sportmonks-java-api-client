@@ -4,9 +4,13 @@ import io.helidon.common.GenericType;
 import io.helidon.json.JsonException;
 import io.helidon.json.binding.JsonBinding;
 import io.github.miro93.sportmonks.core.response.ApiResponse;
+import io.github.miro93.sportmonks.core.response.Pagination;
+import io.github.miro93.sportmonks.core.response.RateLimit;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -14,18 +18,13 @@ import java.util.Map;
 /// and decodes the SportMonks envelope into a typed {@link ApiResponse}.
 /// snake_case mapping is declared per field via `@Json.Property` on the records.
 ///
-/// The envelope is parsed generically first, via {@link Envelope} (`data` held as a
-/// raw {@code JsonValue}), and the payload is then decoded separately into `T`/
-/// `List<T>` — see {@link Envelope} for why `ApiResponse<T>` is not decoded directly.
-///
-/// ponytail: the `data` subtree is re-serialized to a `String` and re-parsed once per
-/// decode (see {@link #toResponse}) instead of binding straight from the captured
-/// {@code JsonValue} — `JsonBinding.deserialize(JsonValue, GenericType)` exists but
-/// throws `JsonException` ("Expected ',' or '}'" / "No more JSON Values available") on
-/// both objects and arrays in Helidon 4.5.4; its `JsonValueParser` doesn't correctly
-/// re-walk an already-parsed tree. Switch to that call directly if a later Helidon
-/// version fixes it, or once the generic-record codegen bug is fixed and `ApiResponse<T>`
-/// can be decoded in one pass.
+/// The envelope members are located with a structural byte scan ({@link JsonTopLevel}) and
+/// each one ({@code data}, {@code pagination}, {@code rate_limit}, {@code timezone}) is handed
+/// to the binding as its own byte slice, so every byte of the response is parsed exactly once.
+/// Helidon 4.5.x cannot decode a generic {@code ApiResponse<T>} in one pass (generic-record
+/// codegen bug) nor re-walk an already parsed {@code JsonValue}
+/// ({@code JsonBinding.deserialize(JsonValue, GenericType)} throws on objects and arrays in
+/// 4.5.4 and 4.5.5), which is why neither of the obvious one-liners is used.
 ///
 /// A second, unrelated Helidon 4.5.4 JSON binding bug affects free-form
 /// {@code Map<String, Object>} fields on the football-module side — see
@@ -63,14 +62,7 @@ public final class HelidonJsonCodec {
 
     /// Decode a SportMonks JSON envelope using a typed {@link DataType} token.
     public <T> ApiResponse<T> decode(String json, DataType<T> dataType) {
-        try {
-            if (dataType.raw()) {
-                return new ApiResponse<>(binding.deserialize(json, dataType.genericType()), null, null, null);
-            }
-            return toResponse(binding.deserialize(json, Envelope.class), dataType);
-        } catch (JsonException e) {
-            throw new CodecException("Failed to decode SportMonks response", e);
-        }
+        return decode(json.getBytes(StandardCharsets.UTF_8), dataType);
     }
 
     /// Decode directly from raw UTF-8 bytes (the transport's preferred path).
@@ -79,15 +71,28 @@ public final class HelidonJsonCodec {
             if (dataType.raw()) {
                 return new ApiResponse<>(binding.deserialize(json, dataType.genericType()), null, null, null);
             }
-            return toResponse(binding.deserialize(json, Envelope.class), dataType);
-        } catch (JsonException e) {
+            Map<String, JsonTopLevel.Range> members = JsonTopLevel.scan(json);
+            T data = member(json, members.get("data"), dataType.genericType());
+            Pagination pagination = member(json, members.get("pagination"), GenericType.create(Pagination.class));
+            RateLimit rateLimit = member(json, members.get("rate_limit"), GenericType.create(RateLimit.class));
+            String timezone = member(json, members.get("timezone"), GenericType.create(String.class));
+            return new ApiResponse<>(data, pagination, rateLimit, timezone);
+        } catch (JsonException | IllegalArgumentException e) {
             throw new CodecException("Failed to decode SportMonks response", e);
         }
     }
 
-    private <T> ApiResponse<T> toResponse(Envelope envelope, DataType<T> dataType) {
-        T data = envelope.data() == null ? null : binding.deserialize(envelope.data().toString(), dataType.genericType());
-        return new ApiResponse<>(data, envelope.pagination(), envelope.rateLimit(), envelope.timezone());
+    /// Decodes one envelope member from its byte slice; absent or {@code null} members decode to {@code null}.
+    private <T> T member(byte[] json, JsonTopLevel.Range range, GenericType<T> type) {
+        if (range == null || isNullLiteral(json, range)) {
+            return null;
+        }
+        return binding.deserialize(Arrays.copyOfRange(json, range.start(), range.end()), type);
+    }
+
+    private static boolean isNullLiteral(byte[] json, JsonTopLevel.Range range) {
+        return range.end() - range.start() == 4 && json[range.start()] == 'n' && json[range.start() + 1] == 'u'
+                && json[range.start() + 2] == 'l' && json[range.start() + 3] == 'l';
     }
 
     private static <T> GenericType<List<T>> genericListType(Class<T> dataClass) {
