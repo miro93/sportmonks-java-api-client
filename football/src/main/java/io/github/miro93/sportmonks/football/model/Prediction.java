@@ -6,8 +6,9 @@ import io.helidon.json.binding.Json;
 import java.util.Map;
 
 /// A predicted-probability record from the SportMonks predictions feed
-/// (probabilities endpoints). {@code id} is always present; every other field
-/// may be {@code null}. {@code predictions} is a free-form object whose keys
+/// (probabilities and live-probabilities endpoints). {@code id} is always present;
+/// every other field may be {@code null}. {@code periodId} and {@code minute} are
+/// only populated by the live-probabilities endpoints. {@code predictions} is a free-form object whose keys
 /// depend on {@code typeId} (e.g. {@code {yes,no}}, {@code {home,draw,away}},
 /// correct-score maps); numeric values decode as {@code Integer} when whole,
 /// {@code Double} when they have a fractional part.
@@ -21,6 +22,8 @@ public record Prediction(
         long id,
         @Json.Property("fixture_id") Long fixtureId,
         @Json.Property("type_id") Long typeId,
+        @Json.Property("period_id") Long periodId,
+        Integer minute,
         @Json.Property("predictions") JsonValue rawPredictions) {
 
     /// The decoded {@code predictions} payload; {@code null} if the field was absent.

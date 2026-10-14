@@ -85,4 +85,30 @@ class PredictionsEndpointTest {
         assertThat(response.data().getFirst().leagueId()).isEqualTo(8L);
         assertThat(response.data().getFirst().data()).containsEntry("fulltime_result", 0.75);
     }
+
+    @Test
+    void liveProbabilitiesHitsLivePath(WireMockRuntimeInfo wm) {
+        stubFor(get(urlPathEqualTo("/predictions/live/probabilities")).willReturn(okJson("""
+                { "data": [ { "id": 181, "fixture_id": 19656849, "period_id": 6965194, "minute": 1,
+                              "predictions": { "home": 52.08, "away": 25.76, "draw": 22.15 }, "type_id": 237 } ] }
+                """)));
+
+        var response = predictions(wm.getHttpBaseUrl()).liveProbabilities().get();
+
+        var prediction = response.data().getFirst();
+        assertThat(prediction.periodId()).isEqualTo(6965194L);
+        assertThat(prediction.minute()).isEqualTo(1);
+        assertThat(prediction.predictions()).containsEntry("home", 52.08);
+    }
+
+    @Test
+    void liveProbabilitiesByFixtureHitsFixturesPath(WireMockRuntimeInfo wm) {
+        stubFor(get(urlPathEqualTo("/predictions/live/probabilities/fixtures/19656849")).willReturn(okJson("""
+                { "data": [ { "id": 181, "fixture_id": 19656849 } ] }
+                """)));
+
+        var response = predictions(wm.getHttpBaseUrl()).liveProbabilitiesByFixture(19656849L).get();
+
+        assertThat(response.data().getFirst().fixtureId()).isEqualTo(19656849L);
+    }
 }
