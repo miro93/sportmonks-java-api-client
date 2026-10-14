@@ -221,6 +221,9 @@ transparently (the cap below applies to the decompressed size).
 Response bodies are capped at 32 MiB by default (`maxResponseSize(long)` on the builders);
 a larger body fails with `TransportException` instead of being buffered in memory.
 
+Base URLs must be `https`; plain `http` is only accepted on `localhost` / `127.0.0.1` /
+`::1` (stubs, local proxies), so a token is never sent in clear text by accident.
+
 Connection pooling is automatic (keep-alive plus HTTP/2 multiplexing). The JDK exposes
 no builder-level pool sizing; tune it via the `jdk.httpclient.*` system properties if
 needed.
