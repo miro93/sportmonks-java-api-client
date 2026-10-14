@@ -37,9 +37,12 @@ tasks.test {
     useJUnitPlatform()
 }
 
-// Register JDK standard implementation/API note tags so Javadoc does not error.
+// Register JDK standard implementation/API note tags so Javadoc does not error, and
+// drop doclint's "missing" group: records are documented in prose, not with one
+// @param per component (~130 "no @param"/"no comment" warnings otherwise).
 tasks.named<Javadoc>("javadoc") {
     (options as StandardJavadocDocletOptions).apply {
+        addBooleanOption("Xdoclint:all,-missing", true)
         addStringOption("tag", "apiNote:a:API Note:")
         addStringOption("tag", "implSpec:a:Implementation Requirements:")
         addStringOption("tag", "implNote:a:Implementation Note:")
