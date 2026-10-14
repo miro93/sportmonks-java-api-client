@@ -142,7 +142,9 @@ future.thenAccept(r -> r.data().forEach(f -> System.out.println(f.name())));
 
 `stream()` automatically fetches subsequent pages on demand — no manual page
 tracking needed. It follows the server's `next_cursor` (cursor-based pagination), so it
-is not subject to the 20 000-row offset cap that applies to `page(int)`.
+is not subject to the 20 000-row offset cap that applies to `page(int)`, and it requests
+the next page while you consume the current one (one-page lookahead), so a consumer that
+stops early has triggered at most one extra request.
 
 ```java
 import java.util.stream.Stream;
