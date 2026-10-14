@@ -9,6 +9,7 @@ module io.github.miro93.sportmonks.core {
     exports io.github.miro93.sportmonks.core.auth;
     exports io.github.miro93.sportmonks.core.error;
     exports io.github.miro93.sportmonks.core.paging;
+    exports io.github.miro93.sportmonks.core.ratelimit;
     exports io.github.miro93.sportmonks.core.request;
     exports io.github.miro93.sportmonks.core.response;
     exports io.github.miro93.sportmonks.core.retry;
