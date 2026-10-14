@@ -99,12 +99,13 @@ FootballClient client = FootballClient.builder()
 ```java
 import io.github.miro93.sportmonks.core.request.Order;
 import io.github.miro93.sportmonks.core.response.ApiResponse;
+import io.github.miro93.sportmonks.football.endpoint.Includes;
 import io.github.miro93.sportmonks.football.model.Fixture;
 import java.util.List;
 
 ApiResponse<List<Fixture>> response = client.fixtures()
         .all()
-        .include("participants", "scores")
+        .include(Includes.Fixtures.PARTICIPANTS, Includes.Fixtures.SCORES)
         .filter("league_id", "271")
         .select("id", "name", "starting_at")
         .sortBy("starting_at")
@@ -351,7 +352,7 @@ specific to `CollectionRequest`:
 
 | Method | Description |
 |--------|-------------|
-| `include(String... values)` | Load related resources (e.g. `"participants"`, `"scores"`) |
+| `include(String... values)` | Load related resources. `Includes.<Group>.<NAME>` holds the documented names per endpoint group (e.g. `Includes.Fixtures.PARTICIPANTS`); `Includes.nested("events", "player")` builds `events.player` |
 | `filter(String name, String... values)` | Filter by an attribute |
 | `select(String... fields)` | Restrict the returned fields |
 | `sortBy(String field)` | Field to sort by (a single field; the API rejects more) |
