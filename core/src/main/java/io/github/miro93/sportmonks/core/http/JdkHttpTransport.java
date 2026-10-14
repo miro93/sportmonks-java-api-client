@@ -3,6 +3,7 @@ package io.github.miro93.sportmonks.core.http;
 import io.github.miro93.sportmonks.core.error.TransportException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -42,12 +43,26 @@ public final class JdkHttpTransport implements HttpTransport {
                 .build();
     }
 
+    /// Largest response body accepted by default (32 MiB); larger ones fail with a
+    /// {@link TransportException} instead of being buffered in memory.
+    public static final long DEFAULT_MAX_RESPONSE_SIZE = 32L * 1024 * 1024;
+
     private final HttpClient client;
     private final Duration requestTimeout;
+    private final long maxResponseSize;
 
     public JdkHttpTransport(HttpClient client, Duration requestTimeout) {
+        this(client, requestTimeout, DEFAULT_MAX_RESPONSE_SIZE);
+    }
+
+    /// @param maxResponseSize the largest body (in bytes) read into memory; must be positive
+    public JdkHttpTransport(HttpClient client, Duration requestTimeout, long maxResponseSize) {
         this.client = Objects.requireNonNull(client, "client");
         this.requestTimeout = Objects.requireNonNull(requestTimeout, "requestTimeout");
+        if (maxResponseSize <= 0) {
+            throw new IllegalArgumentException("maxResponseSize must be positive, got " + maxResponseSize);
+        }
+        this.maxResponseSize = maxResponseSize;
     }
 
     @Override
@@ -56,13 +71,26 @@ public final class JdkHttpTransport implements HttpTransport {
         headers.forEach(builder::header);
         HttpRequest request = builder.build();
         try {
-            HttpResponse<byte[]> response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
-            return new RawResponse(response.statusCode(), response.body(), response.headers().map());
+            HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
+            byte[] body;
+            try (InputStream in = response.body()) {
+                body = readBounded(in, uri);
+            }
+            return new RawResponse(response.statusCode(), body, response.headers().map());
         } catch (IOException e) {
             throw new TransportException("HTTP request failed: " + uri, e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new TransportException("HTTP request interrupted: " + uri, e);
         }
+    }
+
+    /// Reads the whole stream, failing once it exceeds {@code maxResponseSize}.
+    private byte[] readBounded(InputStream in, URI uri) throws IOException {
+        byte[] bytes = in.readNBytes(Math.toIntExact(Math.min(maxResponseSize, Integer.MAX_VALUE - 8)) + 1);
+        if (bytes.length > maxResponseSize) {
+            throw new TransportException("Response body exceeds " + maxResponseSize + " bytes: " + uri, null);
+        }
+        return bytes;
     }
 }

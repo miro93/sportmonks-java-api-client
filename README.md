@@ -215,6 +215,9 @@ Two timeout dimensions apply, mirroring the JDK client:
 - **request timeout** — `requestTimeout(Duration)` on the builder (default 30s), the
   request→response deadline (`HttpTimeoutException` if exceeded).
 
+Response bodies are capped at 32 MiB by default (`maxResponseSize(long)` on the builders);
+a larger body fails with `TransportException` instead of being buffered in memory.
+
 Connection pooling is automatic (keep-alive plus HTTP/2 multiplexing). The JDK exposes
 no builder-level pool sizing; tune it via the `jdk.httpclient.*` system properties if
 needed.
