@@ -14,10 +14,13 @@ annotation processor. Gradle refuses any artifact whose checksum does not match,
 dependency (Dependabot included) fails the build until the file is refreshed:
 
 ```bash
-./gradlew --write-verification-metadata sha256 build javadoc
+./gradlew --write-verification-metadata sha256 build javadoc --refresh-dependencies
 ```
 
-Review the diff (only the bumped coordinates should change) and commit it with the bump.
+`--refresh-dependencies` matters: without it Gradle only records what it downloads, and
+metadata files already in the local cache (BOM `.module` files, for example) are left out,
+which then fails on a clean CI runner. Review the diff (only the bumped coordinates should
+change) and commit it with the bump.
 
 ## Native-image metadata
 
