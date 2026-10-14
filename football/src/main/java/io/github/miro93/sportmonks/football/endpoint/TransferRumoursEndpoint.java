@@ -4,21 +4,21 @@ import io.github.miro93.sportmonks.core.ApiExecutor;
 import io.github.miro93.sportmonks.core.json.DataType;
 import io.github.miro93.sportmonks.core.json.HelidonJsonCodec;
 import io.github.miro93.sportmonks.core.request.CollectionRequest;
+import io.github.miro93.sportmonks.core.request.SingleResourceRequest;
 import io.github.miro93.sportmonks.core.request.internal.RequestSpec;
 import io.github.miro93.sportmonks.football.model.TransferRumour;
+import io.github.miro93.sportmonks.football.model.TransferRumourConfig;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
 /// Access to the SportMonks {@code /transfer-rumours} endpoints.
-///
-/// The {@code transfer-rumours/config} reference endpoint is not exposed: its response has
-/// no {@code data} envelope, so it cannot be decoded as an {@code ApiResponse}.
 public final class TransferRumoursEndpoint {
 
     private final ApiExecutor executor;
     private final DataType<List<TransferRumour>> list;
+    private final DataType<TransferRumourConfig> config;
 
     /// Creates the endpoint, building the {@link TransferRumour} list decoder from {@code codec}.
     ///
@@ -28,6 +28,7 @@ public final class TransferRumoursEndpoint {
         this.executor = Objects.requireNonNull(executor, "executor");
         Objects.requireNonNull(codec, "codec");
         this.list = codec.listType(TransferRumour.class);
+        this.config = codec.rawType(TransferRumourConfig.class);
     }
 
     /// Requests every transfer rumour, paginated.
@@ -69,6 +70,15 @@ public final class TransferRumoursEndpoint {
     /// @return a collection request for that player's rumours
     public CollectionRequest<TransferRumour> byPlayer(long playerId) {
         return collection("transfer-rumours/players/" + playerId);
+    }
+
+    /// Requests the reference values for fee types, transfer types and rumour statuses.
+    /// The response has no {@code data} envelope, so the returned {@code ApiResponse}
+    /// carries no pagination or rate-limit block.
+    ///
+    /// @return a single-resource request for the config
+    public SingleResourceRequest<TransferRumourConfig> config() {
+        return new SingleResourceRequest<>(executor, RequestSpec.builder("transfer-rumours/config"), config);
     }
 
     private CollectionRequest<TransferRumour> collection(String path) {

@@ -393,6 +393,14 @@
       ]
     },
     {
+      "type": "io.github.miro93.sportmonks.football.model.TransferRumourConfig__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
       "type": "io.github.miro93.sportmonks.football.model.TransferRumour__GeneratedConverter__ServiceDescriptor",
       "fields": [
         {

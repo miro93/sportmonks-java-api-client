@@ -444,7 +444,7 @@ All endpoints are accessed via `FootballClient`:
 | `statistics()` | `StatisticsEndpoint` | `seasonByTeam(teamId)`, `seasonByPlayer(playerId)`, `seasonByCoach(coachId)`, `seasonByReferee(refereeId)`, `byStage(stageId)`, `byRound(roundId)` |
 | `expected()` | `ExpectedEndpoint` | `fixtures()`, `lineups()` |
 | `matchFacts()` | `MatchFactsEndpoint` | `all()`, `byFixture(fixtureId)`, `byDateRange(start, end)`, `byLeague(leagueId)` |
-| `transferRumours()` | `TransferRumoursEndpoint` | `all()`, `byId(id)`, `byDateRange(start, end)`, `byTeam(teamId)`, `byPlayer(playerId)` |
+| `transferRumours()` | `TransferRumoursEndpoint` | `all()`, `byId(id)`, `byDateRange(start, end)`, `byTeam(teamId)`, `byPlayer(playerId)`, `config()` |
 | `rivals()` | `RivalsEndpoint` | `all()`, `byTeam(teamId)` |
 | `news()` | `NewsEndpoint` | `preMatch()`, `preMatchBySeason(seasonId)`, `preMatchUpcoming()`, `postMatch()`, `postMatchBySeason(seasonId)` |
 | `teamRankings()` | `TeamRankingsEndpoint` | `all()`, `byTeam(teamId)`, `byDate(date)` (beta) |

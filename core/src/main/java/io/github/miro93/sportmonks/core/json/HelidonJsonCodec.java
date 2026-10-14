@@ -48,6 +48,13 @@ public final class HelidonJsonCodec {
         return new DataType<>(genericListType(dataClass));
     }
 
+    /// Build the {@link DataType} for a response that has no {@code data} envelope: the
+    /// whole body is decoded as {@code T} and the resulting {@link ApiResponse} carries no
+    /// pagination, rate limit or timezone (e.g. {@code transfer-rumours/config}).
+    public <T> DataType<T> rawType(Class<T> dataClass) {
+        return new DataType<>(GenericType.create(dataClass), true);
+    }
+
     /// Build the {@link DataType} for a `data` payload that is a JSON object keyed by
     /// arbitrary strings (e.g. the entity-keyed {@code types/entities} response).
     public <T> DataType<Map<String, T>> mapType(Class<T> valueClass) {
@@ -57,6 +64,9 @@ public final class HelidonJsonCodec {
     /// Decode a SportMonks JSON envelope using a typed {@link DataType} token.
     public <T> ApiResponse<T> decode(String json, DataType<T> dataType) {
         try {
+            if (dataType.raw()) {
+                return new ApiResponse<>(binding.deserialize(json, dataType.genericType()), null, null, null);
+            }
             return toResponse(binding.deserialize(json, Envelope.class), dataType);
         } catch (JsonException e) {
             throw new CodecException("Failed to decode SportMonks response", e);
@@ -66,6 +76,9 @@ public final class HelidonJsonCodec {
     /// Decode directly from raw UTF-8 bytes (the transport's preferred path).
     public <T> ApiResponse<T> decode(byte[] json, DataType<T> dataType) {
         try {
+            if (dataType.raw()) {
+                return new ApiResponse<>(binding.deserialize(json, dataType.genericType()), null, null, null);
+            }
             return toResponse(binding.deserialize(json, Envelope.class), dataType);
         } catch (JsonException e) {
             throw new CodecException("Failed to decode SportMonks response", e);
