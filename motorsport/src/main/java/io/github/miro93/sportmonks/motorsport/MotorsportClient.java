@@ -2,6 +2,7 @@ package io.github.miro93.sportmonks.motorsport;
 
 import io.github.miro93.sportmonks.core.ApiExecutor;
 import io.github.miro93.sportmonks.core.auth.ApiToken;
+import io.github.miro93.sportmonks.core.cache.CachePolicy;
 import io.github.miro93.sportmonks.core.coreapi.CoreClient;
 import io.github.miro93.sportmonks.core.http.BaseUrls;
 import io.github.miro93.sportmonks.core.http.HttpTransport;
@@ -218,6 +219,7 @@ public final class MotorsportClient {
         private Duration connectTimeout;
         private RequestListener listener = RequestListener.NOOP;
         private RateLimitPolicy rateLimitPolicy = RateLimitPolicy.NONE;
+        private CachePolicy cachePolicy = CachePolicy.NONE;
         private Duration requestTimeout = JdkHttpTransport.DEFAULT_REQUEST_TIMEOUT;
         private long maxResponseSize = JdkHttpTransport.DEFAULT_MAX_RESPONSE_SIZE;
 
@@ -321,6 +323,16 @@ public final class MotorsportClient {
             return this;
         }
 
+        /// Serves the listed entities from a cache for their TTL instead of calling the API
+        /// (reference data such as types, states, countries). Defaults to {@link CachePolicy#NONE}.
+        ///
+        /// @param cachePolicy the policy
+        /// @return this builder
+        public Builder cachePolicy(CachePolicy cachePolicy) {
+            this.cachePolicy = Objects.requireNonNull(cachePolicy, "cachePolicy");
+            return this;
+        }
+
         /// Builds the client.
         ///
         /// @return the configured client
@@ -342,8 +354,8 @@ public final class MotorsportClient {
                     new ListeningTransport(base, listener), retryPolicy, Sleeper.REAL);
             HelidonJsonCodec codec = new HelidonJsonCodec();
             RateLimitTracker rateLimits = new RateLimitTracker();
-            ApiExecutor executor = new ApiExecutor(transport, codec, apiToken, baseUrl, rateLimits, rateLimitPolicy);
-            ApiExecutor coreExecutor = new ApiExecutor(transport, codec, apiToken, coreBaseUrl, rateLimits, rateLimitPolicy);
+            ApiExecutor executor = new ApiExecutor(transport, codec, apiToken, baseUrl, rateLimits, rateLimitPolicy, cachePolicy);
+            ApiExecutor coreExecutor = new ApiExecutor(transport, codec, apiToken, coreBaseUrl, rateLimits, rateLimitPolicy, cachePolicy);
             return new MotorsportClient(executor, codec, new CoreClient(coreExecutor, codec));
         }
     }

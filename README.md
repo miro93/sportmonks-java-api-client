@@ -425,6 +425,31 @@ is shared by the football, core and odds executors of a client.
 
 ---
 
+## Caching reference data
+
+Types, states, countries, leagues or venues rarely change, yet every lookup is a network
+call that also counts against the quota. An optional cache serves them locally for a TTL
+you choose per entity (first path segment), keyed by the full request URI:
+
+```java
+import io.github.miro93.sportmonks.core.cache.CachePolicy;
+
+FootballClient client = FootballClient.builder()
+        .apiToken(ApiToken.fromEnv())
+        .cachePolicy(CachePolicy.inMemory(500, Map.of(
+                "types", Duration.ofDays(1),
+                "states", Duration.ofDays(1),
+                "countries", Duration.ofDays(1),
+                "leagues", Duration.ofHours(6))))
+        .build();
+```
+
+Only successful responses are stored; cached hits skip the transport, the retry policy, the
+request listener and the rate-limit tracker. Implement `ResponseCache` to back it with
+Caffeine, Redis or anything else.
+
+---
+
 ## Retry policy
 
 By default the client retries `429` and all `5xx` responses, up to 3 attempts, with jittered

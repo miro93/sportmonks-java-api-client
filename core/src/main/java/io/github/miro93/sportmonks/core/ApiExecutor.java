@@ -1,6 +1,7 @@
 package io.github.miro93.sportmonks.core;
 
 import io.github.miro93.sportmonks.core.auth.ApiToken;
+import io.github.miro93.sportmonks.core.cache.CachePolicy;
 import io.github.miro93.sportmonks.core.error.internal.ErrorMapper;
 import io.github.miro93.sportmonks.core.error.RateLimitException;
 import io.github.miro93.sportmonks.core.error.ServerException;
@@ -16,6 +17,7 @@ import io.github.miro93.sportmonks.core.request.internal.UrlBuilder;
 import io.github.miro93.sportmonks.core.response.ApiResponse;
 import io.github.miro93.sportmonks.core.retry.internal.Sleeper;
 
+import java.net.URI;
 import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
@@ -43,6 +45,7 @@ public final class ApiExecutor {
     private final RateLimitTracker rateLimits;
     private final RateLimitPolicy rateLimitPolicy;
     private final Sleeper sleeper;
+    private final CachePolicy cachePolicy;
 
     /// Creates an executor with a per-instance virtual-thread executor for async calls.
     ///
@@ -64,7 +67,8 @@ public final class ApiExecutor {
     /// @param asyncExecutor the executor backing {@link #executeAsync}
     public ApiExecutor(HttpTransport transport, HelidonJsonCodec codec, ApiToken token,
                        String baseUrl, Executor asyncExecutor) {
-        this(transport, codec, token, baseUrl, asyncExecutor, new RateLimitTracker(), RateLimitPolicy.NONE, Sleeper.REAL);
+        this(transport, codec, token, baseUrl, asyncExecutor, new RateLimitTracker(), RateLimitPolicy.NONE, Sleeper.REAL,
+                CachePolicy.NONE);
     }
 
     /// Creates an executor sharing a {@link RateLimitTracker} with sibling executors and
@@ -78,12 +82,28 @@ public final class ApiExecutor {
     /// @param rateLimitPolicy the client-side quota guard
     public ApiExecutor(HttpTransport transport, HelidonJsonCodec codec, ApiToken token, String baseUrl,
                        RateLimitTracker rateLimits, RateLimitPolicy rateLimitPolicy) {
+        this(transport, codec, token, baseUrl, rateLimits, rateLimitPolicy, CachePolicy.NONE);
+    }
+
+    /// Creates an executor sharing a {@link RateLimitTracker}, guarded by a
+    /// {@link RateLimitPolicy} and serving cacheable entities from a {@link CachePolicy}.
+    ///
+    /// @param transport       the HTTP transport
+    /// @param codec           the JSON codec
+    /// @param token           the API token
+    /// @param baseUrl         the base URL requests are relative to
+    /// @param rateLimits      the tracker fed by every response
+    /// @param rateLimitPolicy the client-side quota guard
+    /// @param cachePolicy     which entities to serve from cache, and for how long
+    public ApiExecutor(HttpTransport transport, HelidonJsonCodec codec, ApiToken token, String baseUrl,
+                       RateLimitTracker rateLimits, RateLimitPolicy rateLimitPolicy, CachePolicy cachePolicy) {
         this(transport, codec, token, baseUrl, Executors.newVirtualThreadPerTaskExecutor(),
-                rateLimits, rateLimitPolicy, Sleeper.REAL);
+                rateLimits, rateLimitPolicy, Sleeper.REAL, cachePolicy);
     }
 
     ApiExecutor(HttpTransport transport, HelidonJsonCodec codec, ApiToken token, String baseUrl,
-                Executor asyncExecutor, RateLimitTracker rateLimits, RateLimitPolicy rateLimitPolicy, Sleeper sleeper) {
+                Executor asyncExecutor, RateLimitTracker rateLimits, RateLimitPolicy rateLimitPolicy, Sleeper sleeper,
+                CachePolicy cachePolicy) {
         this.transport = Objects.requireNonNull(transport, "transport");
         this.codec = Objects.requireNonNull(codec, "codec");
         Objects.requireNonNull(token, "token");
@@ -93,6 +113,7 @@ public final class ApiExecutor {
         this.rateLimits = Objects.requireNonNull(rateLimits, "rateLimits");
         this.rateLimitPolicy = Objects.requireNonNull(rateLimitPolicy, "rateLimitPolicy");
         this.sleeper = Objects.requireNonNull(sleeper, "sleeper");
+        this.cachePolicy = Objects.requireNonNull(cachePolicy, "cachePolicy");
     }
 
     /// The tracker fed by this executor's responses.
@@ -110,20 +131,33 @@ public final class ApiExecutor {
     /// @throws io.github.miro93.sportmonks.core.error.SportmonksException on HTTP or decoding failure
     public <T> ApiResponse<T> execute(RequestSpec spec, DataType<T> dataType) {
         String entity = entityKey(spec.path());
+        URI uri = UrlBuilder.build(baseUrl, spec);
+        Duration ttl = cachePolicy.ttlFor(entity);
+        if (ttl != null) {
+            Optional<byte[]> cached = cachePolicy.cache().get(uri);
+            if (cached.isPresent()) {
+                return decode(cached.get(), dataType, 200);
+            }
+        }
         guard(entity);
-        RawResponse response = transport.get(UrlBuilder.build(baseUrl, spec), headers);
+        RawResponse response = transport.get(uri, headers);
 
         if (!response.isSuccessful()) {
             throw ErrorMapper.fromResponse(response.status(), response.bodyAsString(), retryAfter(response));
         }
+        ApiResponse<T> decoded = decode(response.body(), dataType, response.status());
+        rateLimits.record(entity, decoded.rateLimit());
+        if (ttl != null) {
+            cachePolicy.cache().put(uri, response.body(), ttl);
+        }
+        return decoded;
+    }
+
+    private <T> ApiResponse<T> decode(byte[] body, DataType<T> dataType, int status) {
         try {
-            ApiResponse<T> decoded = codec.decode(response.body(), dataType);
-            rateLimits.record(entity, decoded.rateLimit());
-            return decoded;
+            return codec.decode(body, dataType);
         } catch (CodecException e) {
-            throw new ServerException(
-                    "Failed to parse successful response (status " + response.status() + ")",
-                    response.status(), e);
+            throw new ServerException("Failed to parse successful response (status " + status + ")", status, e);
         }
     }
 
