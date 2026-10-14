@@ -15,11 +15,11 @@ import java.util.Objects;
 public final class JdkHttpTransport implements HttpTransport {
 
     /// Default connection-establishment timeout for the built-in {@link HttpClient}.
-    /// Hard-coded for now; a later ticket may externalise this to a property.
+    /// Override it via the client builder's {@code connectTimeout(Duration)} / {@code requestTimeout(Duration)}.
     public static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
 
     /// Default request→response deadline applied per request (see {@link HttpRequest#timeout}).
-    /// Hard-coded for now; a later ticket may externalise this to a property.
+    /// Override it via the client builder's {@code connectTimeout(Duration)} / {@code requestTimeout(Duration)}.
     public static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(30);
 
     /// Builds the default {@link HttpClient} using {@link #DEFAULT_CONNECT_TIMEOUT}.

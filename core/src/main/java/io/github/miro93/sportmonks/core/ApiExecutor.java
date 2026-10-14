@@ -33,9 +33,9 @@ public final class ApiExecutor {
 
     private final HttpTransport transport;
     private final HelidonJsonCodec codec;
-    private final ApiToken token;
     private final String baseUrl;
     private final Executor asyncExecutor;
+    private final Map<String, String> headers;
 
     /// Creates an executor with a per-instance virtual-thread executor for async calls.
     ///
@@ -59,9 +59,10 @@ public final class ApiExecutor {
                        String baseUrl, Executor asyncExecutor) {
         this.transport = Objects.requireNonNull(transport, "transport");
         this.codec = Objects.requireNonNull(codec, "codec");
-        this.token = Objects.requireNonNull(token, "token");
+        Objects.requireNonNull(token, "token");
         this.baseUrl = Objects.requireNonNull(baseUrl, "baseUrl");
         this.asyncExecutor = Objects.requireNonNull(asyncExecutor, "asyncExecutor");
+        this.headers = Map.of("Authorization", token.value(), "Accept", "application/json");
     }
 
     /// Runs the request synchronously: builds the URL, applies auth, and decodes
@@ -73,9 +74,7 @@ public final class ApiExecutor {
     /// @return the decoded response
     /// @throws io.github.miro93.sportmonks.core.error.SportmonksException on HTTP or decoding failure
     public <T> ApiResponse<T> execute(RequestSpec spec, DataType<T> dataType) {
-        RawResponse response = transport.get(
-                UrlBuilder.build(baseUrl, spec),
-                Map.of("Authorization", token.value(), "Accept", "application/json"));
+        RawResponse response = transport.get(UrlBuilder.build(baseUrl, spec), headers);
 
         if (!response.isSuccessful()) {
             throw ErrorMapper.fromResponse(response.status(), response.bodyAsString(), retryAfter(response));
