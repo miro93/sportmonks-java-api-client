@@ -61,11 +61,11 @@ class JdkHttpTransportTest {
     }
 
     @Test
-    void newDefaultClientHasConnectTimeoutAndFollowsRedirects() {
+    void newDefaultClientHasConnectTimeoutAndNeverFollowsRedirects() {
         HttpClient client = JdkHttpTransport.newDefaultClient();
 
         assertThat(client.connectTimeout()).contains(Duration.ofSeconds(10));
-        assertThat(client.followRedirects()).isEqualTo(HttpClient.Redirect.NORMAL);
+        assertThat(client.followRedirects()).isEqualTo(HttpClient.Redirect.NEVER);
     }
 
     @Test
@@ -73,12 +73,24 @@ class JdkHttpTransportTest {
         HttpClient client = JdkHttpTransport.newDefaultClient(Duration.ofSeconds(5));
 
         assertThat(client.connectTimeout()).contains(Duration.ofSeconds(5));
-        assertThat(client.followRedirects()).isEqualTo(HttpClient.Redirect.NORMAL);
+        assertThat(client.followRedirects()).isEqualTo(HttpClient.Redirect.NEVER);
     }
 
     @Test
     void noArgNewDefaultClientDelegatesToDefaultConstant() {
         assertThat(JdkHttpTransport.newDefaultClient().connectTimeout())
                 .contains(JdkHttpTransport.DEFAULT_CONNECT_TIMEOUT);
+    }
+
+    @Test
+    void defaultClientDoesNotFollowRedirects(WireMockRuntimeInfo wm) {
+        stubFor(get("/moved").willReturn(aResponse().withStatus(302).withHeader("Location", wm.getHttpBaseUrl() + "/elsewhere")));
+        stubFor(get("/elsewhere").willReturn(ok("should not be reached")));
+
+        RawResponse response = new JdkHttpTransport(JdkHttpTransport.newDefaultClient(), Duration.ofSeconds(5))
+                .get(URI.create(wm.getHttpBaseUrl() + "/moved"), Map.of("Authorization", "tok"));
+
+        assertThat(response.status()).isEqualTo(302);
+        verify(0, getRequestedFor(urlEqualTo("/elsewhere")));
     }
 }
