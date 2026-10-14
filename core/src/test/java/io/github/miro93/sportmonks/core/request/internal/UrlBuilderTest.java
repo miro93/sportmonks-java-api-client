@@ -61,15 +61,24 @@ class UrlBuilderTest {
         URI uri = UrlBuilder.build(BASE, RequestSpec.builder("fixtures/1")
                 .filter("eventTypes", "15", "16")
                 .select("name", "starting_at")
-                .sort("starting_at")
+                .sortBy("starting_at")
+                .order(io.github.miro93.sportmonks.core.request.Order.DESC)
                 .page(3)
+                .perPage(50)
+                .locale("de")
+                .timezone(java.time.ZoneId.of("Europe/Amsterdam"))
                 .build());
 
         String s = uri.toString();
         assertThat(s).contains("filters=eventTypes:15,16");
         assertThat(s).contains("select=name,starting_at");
-        assertThat(s).contains("sort=starting_at");
+        assertThat(s).contains("sortBy=starting_at");
+        assertThat(s).contains("order=desc");
+        assertThat(s).doesNotContain("sort=");
         assertThat(s).contains("page=3");
+        assertThat(s).contains("per_page=50");
+        assertThat(s).contains("locale=de");
+        assertThat(s).contains("timezone=Europe%2FAmsterdam");
     }
 
     @Test

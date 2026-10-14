@@ -119,4 +119,31 @@ class CollectionRequestTest {
 
         assertThat(response.data()).extracting(Team::name).containsExactly("PSV");
     }
+
+    @Test
+    void streamSendsPerPageOnFirstRequestOnlyWhenFollowingCursor(WireMockRuntimeInfo wm) {
+        stubFor(get(urlEqualTo("/teams?page=1&per_page=50")).willReturn(okJson("""
+                { "data": [ { "id": 1, "name": "Ajax" } ],
+                  "pagination": { "count": 1, "per_page": 50, "current_page": 1, "next_cursor": "c1", "has_more": true } }
+                """)));
+        stubFor(get(urlEqualTo("/teams?cursor=c1")).willReturn(okJson("""
+                { "data": [ { "id": 2, "name": "PSV" } ],
+                  "pagination": { "count": 1, "per_page": 50, "current_page": 2, "next_cursor": null, "has_more": false } }
+                """)));
+
+        List<String> names = teams(wm.getHttpBaseUrl()).perPage(50).stream().map(Team::name).toList();
+
+        assertThat(names).containsExactly("Ajax", "PSV");
+    }
+
+    @Test
+    void sortByAndOrderAreSentAsApiExpects(WireMockRuntimeInfo wm) {
+        stubFor(get(urlEqualTo("/teams?sortBy=name&order=desc")).willReturn(okJson("""
+                { "data": [ { "id": 2, "name": "PSV" } ] }
+                """)));
+
+        var response = teams(wm.getHttpBaseUrl()).sortBy("name").order(Order.DESC).get();
+
+        assertThat(response.data()).extracting(Team::name).containsExactly("PSV");
+    }
 }

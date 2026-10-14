@@ -97,6 +97,7 @@ FootballClient client = FootballClient.builder()
 ### Synchronous request with includes, filters and field selection
 
 ```java
+import io.github.miro93.sportmonks.core.request.Order;
 import io.github.miro93.sportmonks.core.response.ApiResponse;
 import io.github.miro93.sportmonks.football.model.Fixture;
 import java.util.List;
@@ -106,7 +107,8 @@ ApiResponse<List<Fixture>> response = client.fixtures()
         .include("participants", "scores")
         .filter("league_id", "271")
         .select("id", "name", "starting_at")
-        .sort("-starting_at")
+        .sortBy("starting_at")
+        .order(Order.DESC)
         .page(1)
         .get();
 
@@ -311,15 +313,20 @@ in CI on every change.
 ## Includes / Filters / Select / Sort / Pagination
 
 Both request types (`CollectionRequest` and `SingleResourceRequest`) share the
-fluent builder methods `include`, `filter`, `select`, `sort`, `get` and
-`getAsync`. Paging (`page`, `stream`) is specific to `CollectionRequest`:
+fluent builder methods `include`, `filter`, `select`, `sortBy`, `order`, `locale`,
+`timezone`, `get` and `getAsync`. Paging (`page`, `perPage`, `cursor`, `stream`) is
+specific to `CollectionRequest`:
 
 | Method | Description |
 |--------|-------------|
 | `include(String... values)` | Load related resources (e.g. `"participants"`, `"scores"`) |
 | `filter(String name, String... values)` | Filter by an attribute |
 | `select(String... fields)` | Restrict the returned fields |
-| `sort(String... fields)` | Sort order; prefix with `-` for descending |
+| `sortBy(String field)` | Field to sort by (a single field; the API rejects more) |
+| `order(Order order)` | `Order.ASC` / `Order.DESC`; without `sortBy` it orders by id |
+| `locale(String locale)` | Translate name fields (e.g. `"de"`) |
+| `timezone(ZoneId zone)` | Timezone for returned date-times |
+| `perPage(int perPage)` | Page size, 1 to 50 (API default 25). `stream()` sends it on the first request only (the API rejects it with `cursor`) |
 | `page(int page)` | 1-based page number (`CollectionRequest` only; ignored by `stream()`). Offset pagination is rejected by SportMonks beyond 20 000 rows (`(page - 1) × per_page > 20000`, i.e. page 801 at the default `per_page=25`) |
 | `cursor(String cursor)` | Pass back a previous response's `pagination.nextCursor()` to fetch the next page (`CollectionRequest` only; ignored by `stream()`) |
 | `get()` | Execute synchronously, returns `ApiResponse<T>` |

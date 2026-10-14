@@ -43,16 +43,26 @@ public final class UrlBuilder {
                     .map(UrlBuilder::encode)
                     .collect(Collectors.joining(",")));
         }
-        if (!spec.sort().isEmpty()) {
-            params.add("sort=" + spec.sort().stream()
-                    .map(UrlBuilder::encode)
-                    .collect(Collectors.joining(",")));
+        if (spec.sortBy() != null) {
+            params.add("sortBy=" + encode(spec.sortBy()));
+        }
+        if (spec.order() != null) {
+            params.add("order=" + spec.order().value());
         }
         if (spec.page() != null) {
             params.add("page=" + spec.page());
         }
         if (spec.cursor() != null) {
             params.add("cursor=" + encode(spec.cursor()));
+        }
+        if (spec.perPage() != null) {
+            params.add("per_page=" + spec.perPage());
+        }
+        if (spec.locale() != null) {
+            params.add("locale=" + encode(spec.locale()));
+        }
+        if (spec.timezone() != null) {
+            params.add("timezone=" + encode(spec.timezone()));
         }
 
         if (!params.isEmpty()) {
