@@ -381,6 +381,33 @@ Optional<RateLimit>  rateLimitOpt()
 
 ---
 
+## Rate limits
+
+SportMonks allows 3000 requests per hour **per entity**. Every response carries the
+remaining quota (`ApiResponse.rateLimit()`); the client also keeps the last block seen per
+entity, keyed by the first path segment, until its window resets:
+
+```java
+Map<String, RateLimit> quota = client.rateLimits();   // e.g. {"fixtures": RateLimit[remaining=2874, ...]}
+```
+
+An optional guard stops you from burning the quota blindly (off by default):
+
+```java
+import io.github.miro93.sportmonks.core.ratelimit.RateLimitPolicy;
+
+FootballClient client = FootballClient.builder()
+        .apiToken(ApiToken.fromEnv())
+        .rateLimitPolicy(RateLimitPolicy.waitBelow(50))   // sleep until the window resets
+        // .rateLimitPolicy(RateLimitPolicy.failBelow(50)) // or throw RateLimitException (retryAfter set)
+        .build();
+```
+
+The guard runs before a request is sent, using the last block seen for that entity. It
+is shared by the football, core and odds executors of a client.
+
+---
+
 ## Retry policy
 
 By default the client retries `429` and all `5xx` responses, up to 3 attempts, with jittered

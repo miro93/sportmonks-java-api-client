@@ -11,13 +11,17 @@ import io.github.miro93.sportmonks.core.http.HttpTransport;
 import io.github.miro93.sportmonks.core.http.JdkHttpTransport;
 import io.github.miro93.sportmonks.core.http.ListeningTransport;
 import io.github.miro93.sportmonks.core.json.HelidonJsonCodec;
+import io.github.miro93.sportmonks.core.ratelimit.RateLimitPolicy;
+import io.github.miro93.sportmonks.core.ratelimit.RateLimitTracker;
 import io.github.miro93.sportmonks.core.request.RequestListener;
+import io.github.miro93.sportmonks.core.response.RateLimit;
 import io.github.miro93.sportmonks.core.retry.RetryPolicy;
 import io.github.miro93.sportmonks.core.retry.internal.RetryingTransport;
 import io.github.miro93.sportmonks.core.retry.internal.Sleeper;
 
 import java.net.http.HttpClient;
 import java.time.Duration;
+import java.util.Map;
 import java.util.Objects;
 
 /// Entry point for the SportMonks Core API (cross-sport resources: continents,
@@ -33,6 +37,7 @@ public final class CoreClient {
     private final RegionsEndpoint regions;
     private final CitiesEndpoint cities;
     private final TypesEndpoint types;
+    private final RateLimitTracker rateLimits;
 
     /// Creates a client wiring the Core API endpoints onto the given executor.
     /// Shared by {@link Builder#build()} and by {@code FootballClient} so a
@@ -43,6 +48,7 @@ public final class CoreClient {
     public CoreClient(ApiExecutor executor, HelidonJsonCodec codec) {
         Objects.requireNonNull(executor, "executor");
         Objects.requireNonNull(codec, "codec");
+        this.rateLimits = executor.rateLimits();
         this.continents = new ContinentsEndpoint(executor, codec);
         this.countries = new CountriesEndpoint(executor, codec);
         this.regions = new RegionsEndpoint(executor, codec);
@@ -92,6 +98,14 @@ public final class CoreClient {
         return types;
     }
 
+    /// The last {@code rate_limit} block seen per entity (first path segment), for windows
+    /// that have not reset yet.
+    ///
+    /// @return a snapshot keyed by entity
+    public Map<String, RateLimit> rateLimits() {
+        return rateLimits.snapshot();
+    }
+
     /// Fluent builder for {@link CoreClient}. The API token is required; the
     /// retry policy, base URL, request timeout, and HTTP client default to sensible values.
     public static final class Builder {
@@ -101,6 +115,7 @@ public final class CoreClient {
         private HttpClient httpClient;
         private Duration connectTimeout;
         private RequestListener listener = RequestListener.NOOP;
+        private RateLimitPolicy rateLimitPolicy = RateLimitPolicy.NONE;
         private Duration requestTimeout = JdkHttpTransport.DEFAULT_REQUEST_TIMEOUT;
 
         private Builder() {
@@ -164,6 +179,15 @@ public final class CoreClient {
             return this;
         }
 
+        /// Client-side quota guard; defaults to {@link RateLimitPolicy#NONE}.
+        ///
+        /// @param rateLimitPolicy the policy
+        /// @return this builder
+        public Builder rateLimitPolicy(RateLimitPolicy rateLimitPolicy) {
+            this.rateLimitPolicy = Objects.requireNonNull(rateLimitPolicy, "rateLimitPolicy");
+            return this;
+        }
+
         /// Sets the connection-establishment timeout for the built-in default {@link HttpClient}.
         /// Only meaningful when no custom {@link #httpClient(HttpClient)} is supplied — a
         /// user-provided client carries its own (immutable) connect timeout. Supplying BOTH is
@@ -197,7 +221,8 @@ public final class CoreClient {
             HttpTransport transport = new RetryingTransport(
                     new ListeningTransport(base, listener), retryPolicy, Sleeper.REAL);
             HelidonJsonCodec codec = new HelidonJsonCodec();
-            ApiExecutor executor = new ApiExecutor(transport, codec, apiToken, baseUrl);
+            ApiExecutor executor = new ApiExecutor(transport, codec, apiToken, baseUrl,
+                    new RateLimitTracker(), rateLimitPolicy);
             return new CoreClient(executor, codec);
         }
     }
