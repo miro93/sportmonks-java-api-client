@@ -119,4 +119,15 @@ class HelidonJsonCodecTest {
         ApiResponse<Team> response = codec.decode(json, codec.type(Team.class));
         assertThat(response.data().name()).isEqualTo("café \"quoted\"\nline");
     }
+
+    @Test
+    void rawTypeDecodesBodyWithoutDataEnvelope() {
+        ApiResponse<Team> response = codec.decode("""
+                { "id": 1, "name": "Ajax" }
+                """, codec.rawType(Team.class));
+
+        assertThat(response.data().name()).isEqualTo("Ajax");
+        assertThat(response.pagination()).isNull();
+        assertThat(response.rateLimit()).isNull();
+    }
 }

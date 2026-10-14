@@ -80,4 +80,16 @@ class TransferRumoursEndpointTest {
 
         assertThat(response.data()).hasSize(2);
     }
+
+    @Test
+    void configHitsConfigPathAndDecodesWithoutEnvelope(WireMockRuntimeInfo wm) {
+        stubFor(get(urlPathEqualTo("/transfer-rumours/config")).willReturn(okJson("""
+                { "fee": [ { "id": 78365, "name": "Confirmed Amount" } ], "transfers": [], "statuses": [] }
+                """)));
+
+        var response = endpoint(wm.getHttpBaseUrl()).config().get();
+
+        assertThat(response.data().fee().getFirst().id()).isEqualTo(78365L);
+        assertThat(response.pagination()).isNull();
+    }
 }

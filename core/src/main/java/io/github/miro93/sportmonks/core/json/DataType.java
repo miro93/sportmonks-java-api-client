@@ -13,12 +13,23 @@ import io.helidon.common.GenericType;
 public final class DataType<T> {
 
     private final GenericType<T> genericType;
+    private final boolean raw;
 
     DataType(GenericType<T> genericType) {
+        this(genericType, false);
+    }
+
+    DataType(GenericType<T> genericType, boolean raw) {
         this.genericType = genericType;
+        this.raw = raw;
     }
 
     GenericType<T> genericType() {
         return genericType;
+    }
+
+    /// Whether the payload is the whole response body rather than its {@code data} member.
+    boolean raw() {
+        return raw;
     }
 }
