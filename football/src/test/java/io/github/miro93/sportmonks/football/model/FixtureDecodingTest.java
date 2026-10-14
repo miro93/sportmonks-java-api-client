@@ -42,7 +42,9 @@ class FixtureDecodingTest {
                     "state": { "id": 5, "state": "FT", "name": "Full-Time", "short_name": "FT", "developer_name": "FT" },
                     "events": [
                       { "id": 99, "fixture_id": 18535517, "type_id": 14, "participant_id": 53,
-                        "player_id": 1001, "player_name": "Kyogo", "minute": 23, "result": "1-0" }
+                        "player_id": 1001, "player_name": "Kyogo", "minute": 23, "result": "1-0" },
+                      { "id": 100, "fixture_id": 18535517, "type_id": 19, "participant_id": 53,
+                        "player_id": 1002, "player_name": "Hatate", "minute": 61, "rescinded": true }
                     ]
                   }
                 }
@@ -70,9 +72,11 @@ class FixtureDecodingTest {
 
         assertThat(fixture.state().developerName()).isEqualTo("FT");
 
-        assertThat(fixture.events()).hasSize(1);
+        assertThat(fixture.events()).hasSize(2);
         assertThat(fixture.events().getFirst().playerName()).isEqualTo("Kyogo");
         assertThat(fixture.events().getFirst().minute()).isEqualTo(23);
+        assertThat(fixture.events().getFirst().rescinded()).isNull();
+        assertThat(fixture.events().getLast().rescinded()).isTrue();
     }
 
     @Test

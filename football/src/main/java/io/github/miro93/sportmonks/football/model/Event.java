@@ -2,7 +2,9 @@ package io.github.miro93.sportmonks.football.model;
 
 import io.helidon.json.binding.Json;
 
-/// A single in-match event (goal, card, substitution, ...).
+/// A single in-match event (goal, card, substitution, ...). {@code id} is always
+/// present; every other field may be {@code null}. {@code rescinded} is only set on
+/// card events and tells whether the referee rescinded the card.
 @Json.Entity
 public record Event(
         long id,
@@ -23,5 +25,6 @@ public record Event(
         Boolean injured,
         @Json.Property("on_bench") Boolean onBench,
         @Json.Property("coach_id") Long coachId,
-        @Json.Property("sort_order") Integer sortOrder) {
+        @Json.Property("sort_order") Integer sortOrder,
+        Boolean rescinded) {
 }
