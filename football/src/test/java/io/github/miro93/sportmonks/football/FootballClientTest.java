@@ -131,4 +131,14 @@ class FootballClientTest {
         assertThatThrownBy(() -> client.fixtures().byId(1L).get())
                 .isInstanceOf(TransportException.class);
     }
+
+    @Test
+    void refusesPlainHttpBaseUrlsOutsideLoopback() {
+        assertThatThrownBy(() -> FootballClient.builder().apiToken(ApiToken.of("t")).baseUrl("http://api.sportmonks.com/v3/football"))
+                .isInstanceOf(IllegalArgumentException.class).hasMessageContaining("https");
+        assertThatThrownBy(() -> FootballClient.builder().apiToken(ApiToken.of("t")).coreBaseUrl("http://example.org/v3/core"))
+                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> FootballClient.builder().apiToken(ApiToken.of("t")).oddsBaseUrl("http://example.org/v3/odds"))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }

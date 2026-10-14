@@ -7,6 +7,7 @@ import io.github.miro93.sportmonks.core.coreapi.endpoint.ContinentsEndpoint;
 import io.github.miro93.sportmonks.core.coreapi.endpoint.CountriesEndpoint;
 import io.github.miro93.sportmonks.core.coreapi.endpoint.RegionsEndpoint;
 import io.github.miro93.sportmonks.core.coreapi.endpoint.TypesEndpoint;
+import io.github.miro93.sportmonks.core.http.BaseUrls;
 import io.github.miro93.sportmonks.core.http.HttpTransport;
 import io.github.miro93.sportmonks.core.http.JdkHttpTransport;
 import io.github.miro93.sportmonks.core.http.ListeningTransport;
@@ -140,12 +141,13 @@ public final class CoreClient {
             return this;
         }
 
-        /// Overrides the API base URL (defaults to {@link #DEFAULT_BASE_URL}).
+        /// Overrides the API base URL (defaults to {@link #DEFAULT_BASE_URL}). Must be https,
+        /// or http on localhost only.
         ///
         /// @param baseUrl the base URL
         /// @return this builder
         public Builder baseUrl(String baseUrl) {
-            this.baseUrl = Objects.requireNonNull(baseUrl, "baseUrl");
+            this.baseUrl = BaseUrls.requireSecure(Objects.requireNonNull(baseUrl, "baseUrl"));
             return this;
         }
 

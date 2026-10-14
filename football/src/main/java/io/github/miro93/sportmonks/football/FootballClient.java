@@ -3,6 +3,7 @@ package io.github.miro93.sportmonks.football;
 import io.github.miro93.sportmonks.core.ApiExecutor;
 import io.github.miro93.sportmonks.core.auth.ApiToken;
 import io.github.miro93.sportmonks.core.coreapi.CoreClient;
+import io.github.miro93.sportmonks.core.http.BaseUrls;
 import io.github.miro93.sportmonks.core.http.HttpTransport;
 import io.github.miro93.sportmonks.core.http.JdkHttpTransport;
 import io.github.miro93.sportmonks.core.http.ListeningTransport;
@@ -514,12 +515,13 @@ public final class FootballClient {
             return this;
         }
 
-        /// Overrides the API base URL (defaults to {@link #DEFAULT_BASE_URL}).
+        /// Overrides the API base URL (defaults to {@link #DEFAULT_BASE_URL}). Must be https,
+        /// or http on localhost only.
         ///
         /// @param baseUrl the base URL
         /// @return this builder
         public Builder baseUrl(String baseUrl) {
-            this.baseUrl = Objects.requireNonNull(baseUrl, "baseUrl");
+            this.baseUrl = BaseUrls.requireSecure(Objects.requireNonNull(baseUrl, "baseUrl"));
             return this;
         }
 
@@ -529,7 +531,7 @@ public final class FootballClient {
         /// @param coreBaseUrl the Core API base URL
         /// @return this builder
         public Builder coreBaseUrl(String coreBaseUrl) {
-            this.coreBaseUrl = Objects.requireNonNull(coreBaseUrl, "coreBaseUrl");
+            this.coreBaseUrl = BaseUrls.requireSecure(Objects.requireNonNull(coreBaseUrl, "coreBaseUrl"));
             return this;
         }
 
@@ -539,7 +541,7 @@ public final class FootballClient {
         /// @param oddsBaseUrl the odds base URL
         /// @return this builder
         public Builder oddsBaseUrl(String oddsBaseUrl) {
-            this.oddsBaseUrl = Objects.requireNonNull(oddsBaseUrl, "oddsBaseUrl");
+            this.oddsBaseUrl = BaseUrls.requireSecure(Objects.requireNonNull(oddsBaseUrl, "oddsBaseUrl"));
             return this;
         }
 
