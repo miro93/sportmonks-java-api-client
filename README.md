@@ -157,6 +157,7 @@ CoreClient core = CoreClient.builder()
 
 List<Country> countries = core.countries().search("Scot").get().data();
 List<Type> types = core.types().all().get().data();
+Map<String, EntityTypes> perEntity = core.types().byEntity().get().data(); // keyed by entity name
 ```
 
 …or reach it from a football client, which shares the same credentials:
