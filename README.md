@@ -411,7 +411,7 @@ All endpoints are accessed via `FootballClient`:
 | `teams()` | `TeamsEndpoint` | `all()`, `byId(id)`, `byMultipleIds(ids...)`, `bySeason(seasonId)`, `byCountry(countryId)`, `search(name)` |
 | `players()` | `PlayersEndpoint` | `all()`, `byId(id)`, `byCountry(countryId)`, `latest()`, `search(name)` |
 | `coaches()` | `CoachesEndpoint` | `all()`, `byId(id)`, `byCountry(countryId)`, `latest()`, `search(name)` |
-| `squads()` | `SquadsEndpoint` | `byTeam(teamId)`, `bySeasonAndTeam(seasonId, teamId)` |
+| `squads()` | `SquadsEndpoint` | `byTeam(teamId)`, `bySeasonAndTeam(seasonId, teamId)`, `extendedByTeam(teamId)` |
 | `transfers()` | `TransfersEndpoint` | `all()`, `latest()`, `byTeam(teamId)`, `byPlayer(playerId)`, `byDateRange(start, end)` |
 | `standings()` | `StandingsEndpoint` | `all()`, `bySeason(seasonId)`, `byRound(roundId)`, `correctionsBySeason(seasonId)`, `liveByLeague(leagueId)` |
 | `topscorers()` | `TopscorersEndpoint` | `bySeason(seasonId)`, `byStage(stageId)` |
