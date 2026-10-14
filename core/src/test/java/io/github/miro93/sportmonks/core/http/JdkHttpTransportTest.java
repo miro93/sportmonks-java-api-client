@@ -5,10 +5,12 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import io.github.miro93.sportmonks.core.error.TransportException;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.time.Duration;
 import java.util.Map;
+import java.util.zip.GZIPOutputStream;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -106,5 +108,44 @@ class JdkHttpTransportTest {
         assertThat(capped.get(URI.create(wm.getHttpBaseUrl() + "/fit"), Map.of()).bodyAsString()).hasSize(100);
         assertThatThrownBy(() -> new JdkHttpTransport(HttpClient.newHttpClient(), Duration.ofSeconds(5), 0))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    private static byte[] gzip(String text) throws Exception {
+        var out = new ByteArrayOutputStream();
+        try (var gz = new GZIPOutputStream(out)) {
+            gz.write(text.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        }
+        return out.toByteArray();
+    }
+
+    @Test
+    void requestsGzipAndDecompressesGzippedBodies(WireMockRuntimeInfo wm) throws Exception {
+        stubFor(get("/zipped").willReturn(aResponse().withStatus(200)
+                .withHeader("Content-Encoding", "gzip").withBody(gzip("{ \"data\": [] }"))));
+
+        RawResponse response = transport().get(URI.create(wm.getHttpBaseUrl() + "/zipped"), Map.of());
+
+        assertThat(response.bodyAsString()).isEqualTo("{ \"data\": [] }");
+        verify(getRequestedFor(urlEqualTo("/zipped")).withHeader("Accept-Encoding", equalTo("gzip")));
+    }
+
+    @Test
+    void malformedGzipBodyIsATransportException(WireMockRuntimeInfo wm) {
+        stubFor(get("/broken").willReturn(aResponse().withStatus(200)
+                .withHeader("Content-Encoding", "gzip").withBody("this is not gzip")));
+
+        assertThatThrownBy(() -> transport().get(URI.create(wm.getHttpBaseUrl() + "/broken"), Map.of()))
+                .isInstanceOf(TransportException.class);
+    }
+
+    @Test
+    void capAppliesToTheDecompressedSize(WireMockRuntimeInfo wm) throws Exception {
+        stubFor(get("/bomb").willReturn(aResponse().withStatus(200)
+                .withHeader("Content-Encoding", "gzip").withBody(gzip("x".repeat(10_000)))));
+        var capped = new JdkHttpTransport(HttpClient.newHttpClient(), Duration.ofSeconds(5), 1_000);
+
+        assertThatThrownBy(() -> capped.get(URI.create(wm.getHttpBaseUrl() + "/bomb"), Map.of()))
+                .isInstanceOf(TransportException.class)
+                .hasMessageContaining("exceeds 1000 bytes");
     }
 }

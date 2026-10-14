@@ -215,6 +215,9 @@ Two timeout dimensions apply, mirroring the JDK client:
 - **request timeout** — `requestTimeout(Duration)` on the builder (default 30s), the
   request→response deadline (`HttpTimeoutException` if exceeded).
 
+Every request asks for `gzip` and the transport decompresses gzipped responses
+transparently (the cap below applies to the decompressed size).
+
 Response bodies are capped at 32 MiB by default (`maxResponseSize(long)` on the builders);
 a larger body fails with `TransportException` instead of being buffered in memory.
 
