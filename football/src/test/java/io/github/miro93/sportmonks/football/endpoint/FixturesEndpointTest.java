@@ -144,4 +144,48 @@ class FixturesEndpointTest {
 
         assertThat(response.data()).hasSize(1);
     }
+
+    @Test
+    void latestHitsLatestPath(WireMockRuntimeInfo wm) {
+        stubFor(get(urlPathEqualTo("/fixtures/latest")).willReturn(okJson("""
+                { "data": [ { "id": 1 } ] }
+                """)));
+
+        var response = fixtures(wm.getHttpBaseUrl()).latest().get();
+
+        assertThat(response.data()).extracting(Fixture::id).containsExactly(1L);
+    }
+
+    @Test
+    void upcomingByMarketHitsMarketPath(WireMockRuntimeInfo wm) {
+        stubFor(get(urlPathEqualTo("/fixtures/upcoming/markets/1")).willReturn(okJson("""
+                { "data": [ { "id": 2 } ] }
+                """)));
+
+        var response = fixtures(wm.getHttpBaseUrl()).upcomingByMarket(1L).get();
+
+        assertThat(response.data()).extracting(Fixture::id).containsExactly(2L);
+    }
+
+    @Test
+    void upcomingByTvStationHitsTvStationPath(WireMockRuntimeInfo wm) {
+        stubFor(get(urlPathEqualTo("/fixtures/upcoming/tv-stations/42")).willReturn(okJson("""
+                { "data": [ { "id": 3 } ] }
+                """)));
+
+        var response = fixtures(wm.getHttpBaseUrl()).upcomingByTvStation(42L).get();
+
+        assertThat(response.data()).extracting(Fixture::id).containsExactly(3L);
+    }
+
+    @Test
+    void pastByTvStationHitsTvStationPath(WireMockRuntimeInfo wm) {
+        stubFor(get(urlPathEqualTo("/fixtures/past/tv-stations/42")).willReturn(okJson("""
+                { "data": [ { "id": 4 } ] }
+                """)));
+
+        var response = fixtures(wm.getHttpBaseUrl()).pastByTvStation(42L).get();
+
+        assertThat(response.data()).extracting(Fixture::id).containsExactly(4L);
+    }
 }

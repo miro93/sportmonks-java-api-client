@@ -96,6 +96,38 @@ public final class FixturesEndpoint {
         return collection("fixtures/head-to-head/" + teamId1 + "/" + teamId2);
     }
 
+    /// Requests the fixtures updated in the last 10 seconds (SportMonks recommends polling
+    /// every 5-8 seconds), paginated.
+    ///
+    /// @return a collection request for the latest updated fixtures
+    public CollectionRequest<Fixture> latest() {
+        return collection("fixtures/latest");
+    }
+
+    /// Requests the upcoming fixtures for which a given market has odds.
+    ///
+    /// @param marketId the market id
+    /// @return a collection request for the upcoming fixtures of that market
+    public CollectionRequest<Fixture> upcomingByMarket(long marketId) {
+        return collection("fixtures/upcoming/markets/" + marketId);
+    }
+
+    /// Requests the upcoming fixtures broadcast by a given TV station.
+    ///
+    /// @param tvStationId the TV station id
+    /// @return a collection request for the upcoming fixtures on that station
+    public CollectionRequest<Fixture> upcomingByTvStation(long tvStationId) {
+        return collection("fixtures/upcoming/tv-stations/" + tvStationId);
+    }
+
+    /// Requests the past fixtures broadcast by a given TV station.
+    ///
+    /// @param tvStationId the TV station id
+    /// @return a collection request for the past fixtures on that station
+    public CollectionRequest<Fixture> pastByTvStation(long tvStationId) {
+        return collection("fixtures/past/tv-stations/" + tvStationId);
+    }
+
     /// Searches fixtures by name.
     ///
     /// @param name the search term (must not be {@code null})

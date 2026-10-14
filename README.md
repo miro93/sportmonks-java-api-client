@@ -401,7 +401,7 @@ All endpoints are accessed via `FootballClient`:
 
 | Accessor | Endpoint class | Example methods |
 |----------|---------------|-----------------|
-| `fixtures()` | `FixturesEndpoint` | `all()`, `byId(id)`, `byMultipleIds(ids...)`, `byDate(date)`, `byDateRange(start, end)`, `byDateRangeForTeam(start, end, teamId)`, `headToHead(t1, t2)`, `search(name)` |
+| `fixtures()` | `FixturesEndpoint` | `all()`, `byId(id)`, `byMultipleIds(ids...)`, `byDate(date)`, `byDateRange(start, end)`, `byDateRangeForTeam(start, end, teamId)`, `headToHead(t1, t2)`, `search(name)`, `latest()`, `upcomingByMarket(marketId)`, `upcomingByTvStation(tvStationId)`, `pastByTvStation(tvStationId)` |
 | `livescores()` | `LivescoresEndpoint` | `all()`, `inplay()`, `latest()` |
 | `leagues()` | `LeaguesEndpoint` | `all()`, `byId(id)`, `byCountry(countryId)`, `live()`, `byDate(date)`, `search(name)` |
 | `seasons()` | `SeasonsEndpoint` | `all()`, `byId(id)`, `byTeam(teamId)`, `search(name)` |
