@@ -25,6 +25,14 @@
       ]
     },
     {
+      "type": "io.github.miro93.sportmonks.core.coreapi.model.EntityTypes__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
       "type": "io.github.miro93.sportmonks.core.coreapi.model.Region__GeneratedConverter__ServiceDescriptor",
       "fields": [
         {
