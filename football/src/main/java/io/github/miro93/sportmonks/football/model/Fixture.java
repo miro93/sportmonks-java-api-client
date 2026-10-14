@@ -2,6 +2,8 @@ package io.github.miro93.sportmonks.football.model;
 
 import io.helidon.json.binding.Json;
 import java.util.List;
+import java.time.LocalDateTime;
+import java.time.Instant;
 
 /// A football fixture. Scalar fields are always present; the relation fields
 /// ({@code participants}, {@code scores}, {@code state}, {@code events}) are
@@ -31,4 +33,15 @@ public record Fixture(
         List<Score> scores,
         State state,
         List<Event> events) {
+
+    /// {@code startingAt} as a {@link LocalDateTime} (in the requested timezone, UTC by
+    /// default); {@code null} when absent.
+    public LocalDateTime startingAtDateTime() {
+        return ApiDates.dateTime(startingAt);
+    }
+
+    /// {@code startingAtTimestamp} as an {@link Instant}; {@code null} when absent.
+    public Instant startingAtInstant() {
+        return startingAtTimestamp == null ? null : Instant.ofEpochSecond(startingAtTimestamp);
+    }
 }

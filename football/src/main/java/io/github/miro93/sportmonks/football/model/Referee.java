@@ -1,6 +1,7 @@
 package io.github.miro93.sportmonks.football.model;
 
 import io.helidon.json.binding.Json;
+import java.time.LocalDate;
 
 /// A match referee from the SportMonks football API. {@code id} is always
 /// present; every other field may be {@code null}. {@code cityId} is typed as
@@ -22,4 +23,9 @@ public record Referee(
         Integer weight,
         @Json.Property("date_of_birth") String dateOfBirth,
         String gender) {
+
+    /// {@code dateOfBirth} as a {@link LocalDate}; {@code null} when absent.
+    public LocalDate dateOfBirthDate() {
+        return ApiDates.date(dateOfBirth);
+    }
 }

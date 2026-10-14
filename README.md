@@ -115,6 +115,13 @@ ApiResponse<List<Fixture>> response = client.fixtures()
 List<Fixture> fixtures = response.data();
 ```
 
+### Typed dates
+
+Date fields stay `String` on the records (the API format is stable), with null-safe
+typed accessors next to them: `Fixture.startingAtDateTime()` / `startingAtInstant()`,
+`Player.dateOfBirthDate()`, `Team.lastPlayedAtDateTime()`, `Season.startingAtDate()`,
+`Transfer.localDate()`, ... Date-times are in the requested `timezone` (UTC by default).
+
 ### Asynchronous request
 
 ```java

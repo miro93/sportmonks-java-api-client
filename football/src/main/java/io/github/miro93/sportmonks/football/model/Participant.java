@@ -1,6 +1,7 @@
 package io.github.miro93.sportmonks.football.model;
 
 import io.helidon.json.binding.Json;
+import java.time.LocalDateTime;
 
 /// A team taking part in a fixture. {@code meta} is present when the participant
 /// is loaded through a fixture include.
@@ -19,4 +20,9 @@ public record Participant(
         boolean placeholder,
         @Json.Property("last_played_at") String lastPlayedAt,
         ParticipantMeta meta) {
+
+    /// {@code lastPlayedAt} as a {@link LocalDateTime} (in the requested timezone); {@code null} when absent.
+    public LocalDateTime lastPlayedAtDateTime() {
+        return ApiDates.dateTime(lastPlayedAt);
+    }
 }

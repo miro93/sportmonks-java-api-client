@@ -2,6 +2,7 @@ package io.github.miro93.sportmonks.football.model;
 
 import io.helidon.json.binding.Json;
 import java.util.List;
+import java.time.LocalDateTime;
 
 /// A football league. Scalar fields ({@code id} through {@code hasJerseys}) are
 /// always present, except {@code sportId} and {@code countryId} which may be
@@ -22,4 +23,9 @@ public record League(
         Integer category,
         @Json.Property("has_jerseys") Boolean hasJerseys,
         List<Season> seasons) {
+
+    /// {@code lastPlayedAt} as a {@link LocalDateTime} (in the requested timezone); {@code null} when absent.
+    public LocalDateTime lastPlayedAtDateTime() {
+        return ApiDates.dateTime(lastPlayedAt);
+    }
 }

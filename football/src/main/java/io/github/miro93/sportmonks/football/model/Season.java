@@ -2,6 +2,7 @@ package io.github.miro93.sportmonks.football.model;
 
 import io.helidon.json.binding.Json;
 import java.util.List;
+import java.time.LocalDate;
 
 /// A competition season. {@code id} is always present. Foreign-key {@code Long}
 /// fields ({@code sportId}, {@code leagueId}, {@code tieBreakerRuleId}) and other
@@ -26,4 +27,14 @@ public record Season(
         @Json.Property("standing_method") String standingMethod,
         League league,
         List<Stage> stages) {
+
+    /// {@code startingAt} as a {@link LocalDate}; {@code null} when absent.
+    public LocalDate startingAtDate() {
+        return ApiDates.date(startingAt);
+    }
+
+    /// {@code endingAt} as a {@link LocalDate}; {@code null} when absent.
+    public LocalDate endingAtDate() {
+        return ApiDates.date(endingAt);
+    }
 }
