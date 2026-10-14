@@ -7,6 +7,7 @@ import io.github.miro93.sportmonks.core.request.internal.RequestSpec;
 import io.github.miro93.sportmonks.core.response.ApiResponse;
 
 import java.util.List;
+import java.time.ZoneId;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
@@ -64,12 +65,52 @@ public final class CollectionRequest<T> {
         return this;
     }
 
-    /// Sets the sort order on the given fields.
+    /// Sets the single field to sort by ({@code sortBy}); the API rejects more than one.
     ///
-    /// @param fields the field names to sort by
+    /// @param field the field name (e.g. {@code "starting_at"})
     /// @return this request
+    public CollectionRequest<T> sortBy(String field) {
+        spec.sortBy(field);
+        return this;
+    }
+
+    /// Sets the sort direction ({@code order}); without {@link #sortBy} it orders by id.
+    ///
+    /// @param order {@link Order#ASC} or {@link Order#DESC}
+    /// @return this request
+    public CollectionRequest<T> order(Order order) {
+        spec.order(order);
+        return this;
+    }
+
+    /// Legacy sort: a single field, optionally prefixed with {@code -} for descending.
+    ///
+    /// @param fields exactly one field name
+    /// @return this request
+    /// @throws IllegalArgumentException if more than one field is given
+    /// @deprecated use {@link #sortBy(String)} and {@link #order(Order)}; the API never
+    ///             honoured the {@code sort} parameter this method used to send
+    @Deprecated(since = "3.1.0")
     public CollectionRequest<T> sort(String... fields) {
         spec.sort(fields);
+        return this;
+    }
+
+    /// Sets the translation locale ({@code locale}, e.g. {@code "de"}).
+    ///
+    /// @param locale the locale code
+    /// @return this request
+    public CollectionRequest<T> locale(String locale) {
+        spec.locale(locale);
+        return this;
+    }
+
+    /// Sets the timezone in which date-times are returned ({@code timezone}).
+    ///
+    /// @param zone the zone
+    /// @return this request
+    public CollectionRequest<T> timezone(ZoneId zone) {
+        spec.timezone(zone);
         return this;
     }
 
@@ -81,6 +122,18 @@ public final class CollectionRequest<T> {
     /// @return this request
     public CollectionRequest<T> page(int page) {
         spec.page(page);
+        return this;
+    }
+
+    /// Sets the page size ({@code per_page}, 1 to 50; the API default is 25). Applies to
+    /// {@link #get()} / {@link #getAsync()} and to the first request of {@link #stream()}
+    /// (the API rejects {@code per_page} together with {@code cursor}).
+    ///
+    /// @param perPage the page size
+    /// @return this request
+    /// @throws IllegalArgumentException if out of range
+    public CollectionRequest<T> perPage(int perPage) {
+        spec.perPage(perPage);
         return this;
     }
 
