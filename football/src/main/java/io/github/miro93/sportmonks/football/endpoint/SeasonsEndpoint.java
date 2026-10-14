@@ -6,6 +6,7 @@ import io.github.miro93.sportmonks.core.json.HelidonJsonCodec;
 import io.github.miro93.sportmonks.core.request.CollectionRequest;
 import io.github.miro93.sportmonks.core.request.internal.RequestSpec;
 import io.github.miro93.sportmonks.core.request.SingleResourceRequest;
+import io.github.miro93.sportmonks.football.model.Bracket;
 import io.github.miro93.sportmonks.football.model.Season;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public final class SeasonsEndpoint {
     private final ApiExecutor executor;
     private final DataType<Season> single;
     private final DataType<List<Season>> list;
+    private final DataType<Bracket> bracket;
 
     /// Creates the endpoint, building the {@link Season} decoders from {@code codec}.
     ///
@@ -27,6 +29,7 @@ public final class SeasonsEndpoint {
         Objects.requireNonNull(codec, "codec");
         this.single = codec.type(Season.class);
         this.list = codec.listType(Season.class);
+        this.bracket = codec.type(Bracket.class);
     }
 
     /// Requests every season, paginated.
@@ -50,6 +53,16 @@ public final class SeasonsEndpoint {
     /// @return a collection request for the matching seasons
     public CollectionRequest<Season> byTeam(long teamId) {
         return collection("seasons/teams/" + teamId);
+    }
+
+    /// Requests the knockout bracket of a season: its knockout stages (with placeholder
+    /// fixtures until the teams are known) and the edges describing how winners and losers
+    /// advance.
+    ///
+    /// @param seasonId the season id
+    /// @return a single-resource request for the season's bracket
+    public SingleResourceRequest<Bracket> brackets(long seasonId) {
+        return new SingleResourceRequest<>(executor, RequestSpec.builder("seasons/" + seasonId + "/brackets"), bracket);
     }
 
     /// Searches seasons by name.

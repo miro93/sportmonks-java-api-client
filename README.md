@@ -404,7 +404,7 @@ All endpoints are accessed via `FootballClient`:
 | `fixtures()` | `FixturesEndpoint` | `all()`, `byId(id)`, `byMultipleIds(ids...)`, `byDate(date)`, `byDateRange(start, end)`, `byDateRangeForTeam(start, end, teamId)`, `headToHead(t1, t2)`, `search(name)` |
 | `livescores()` | `LivescoresEndpoint` | `all()`, `inplay()`, `latest()` |
 | `leagues()` | `LeaguesEndpoint` | `all()`, `byId(id)`, `byCountry(countryId)`, `live()`, `byDate(date)`, `search(name)` |
-| `seasons()` | `SeasonsEndpoint` | `all()`, `byId(id)`, `byTeam(teamId)`, `search(name)` |
+| `seasons()` | `SeasonsEndpoint` | `all()`, `byId(id)`, `byTeam(teamId)`, `brackets(seasonId)`, `search(name)` |
 | `stages()` | `StagesEndpoint` | `all()`, `byId(id)`, `bySeason(seasonId)`, `search(name)` |
 | `rounds()` | `RoundsEndpoint` | `all()`, `byId(id)`, `bySeason(seasonId)`, `search(name)` |
 | `schedules()` | `SchedulesEndpoint` | `bySeason(seasonId)`, `byTeam(teamId)`, `bySeasonAndTeam(seasonId, teamId)` |
