@@ -9,7 +9,9 @@ import io.helidon.json.binding.Json;
 /// {@code name}, {@code displayName}, {@code imagePath}, {@code height},
 /// {@code weight}, {@code dateOfBirth}, {@code gender}) may be {@code null}.
 /// Note: {@code cityId} is typed as {@code String} because the API returns
-/// {@code city_id} as a string value. No relation fields are exposed on this record.
+/// {@code city_id} as a string value. {@code inSquad} is only populated by the
+/// extended team squad endpoint ({@code null} elsewhere). No relation fields are
+/// exposed on this record.
 @Json.Entity
 public record Player(
         long id,
@@ -29,5 +31,6 @@ public record Player(
         Integer height,
         Integer weight,
         @Json.Property("date_of_birth") String dateOfBirth,
-        String gender) {
+        String gender,
+        @Json.Property("in_squad") Boolean inSquad) {
 }

@@ -116,4 +116,26 @@ class SquadsEndpointTest {
         assertThat(response.data()).hasSize(2);
         assertThat(response.data().get(0).id()).isEqualTo(20L);
     }
+
+    @Test
+    void extendedByTeamHitsExtendedPathAndDecodesPlayers(WireMockRuntimeInfo wm) {
+        stubFor(get(urlPathEqualTo("/squads/teams/53/extended")).willReturn(okJson("""
+                { "data": [
+                    { "id": 4598752, "common_name": "L. Geertruida", "firstname": "Lutsharel", "lastname": "Geertruida",
+                      "position_id": 25, "detailed_position_id": 154, "height": 182, "weight": 73,
+                      "date_of_birth": "2000-07-18", "image_path": "https://cdn/p.png", "in_squad": true },
+                    { "id": 4598753, "common_name": "X. Left", "in_squad": false }
+                ] }
+                """)));
+
+        var response = squads(wm.getHttpBaseUrl()).extendedByTeam(53L).get();
+
+        assertThat(response.data()).hasSize(2);
+        var first = response.data().getFirst();
+        assertThat(first.id()).isEqualTo(4598752L);
+        assertThat(first.commonName()).isEqualTo("L. Geertruida");
+        assertThat(first.positionId()).isEqualTo(25L);
+        assertThat(first.inSquad()).isTrue();
+        assertThat(response.data().getLast().inSquad()).isFalse();
+    }
 }

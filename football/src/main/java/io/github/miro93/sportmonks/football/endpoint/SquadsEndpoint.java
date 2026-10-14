@@ -5,6 +5,7 @@ import io.github.miro93.sportmonks.core.json.DataType;
 import io.github.miro93.sportmonks.core.json.HelidonJsonCodec;
 import io.github.miro93.sportmonks.core.request.CollectionRequest;
 import io.github.miro93.sportmonks.core.request.internal.RequestSpec;
+import io.github.miro93.sportmonks.football.model.Player;
 import io.github.miro93.sportmonks.football.model.Squad;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public final class SquadsEndpoint {
 
     private final ApiExecutor executor;
     private final DataType<List<Squad>> list;
+    private final DataType<List<Player>> playerList;
 
     /// Creates the endpoint, building the {@link Squad} list decoder from {@code codec}.
     ///
@@ -29,6 +31,7 @@ public final class SquadsEndpoint {
         this.executor = Objects.requireNonNull(executor, "executor");
         Objects.requireNonNull(codec, "codec");
         this.list = codec.listType(Squad.class);
+        this.playerList = codec.listType(Player.class);
     }
 
     /// Requests the squad for a given team.
@@ -46,6 +49,16 @@ public final class SquadsEndpoint {
     /// @return a collection request for the squad members of that team in the season
     public CollectionRequest<Squad> bySeasonAndTeam(long seasonId, long teamId) {
         return collection("squads/seasons/" + seasonId + "/teams/" + teamId);
+    }
+
+    /// Requests the extended squad for a given team: every player of the team's current
+    /// seasons, with {@link Player#inSquad()} telling whether the player is still in the
+    /// roster. Not paginated; up to 2 nested includes.
+    ///
+    /// @param teamId the team id
+    /// @return a collection request for the extended squad of that team
+    public CollectionRequest<Player> extendedByTeam(long teamId) {
+        return new CollectionRequest<>(executor, RequestSpec.builder("squads/teams/" + teamId + "/extended"), playerList);
     }
 
     private CollectionRequest<Squad> collection(String path) {
