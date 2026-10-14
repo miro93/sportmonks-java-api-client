@@ -11,6 +11,7 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
+import java.util.zip.GZIPInputStream;
 
 /// {@link HttpTransport} backed by the JDK {@link HttpClient}.
 public final class JdkHttpTransport implements HttpTransport {
@@ -67,13 +68,16 @@ public final class JdkHttpTransport implements HttpTransport {
 
     @Override
     public RawResponse get(URI uri, Map<String, String> headers) {
-        HttpRequest.Builder builder = HttpRequest.newBuilder(uri).GET().timeout(requestTimeout);
+        HttpRequest.Builder builder = HttpRequest.newBuilder(uri).GET().timeout(requestTimeout)
+                .header("Accept-Encoding", "gzip");
         headers.forEach(builder::header);
         HttpRequest request = builder.build();
         try {
             HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
             byte[] body;
-            try (InputStream in = response.body()) {
+            boolean gzipped = response.headers().firstValue("Content-Encoding")
+                    .map(v -> v.trim().equalsIgnoreCase("gzip")).orElse(false);
+            try (InputStream raw = response.body(); InputStream in = gzipped ? new GZIPInputStream(raw) : raw) {
                 body = readBounded(in, uri);
             }
             return new RawResponse(response.statusCode(), body, response.headers().map());
@@ -85,7 +89,7 @@ public final class JdkHttpTransport implements HttpTransport {
         }
     }
 
-    /// Reads the whole stream, failing once it exceeds {@code maxResponseSize}.
+    /// Reads the whole (decompressed) stream, failing once it exceeds {@code maxResponseSize}.
     private byte[] readBounded(InputStream in, URI uri) throws IOException {
         byte[] bytes = in.readNBytes(Math.toIntExact(Math.min(maxResponseSize, Integer.MAX_VALUE - 8)) + 1);
         if (bytes.length > maxResponseSize) {
