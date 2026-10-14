@@ -65,6 +65,14 @@
       ]
     },
     {
+      "type": "io.github.miro93.sportmonks.football.model.BookmakerMapping__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
       "type": "io.github.miro93.sportmonks.football.model.Bookmaker__GeneratedConverter__ServiceDescriptor",
       "fields": [
         {
@@ -169,6 +177,22 @@
       ]
     },
     {
+      "type": "io.github.miro93.sportmonks.football.model.MatchFact__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.News__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
       "type": "io.github.miro93.sportmonks.football.model.Odd__GeneratedConverter__ServiceDescriptor",
       "fields": [
         {
@@ -226,6 +250,14 @@
     },
     {
       "type": "io.github.miro93.sportmonks.football.model.Referee__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.Rival__GeneratedConverter__ServiceDescriptor",
       "fields": [
         {
           "name": "INSTANCE"
@@ -321,6 +353,22 @@
       ]
     },
     {
+      "type": "io.github.miro93.sportmonks.football.model.TeamOfTheWeekEntry__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.TeamRanking__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
       "type": "io.github.miro93.sportmonks.football.model.Team__GeneratedConverter__ServiceDescriptor",
       "fields": [
         {
@@ -330,6 +378,14 @@
     },
     {
       "type": "io.github.miro93.sportmonks.football.model.Topscorer__GeneratedConverter__ServiceDescriptor",
+      "fields": [
+        {
+          "name": "INSTANCE"
+        }
+      ]
+    },
+    {
+      "type": "io.github.miro93.sportmonks.football.model.TransferRumour__GeneratedConverter__ServiceDescriptor",
       "fields": [
         {
           "name": "INSTANCE"
