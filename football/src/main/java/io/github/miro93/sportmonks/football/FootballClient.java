@@ -491,6 +491,7 @@ public final class FootballClient {
         private RequestListener listener = RequestListener.NOOP;
         private RateLimitPolicy rateLimitPolicy = RateLimitPolicy.NONE;
         private Duration requestTimeout = JdkHttpTransport.DEFAULT_REQUEST_TIMEOUT;
+        private long maxResponseSize = JdkHttpTransport.DEFAULT_MAX_RESPONSE_SIZE;
 
         private Builder() {
         }
@@ -548,6 +549,20 @@ public final class FootballClient {
         /// @return this builder
         public Builder requestTimeout(Duration requestTimeout) {
             this.requestTimeout = Objects.requireNonNull(requestTimeout, "requestTimeout");
+            return this;
+        }
+
+        /// Caps the response body size read into memory (defaults to
+        /// {@link JdkHttpTransport#DEFAULT_MAX_RESPONSE_SIZE}, 32 MiB); larger bodies fail
+        /// with a {@code TransportException}.
+        ///
+        /// @param maxResponseSize the cap in bytes (positive)
+        /// @return this builder
+        public Builder maxResponseSize(long maxResponseSize) {
+            if (maxResponseSize <= 0) {
+                throw new IllegalArgumentException("maxResponseSize must be positive, got " + maxResponseSize);
+            }
+            this.maxResponseSize = maxResponseSize;
             return this;
         }
 
@@ -613,7 +628,7 @@ public final class FootballClient {
                     ? httpClient
                     : JdkHttpTransport.newDefaultClient(
                           connectTimeout != null ? connectTimeout : JdkHttpTransport.DEFAULT_CONNECT_TIMEOUT);
-            HttpTransport base = new JdkHttpTransport(client, requestTimeout);
+            HttpTransport base = new JdkHttpTransport(client, requestTimeout, maxResponseSize);
             HttpTransport transport = new RetryingTransport(
                     new ListeningTransport(base, listener), retryPolicy, Sleeper.REAL);
             HelidonJsonCodec codec = new HelidonJsonCodec();

@@ -93,4 +93,18 @@ class JdkHttpTransportTest {
         assertThat(response.status()).isEqualTo(302);
         verify(0, getRequestedFor(urlEqualTo("/elsewhere")));
     }
+
+    @Test
+    void rejectsBodiesLargerThanTheCapAndAcceptsOnesAtTheCap(WireMockRuntimeInfo wm) {
+        stubFor(get("/big").willReturn(ok("x".repeat(101))));
+        stubFor(get("/fit").willReturn(ok("x".repeat(100))));
+        var capped = new JdkHttpTransport(HttpClient.newHttpClient(), Duration.ofSeconds(5), 100);
+
+        assertThatThrownBy(() -> capped.get(URI.create(wm.getHttpBaseUrl() + "/big"), Map.of()))
+                .isInstanceOf(TransportException.class)
+                .hasMessageContaining("exceeds 100 bytes");
+        assertThat(capped.get(URI.create(wm.getHttpBaseUrl() + "/fit"), Map.of()).bodyAsString()).hasSize(100);
+        assertThatThrownBy(() -> new JdkHttpTransport(HttpClient.newHttpClient(), Duration.ofSeconds(5), 0))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }
