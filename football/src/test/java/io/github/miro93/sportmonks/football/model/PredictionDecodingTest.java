@@ -27,6 +27,8 @@ class PredictionDecodingTest {
         assertThat(prediction.id()).isEqualTo(100L);
         assertThat(prediction.fixtureId()).isEqualTo(18533878L);
         assertThat(prediction.typeId()).isEqualTo(231L);
+        assertThat(prediction.periodId()).isNull();
+        assertThat(prediction.minute()).isNull();
         assertThat(prediction.predictions())
                 .containsEntry("yes", 0.67)
                 .containsEntry("no", 0.33);

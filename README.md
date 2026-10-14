@@ -429,7 +429,7 @@ All endpoints are accessed via `FootballClient`:
 | `premiumMarkets()` | `PremiumMarketsEndpoint` | `all()` (served from the `/v3/odds` base URL) |
 | `premiumBookmakers()` | `PremiumBookmakersEndpoint` | `all()` (served from the `/v3/odds` base URL) |
 | `expectedLineups()` | `ExpectedLineupsEndpoint` | `byTeam(teamId)`, `byPlayer(playerId)` |
-| `predictions()` | `PredictionsEndpoint` | `probabilities()`, `probabilitiesByFixture(fixtureId)`, `valueBets()`, `valueBetsByFixture(fixtureId)`, `predictabilityByLeague(leagueId)` |
+| `predictions()` | `PredictionsEndpoint` | `probabilities()`, `probabilitiesByFixture(fixtureId)`, `liveProbabilities()`, `liveProbabilitiesByFixture(fixtureId)`, `valueBets()`, `valueBetsByFixture(fixtureId)`, `predictabilityByLeague(leagueId)` |
 | `statistics()` | `StatisticsEndpoint` | `seasonByTeam(teamId)`, `seasonByPlayer(playerId)`, `seasonByCoach(coachId)`, `seasonByReferee(refereeId)`, `byStage(stageId)`, `byRound(roundId)` |
 | `expected()` | `ExpectedEndpoint` | `fixtures()`, `lineups()` |
 

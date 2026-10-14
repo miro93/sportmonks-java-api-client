@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 /// Access to the SportMonks predictions endpoints ({@code /predictions}):
-/// probabilities and value bets by fixture, plus predictability by league.
+/// probabilities (pre-match and live) and value bets by fixture, plus predictability by league.
 public final class PredictionsEndpoint {
 
     private final ApiExecutor executor;
@@ -46,6 +46,23 @@ public final class PredictionsEndpoint {
     /// @return a collection request for the matching probability predictions
     public CollectionRequest<Prediction> probabilitiesByFixture(long fixtureId) {
         return new CollectionRequest<>(executor, RequestSpec.builder("predictions/probabilities/fixtures/" + fixtureId), predictionList);
+    }
+
+    /// Requests the live (in-play) probability predictions for every fixture currently
+    /// being played, paginated. Requires the Predictions Advanced tier.
+    ///
+    /// @return a collection request for the live probability predictions
+    public CollectionRequest<Prediction> liveProbabilities() {
+        return new CollectionRequest<>(executor, RequestSpec.builder("predictions/live/probabilities"), predictionList);
+    }
+
+    /// Requests the live (in-play) probability predictions for a given fixture.
+    /// Requires the Predictions Advanced tier.
+    ///
+    /// @param fixtureId the fixture id
+    /// @return a collection request for the fixture's live probability predictions
+    public CollectionRequest<Prediction> liveProbabilitiesByFixture(long fixtureId) {
+        return new CollectionRequest<>(executor, RequestSpec.builder("predictions/live/probabilities/fixtures/" + fixtureId), predictionList);
     }
 
     /// Requests every value-bet record, paginated.
