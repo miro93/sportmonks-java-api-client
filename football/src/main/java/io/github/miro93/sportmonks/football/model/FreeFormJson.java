@@ -11,8 +11,8 @@ import java.util.Map;
 /// every record in this package with a free-form JSON payload field ({@link StatisticDetail},
 /// {@link Prediction}, {@link Expected}, {@link Predictability}).
 ///
-/// ponytail: exists because Helidon 4.5.4's `Object`-typed (and `Double`-typed) map-value
-/// converter mis-parses JSON integer literals. Precisely, via `JsonBinding.deserialize`: a
+/// ponytail: exists because Helidon's `Object`-typed (and `Double`-typed) map-value
+/// converter mis-parses JSON integer literals (4.5.4, 4.5.5 and 27.0.0 all checked). Precisely, via `JsonBinding.deserialize`: a
 /// single-digit bare (no decimal point) integer literal throws even alone/as the object's only
 /// or last entry (e.g. `{"home":5}`); multi-digit bare integers happen to parse without
 /// throwing, but come back as `Double` (`33.0`), not `Integer` — either way, "numeric values
