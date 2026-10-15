@@ -1,6 +1,18 @@
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
+// Build-time only: the CycloneDX plugin drags Jackson 2.22.0, which carries four high
+// advisories (GHSA-7hhh-6rmp-j9qf, GHSA-p6pp-m3f8-5c89, GHSA-cxp5-3px4-pw24, GHSA-wv8q-qhhj-9h54)
+// that Dependabot reports on this classpath. Nothing here reaches the published jars.
+buildscript {
+    dependencies {
+        constraints {
+            classpath("com.fasterxml.jackson.core:jackson-core:2.22.3")
+            classpath("com.fasterxml.jackson.core:jackson-databind:2.22.3")
+        }
+    }
+}
+
 // Declare the GraalVM native-build-tools plugin once at the root (apply false) so it
 // is loaded by a single classloader and shared across subprojects. Applying it
 // independently per subproject otherwise causes a GraalVMReachabilityMetadataService
