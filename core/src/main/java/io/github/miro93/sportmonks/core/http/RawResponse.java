@@ -1,15 +1,14 @@
 package io.github.miro93.sportmonks.core.http;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-/// Raw, undecoded HTTP response. The body is kept as raw bytes so the JSON codec's envelope
-/// parse can read straight from the byte stream, avoiding a large intermediate `String`
-/// allocation for big payloads (e.g. livescores). The envelope's `data` subtree is still
-/// re-serialized to a `String` once per decode before being parsed into its target type — see
-/// {@code HelidonJsonCodec}'s class javadoc. Header lookup is case-insensitive.
+/// Raw, undecoded HTTP response. The body is kept as raw bytes so the JSON codec parses
+/// straight from them, with no intermediate `String` for big payloads (e.g. livescores).
+/// Header lookup is case-insensitive.
 public record RawResponse(int status, byte[] body, Map<String, List<String>> headers) {
 
     public Optional<String> header(String name) {
@@ -17,6 +16,18 @@ public record RawResponse(int status, byte[] body, Map<String, List<String>> hea
                 .filter(entry -> entry.getKey().equalsIgnoreCase(name))
                 .flatMap(entry -> entry.getValue().stream())
                 .findFirst();
+    }
+
+    /// The {@code Retry-After} header as a delay; empty when absent or not a whole number of
+    /// seconds (the HTTP-date form is not supported).
+    public Optional<Duration> retryAfter() {
+        return header("Retry-After").flatMap(value -> {
+            try {
+                return Optional.of(Duration.ofSeconds(Long.parseLong(value.trim())));
+            } catch (NumberFormatException e) {
+                return Optional.empty();
+            }
+        });
     }
 
     public boolean isSuccessful() {

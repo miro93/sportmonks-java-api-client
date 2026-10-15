@@ -2,6 +2,7 @@ package io.github.miro93.sportmonks.core.json;
 
 import io.helidon.common.GenericType;
 import io.helidon.json.JsonException;
+import io.helidon.json.JsonParser;
 import io.helidon.json.binding.JsonBinding;
 import io.github.miro93.sportmonks.core.response.ApiResponse;
 import io.github.miro93.sportmonks.core.response.Pagination;
@@ -10,7 +11,6 @@ import io.github.miro93.sportmonks.core.response.RateLimit;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -18,18 +18,18 @@ import java.util.Map;
 /// and decodes the SportMonks envelope into a typed {@link ApiResponse}.
 /// snake_case mapping is declared per field via `@Json.Property` on the records.
 ///
-/// The envelope members are located with a structural byte scan ({@link JsonTopLevel}) and
-/// each one ({@code data}, {@code pagination}, {@code rate_limit}, {@code timezone}) is handed
-/// to the binding as its own byte slice, so every byte of the response is parsed exactly once.
-/// Helidon 4.5.x cannot decode a generic {@code ApiResponse<T>} in one pass (generic-record
-/// codegen bug) nor re-walk an already parsed {@code JsonValue}
-/// ({@code JsonBinding.deserialize(JsonValue, GenericType)} throws on objects and arrays in
-/// 4.5.4 and 4.5.5), which is why neither of the obvious one-liners is used.
+/// The envelope is read in one streaming pass with Helidon's {@link JsonParser}: each member
+/// ({@code data}, {@code pagination}, {@code rate_limit}, {@code timezone}) is handed to the
+/// binding from the parser's current position and every other member is skipped, so each byte
+/// of the response is parsed exactly once and nothing is copied. A generic
+/// {@code ApiResponse<T>} entity is not an option: Helidon's codegen cannot bind generic records.
 ///
-/// A second, unrelated Helidon 4.5.4 JSON binding bug affects free-form
-/// {@code Map<String, Object>} fields on the football-module side — see
-/// {@code io.github.miro93.sportmonks.football.model.FreeFormJson}'s javadoc.
+/// A separate Helidon JSON binding bug affects free-form {@code Map<String, Object>} fields on the
+/// football-module side — see {@code io.github.miro93.sportmonks.football.model.FreeFormJson}'s javadoc.
 public final class HelidonJsonCodec {
+
+    private static final GenericType<Pagination> PAGINATION = GenericType.create(Pagination.class);
+    private static final GenericType<RateLimit> RATE_LIMIT = GenericType.create(RateLimit.class);
 
     private final JsonBinding binding;
 
@@ -71,28 +71,48 @@ public final class HelidonJsonCodec {
             if (dataType.raw()) {
                 return new ApiResponse<>(binding.deserialize(json, dataType.genericType()), null, null, null);
             }
-            Map<String, JsonTopLevel.Range> members = JsonTopLevel.scan(json);
-            T data = member(json, members.get("data"), dataType.genericType());
-            Pagination pagination = member(json, members.get("pagination"), GenericType.create(Pagination.class));
-            RateLimit rateLimit = member(json, members.get("rate_limit"), GenericType.create(RateLimit.class));
-            String timezone = member(json, members.get("timezone"), GenericType.create(String.class));
+            JsonParser parser = JsonParser.create(json);
+            if (parser.currentByte() != '{') {
+                throw parser.createException("Expected a JSON object at the top level", parser.currentByte());
+            }
+            T data = null;
+            Pagination pagination = null;
+            RateLimit rateLimit = null;
+            String timezone = null;
+            byte token = parser.nextToken();
+            while (token != '}') {
+                if (token != '"') {
+                    throw parser.createException("Expected a member name", token);
+                }
+                String key = parser.readString();
+                token = parser.nextToken();
+                if (token != ':') {
+                    throw parser.createException("Expected ':' after the member name", token);
+                }
+                parser.nextToken();
+                switch (key) {
+                    case "data" -> data = member(parser, dataType.genericType());
+                    case "pagination" -> pagination = member(parser, PAGINATION);
+                    case "rate_limit" -> rateLimit = member(parser, RATE_LIMIT);
+                    case "timezone" -> timezone = member(parser, GenericType.STRING);
+                    default -> parser.skip();
+                }
+                token = parser.nextToken();
+                if (token == ',') {
+                    token = parser.nextToken();
+                } else if (token != '}') {
+                    throw parser.createException("Expected ',' or '}' after a member", token);
+                }
+            }
             return new ApiResponse<>(data, pagination, rateLimit, timezone);
         } catch (JsonException | IllegalArgumentException e) {
             throw new CodecException("Failed to decode SportMonks response", e);
         }
     }
 
-    /// Decodes one envelope member from its byte slice; absent or {@code null} members decode to {@code null}.
-    private <T> T member(byte[] json, JsonTopLevel.Range range, GenericType<T> type) {
-        if (range == null || isNullLiteral(json, range)) {
-            return null;
-        }
-        return binding.deserialize(Arrays.copyOfRange(json, range.start(), range.end()), type);
-    }
-
-    private static boolean isNullLiteral(byte[] json, JsonTopLevel.Range range) {
-        return range.end() - range.start() == 4 && json[range.start()] == 'n' && json[range.start() + 1] == 'u'
-                && json[range.start() + 2] == 'l' && json[range.start() + 3] == 'l';
+    /// Decodes the member at the parser's position; a JSON {@code null} decodes to {@code null}.
+    private <T> T member(JsonParser parser, GenericType<T> type) {
+        return parser.checkNull() ? null : binding.deserialize(parser, type);
     }
 
     private static <T> GenericType<List<T>> genericListType(Class<T> dataClass) {
