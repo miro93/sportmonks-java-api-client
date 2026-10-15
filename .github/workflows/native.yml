@@ -1,9 +1,11 @@
 name: Native
 
+# Manual until a GraalVM built on JDK 27 exists: Helidon 27 ships Java 27 bytecode and every
+# current GraalVM (25.0 LTS, 25.x Innovation, dev builds) runs on JDK 25, so native-image
+# cannot load it. The native-smoke module still compiles and runs its entity check in `build`;
+# re-enable `push`/`pull_request` here once setup-graalvm resolves java-version 27.
 on:
-  push:
-    branches: [ main ]
-  pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read

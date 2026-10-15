@@ -355,7 +355,11 @@ reflective field access — and the shipped metadata only covers the record-cons
 reflection Helidon's runtime performs during decode. That metadata is generated at build
 time from the compiled classes (one entry per `@Json.Entity` converter descriptor, plus the
 fixed set of Helidon runtime types), so it can never drift from the code; the `native-smoke`
-CI job compiles a native image against it and decodes every entity.
+job compiles a native image against it and decodes every entity.
+
+Since 4.0.0 the library targets Java 27 (Helidon 27), and no GraalVM distribution runs on
+JDK 27 yet, so the `native-smoke` job is run manually rather than on every push; it will be
+back in CI as soon as GraalVM for JDK 27 is available.
 
 ---
 
