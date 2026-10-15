@@ -103,6 +103,13 @@ public final class NativeSmoke {
             Stint.class, io.github.miro93.sportmonks.motorsport.model.Team.class,
             io.github.miro93.sportmonks.motorsport.model.Venue.class);
 
+    private NativeSmoke() {
+    }
+
+    /// Runs both smoke checks and prints {@code NATIVE SMOKE OK}.
+    ///
+    /// @param args ignored
+    /// @throws Exception on any failure, which makes the native-smoke job fail
     public static void main(String[] args) throws Exception {
         smokeHttpAndDecode();
         smokeEveryEntity();

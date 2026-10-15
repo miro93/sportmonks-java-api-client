@@ -39,7 +39,7 @@ tasks.test {
 }
 
 // Smoke calls against the real API; needs SPORTMONKS_API_TOKEN (skipped otherwise).
-val liveTest by tasks.registering(Test::class) {
+tasks.register<Test>("liveTest") {
     description = "Runs the live SportMonks API smoke tests (requires SPORTMONKS_API_TOKEN)."
     group = "verification"
     testClassesDirs = sourceSets["test"].output.classesDirs

@@ -37,7 +37,7 @@ graalvmNative {
 
 // Fails when a `@Json.Entity` gained a generated converter but is missing from
 // NativeSmoke.ENTITIES, so the native image keeps exercising every converter.
-val checkSmokeEntities by tasks.registering {
+val checkSmokeEntities = tasks.register("checkSmokeEntities") {
     val classesDirs = listOf(":core", ":football", ":motorsport").map { p ->
         project(p).extensions.getByType<SourceSetContainer>()["main"].output.classesDirs
     }
