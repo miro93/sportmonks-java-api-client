@@ -5,7 +5,7 @@ plugins {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(25)
+        languageVersion = JavaLanguageVersion.of(27)
     }
 }
 
@@ -25,7 +25,7 @@ application {
 graalvmNative {
     // We ship our own reachability metadata in the jars (auto-detected from
     // META-INF/native-image); the community metadata repository is not needed and
-    // its newer schema is incompatible with the installed GraalVM 25.0.0.
+    // its schema has lagged behind the installed GraalVM before.
     metadataRepository {
         enabled = false
     }
