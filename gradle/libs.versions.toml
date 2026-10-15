@@ -17,5 +17,5 @@ wiremock = { module = "org.wiremock:wiremock", version.ref = "wiremock" }
 
 [plugins]
 vanniktech-mavenPublish = { id = "com.vanniktech.maven.publish", version = "0.37.0" }
-graalvm-native = { id = "org.graalvm.buildtools.native", version = "1.1.12" }
+graalvm-native = { id = "org.graalvm.buildtools.native", version = "1.1.14" }
 cyclonedx-bom = { id = "org.cyclonedx.bom", version = "3.5.1" }
