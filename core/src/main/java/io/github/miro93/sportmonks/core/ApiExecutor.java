@@ -143,7 +143,7 @@ public final class ApiExecutor {
         RawResponse response = transport.get(uri, headers);
 
         if (!response.isSuccessful()) {
-            throw ErrorMapper.fromResponse(response.status(), response.bodyAsString(), retryAfter(response));
+            throw ErrorMapper.fromResponse(response.status(), response.bodyAsString(), response.retryAfter());
         }
         ApiResponse<T> decoded = decode(response.body(), dataType, response.status());
         rateLimits.record(entity, decoded.rateLimit());
@@ -192,15 +192,5 @@ public final class ApiExecutor {
     static String entityKey(String path) {
         int slash = path.indexOf('/');
         return slash < 0 ? path : path.substring(0, slash);
-    }
-
-    private static Optional<Duration> retryAfter(RawResponse response) {
-        return response.header("Retry-After").map(value -> {
-            try {
-                return Duration.ofSeconds(Long.parseLong(value.trim()));
-            } catch (NumberFormatException e) {
-                return null;
-            }
-        });
     }
 }

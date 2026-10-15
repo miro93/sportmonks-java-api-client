@@ -6,12 +6,12 @@ import io.github.miro93.sportmonks.core.http.RawResponse;
 import io.github.miro93.sportmonks.core.retry.RetryPolicy;
 
 import java.net.URI;
-import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
 
 /// Decorates an {@link HttpTransport} with retry on 429/5xx and on
-/// {@link TransportException}, honoring a {@code Retry-After} header when present.
+/// {@link TransportException}, honoring a numeric {@code Retry-After} header when present
+/// (an unparsable one falls back to the backoff).
 public final class RetryingTransport implements HttpTransport {
 
     private final HttpTransport delegate;
@@ -41,25 +41,12 @@ public final class RetryingTransport implements HttpTransport {
             }
 
             if (policy.isRetryableStatus(response.status()) && attempt < policy.maxAttempts()) {
-                sleeper.sleep(delayFor(response, attempt));
+                int current = attempt;
+                sleeper.sleep(response.retryAfter().orElseGet(() -> policy.backoff().delayFor(current)));
                 attempt++;
                 continue;
             }
             return response;
-        }
-    }
-
-    private Duration delayFor(RawResponse response, int attempt) {
-        return response.header("Retry-After")
-                .map(RetryingTransport::parseSeconds)
-                .orElseGet(() -> policy.backoff().delayFor(attempt));
-    }
-
-    private static Duration parseSeconds(String value) {
-        try {
-            return Duration.ofSeconds(Long.parseLong(value.trim()));
-        } catch (NumberFormatException e) {
-            return Duration.ZERO;
         }
     }
 }

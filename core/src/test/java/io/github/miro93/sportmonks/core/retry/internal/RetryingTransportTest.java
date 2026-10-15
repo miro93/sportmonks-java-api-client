@@ -76,6 +76,19 @@ class RetryingTransportTest {
     }
 
     @Test
+    void fallsBackToBackoffWhenRetryAfterIsNotSeconds() {
+        Queue<RawResponse> responses = new ArrayDeque<>(List.of(
+                new RawResponse(429, body("slow"), Map.of("Retry-After", List.of("Wed, 21 Oct 2026 07:28:00 GMT"))),
+                new RawResponse(200, body("ok"), Map.of())));
+        HttpTransport delegate = (u, h) -> responses.poll();
+
+        new RetryingTransport(delegate, RetryPolicy.defaults(), recordingSleeper).get(uri, Map.of());
+
+        assertThat(slept).hasSize(1);
+        assertThat(slept.getFirst()).isPositive();
+    }
+
+    @Test
     void exhaustsAttemptsAndReturnsLastFailure() {
         HttpTransport delegate = (u, h) -> new RawResponse(500, body("boom"), Map.of());
 
