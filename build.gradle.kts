@@ -18,10 +18,15 @@ plugins {
 // under META-INF/native-image/<group>/<module>/ where native-image auto-detects it; the
 // native-smoke job proves it is sufficient.
 configure(listOf(project(":core"), project(":football"), project(":motorsport"))) {
+    // javac's "module" lint cannot be satisfied here: the group name carries digits (miro93)
+    // and core's qualified exports name the sport modules, which are compiled after it.
+    tasks.withType<JavaCompile>().configureEach {
+        options.compilerArgs.add("-Xlint:-module")
+    }
     plugins.withId("java-library") {
         val sourceSets = extensions.getByType<SourceSetContainer>()
         val helidonFragment = rootProject.layout.projectDirectory.file("gradle/helidon-reachability-metadata.json")
-        val generateReachabilityMetadata by tasks.registering {
+        val generateReachabilityMetadata = tasks.register("generateReachabilityMetadata") {
             val classesDirs = sourceSets["main"].output.classesDirs
             val outputDir = layout.buildDirectory.dir("generated/native-metadata")
             // the Maven group comes from gradle.properties (GROUP), as the publishing plugin reads it
