@@ -12,7 +12,7 @@ on:
       - 'v*'
 
 permissions:
-  contents: read
+  contents: write # upload the SBOMs to the GitHub Release
 
 jobs:
   publish:
@@ -31,12 +31,22 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
 
-      - name: Publish to Maven Central
+      - name: Publish to Maven Central and generate the CycloneDX SBOMs
         run: |
           VERSION=${GITHUB_REF_NAME#v}
-          ./gradlew publishToMavenCentral --no-daemon -PVERSION_NAME="$VERSION"
+          ./gradlew publishToMavenCentral cyclonedxDirectBom --no-daemon -PVERSION_NAME="$VERSION"
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+
+      - name: Attach the SBOMs to the GitHub Release
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          for module in core football motorsport; do
+            cp "$module/build/reports/cyclonedx-direct/bom.json" "sportmonks-$module-$VERSION-cyclonedx.json"
+          done
+          gh release upload "$GITHUB_REF_NAME" ./*-cyclonedx.json --clobber
+        env:
+          GH_TOKEN: ${{ github.token }}

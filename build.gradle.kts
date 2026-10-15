@@ -7,6 +7,7 @@ import groovy.json.JsonSlurper
 // classloader-cast failure during :native-smoke:nativeCompile.
 plugins {
     alias(libs.plugins.graalvm.native) apply false
+    alias(libs.plugins.cyclonedx.bom) apply false
 }
 
 // GraalVM reachability metadata, generated from the compiled classes instead of the
@@ -47,5 +48,23 @@ configure(listOf(project(":core"), project(":football"), project(":motorsport"))
             }
         }
         sourceSets["main"].resources.srcDir(generateReachabilityMetadata)
+    }
+}
+
+// CycloneDX SBOM per published module (build/reports/cyclonedx-direct/bom.json), attached to
+// the GitHub Release by release.yml. Only the runtime classpath: test and annotation-processor
+// dependencies never reach consumers.
+configure(listOf(project(":core"), project(":football"), project(":motorsport"))) {
+    // the plugin reads group/version eagerly, before the publishing plugin sets them
+    group = providers.gradleProperty("GROUP").get()
+    version = providers.gradleProperty("VERSION_NAME").get()
+    apply(plugin = "org.cyclonedx.bom")
+    tasks.named<org.cyclonedx.gradle.CyclonedxDirectTask>("cyclonedxDirectBom") {
+        includeConfigs = listOf("runtimeClasspath")
+        // published artifactId, not the Gradle project name
+        // ponytail: the football/motorsport BOMs still reference core by project name
+        // (`core`), the plugin derives inner project components from the Gradle graph;
+        // renaming the projects in settings.gradle.kts would fix it (~170 references).
+        componentName = project.property("POM_ARTIFACT_ID") as String
     }
 }
