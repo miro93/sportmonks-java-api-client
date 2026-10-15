@@ -1,6 +1,6 @@
 # sportmonks-java-api-client
 
-A type-safe Java 25 client for the [SportMonks v3 football API](https://docs.sportmonks.com/football).
+A type-safe Java 27 client for the [SportMonks v3 football API](https://docs.sportmonks.com/football).
 
 ![CI](https://github.com/miro93/sportmonks-java-api-client/actions/workflows/ci.yml/badge.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -20,7 +20,7 @@ A type-safe Java 25 client for the [SportMonks v3 football API](https://docs.spo
 
 ## Requirements
 
-- Java 25 or later
+- Java 27 or later
 
 ---
 
