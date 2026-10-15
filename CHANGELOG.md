@@ -5,6 +5,51 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0](https://github.com/miro93/sportmonks-java-api-client/compare/v3.0.1...v4.0.0) (2026-10-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** the published jars target Java 27.
+
+### Features
+
+* **core:** cap the response body size read by the transport ([d1875bf](https://github.com/miro93/sportmonks-java-api-client/commit/d1875bff7fa1ed400d51bc632aea51ea15f981e9)), closes [#141](https://github.com/miro93/sportmonks-java-api-client/issues/141)
+* **core:** optional TTL cache for reference data ([9f70304](https://github.com/miro93/sportmonks-java-api-client/commit/9f703043b8e79aa05acccb81ecb9a73220a819f7)), closes [#144](https://github.com/miro93/sportmonks-java-api-client/issues/144)
+* **core:** rate-limit tracking and optional client-side guard ([a2e6113](https://github.com/miro93/sportmonks-java-api-client/commit/a2e6113169d007b504c9f7f20c5b0ab85aec02c3)), closes [#122](https://github.com/miro93/sportmonks-java-api-client/issues/122)
+* **core:** request gzip responses and decompress them in the transport ([a6a525a](https://github.com/miro93/sportmonks-java-api-client/commit/a6a525ad68abc6591a87caea286a51899d372b21)), closes [#138](https://github.com/miro93/sportmonks-java-api-client/issues/138)
+* **core:** RequestListener hook for logging and metrics ([7a27b0f](https://github.com/miro93/sportmonks-java-api-client/commit/7a27b0f43d75203101f119b4ccfb1fc735de5f78)), closes [#123](https://github.com/miro93/sportmonks-java-api-client/issues/123)
+* **core:** sortBy/order query options, plus per_page, locale and timezone ([#128](https://github.com/miro93/sportmonks-java-api-client/issues/128)) ([b6408e1](https://github.com/miro93/sportmonks-java-api-client/commit/b6408e127601d18b58141e8b84a666966e69fa1d)), closes [#117](https://github.com/miro93/sportmonks-java-api-client/issues/117) [#118](https://github.com/miro93/sportmonks-java-api-client/issues/118)
+* **core:** support cursor-based pagination (next_cursor) ([#110](https://github.com/miro93/sportmonks-java-api-client/issues/110)) ([562288e](https://github.com/miro93/sportmonks-java-api-client/commit/562288ef9444992cc9b6b3c578a9bfcd81c99cba)), closes [#103](https://github.com/miro93/sportmonks-java-api-client/issues/103)
+* cover the remaining SportMonks endpoint groups ([#109](https://github.com/miro93/sportmonks-java-api-client/issues/109)) ([#116](https://github.com/miro93/sportmonks-java-api-client/issues/116)) ([9324254](https://github.com/miro93/sportmonks-java-api-client/commit/9324254ae1002137889989784673028229f28563))
+* decode envelope-less responses and expose transfer-rumours/config ([afac506](https://github.com/miro93/sportmonks-java-api-client/commit/afac506be5afeabfa86046ccb65ded5607b07727)), closes [#119](https://github.com/miro93/sportmonks-java-api-client/issues/119)
+* **football:** add Event.rescinded for card events ([#111](https://github.com/miro93/sportmonks-java-api-client/issues/111)) ([7047396](https://github.com/miro93/sportmonks-java-api-client/commit/7047396904de50f23bde6e6fb27f4c9363e2de25)), closes [#104](https://github.com/miro93/sportmonks-java-api-client/issues/104)
+* **football:** add latest(), upcomingByMarket(), upcomingByTvStation(), pastByTvStation() to FixturesEndpoint ([#112](https://github.com/miro93/sportmonks-java-api-client/issues/112)) ([eb69de1](https://github.com/miro93/sportmonks-java-api-client/commit/eb69de18675452ac394b6dd3620674747cf45bc0)), closes [#105](https://github.com/miro93/sportmonks-java-api-client/issues/105)
+* **football:** add live probabilities endpoints to PredictionsEndpoint ([#113](https://github.com/miro93/sportmonks-java-api-client/issues/113)) ([047bf3a](https://github.com/miro93/sportmonks-java-api-client/commit/047bf3a5da8c7cd57248fd1b8edca49f1d41a4b9)), closes [#106](https://github.com/miro93/sportmonks-java-api-client/issues/106)
+* **football:** add SeasonsEndpoint.brackets() for knockout tournament brackets ([#115](https://github.com/miro93/sportmonks-java-api-client/issues/115)) ([f3e9326](https://github.com/miro93/sportmonks-java-api-client/commit/f3e93266b2046c4540db5184ce374171b3d5eb71)), closes [#108](https://github.com/miro93/sportmonks-java-api-client/issues/108)
+* **football:** add SquadsEndpoint.extendedByTeam() and Player.inSquad ([#114](https://github.com/miro93/sportmonks-java-api-client/issues/114)) ([fffcdaf](https://github.com/miro93/sportmonks-java-api-client/commit/fffcdafd16fff3a19050328e3f23fdc0ad38885e)), closes [#107](https://github.com/miro93/sportmonks-java-api-client/issues/107)
+* **football:** Includes constants for the documented include names ([1929e93](https://github.com/miro93/sportmonks-java-api-client/commit/1929e93caeab2c7a2910b1f7dab920f12f33b2cb)), closes [#124](https://github.com/miro93/sportmonks-java-api-client/issues/124)
+* **football:** typed date accessors on the models ([208b94b](https://github.com/miro93/sportmonks-java-api-client/commit/208b94b7691fd3f259b7ea5bb3d0fe389e211557)), closes [#120](https://github.com/miro93/sportmonks-java-api-client/issues/120)
+* **motorsport:** new module for the SportMonks Motorsport API v3 ([24b1214](https://github.com/miro93/sportmonks-java-api-client/commit/24b1214fc852940e45f0c782543a0cc9e876004e)), closes [#127](https://github.com/miro93/sportmonks-java-api-client/issues/127)
+
+
+### Bug Fixes
+
+* **core:** default HttpClient no longer follows redirects ([aeb7cc8](https://github.com/miro93/sportmonks-java-api-client/commit/aeb7cc88b3a3d20d72b29ecccceb3d5b42ec61c5)), closes [#140](https://github.com/miro93/sportmonks-java-api-client/issues/140)
+* **core:** refuse plain http:// base URLs outside loopback ([d668bf4](https://github.com/miro93/sportmonks-java-api-client/commit/d668bf4b7a78f2aed3d5db75ec0de3bf031abe37)), closes [#139](https://github.com/miro93/sportmonks-java-api-client/issues/139)
+
+
+### Performance Improvements
+
+* **core:** decode the envelope in one JsonParser pass, share Retry-After parsing ([e250eb4](https://github.com/miro93/sportmonks-java-api-client/commit/e250eb44016742f5316da42d6a8ac1e3c8cba1b1))
+* **core:** one-page lookahead in CollectionRequest.stream() ([f83f87d](https://github.com/miro93/sportmonks-java-api-client/commit/f83f87d2038cbedda22592904996266705fd6411)), closes [#142](https://github.com/miro93/sportmonks-java-api-client/issues/142)
+* **core:** parse each response exactly once in HelidonJsonCodec ([12a8680](https://github.com/miro93/sportmonks-java-api-client/commit/12a86801a0f06a00bef96a25b469c7dc4bc256ef)), closes [#143](https://github.com/miro93/sportmonks-java-api-client/issues/143)
+
+
+### Build System
+
+* **deps:** Java 27 toolchain and Helidon 27.0.0 ([9e6fdf7](https://github.com/miro93/sportmonks-java-api-client/commit/9e6fdf73d2d4766416bf45cd5c04119d0efece8e))
+
 ## [3.0.1](https://github.com/miro93/sportmonks-java-api-client/compare/v3.0.0...v3.0.1) (2026-10-14)
 
 
