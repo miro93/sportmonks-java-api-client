@@ -6,6 +6,11 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 10
+    ignore:
+      # Helidon 27+ follows the JDK tip-and-tail cadence and needs Java 27; this library
+      # targets the Java 25 toolchain and stays on the Helidon 4 LTS line.
+      - dependency-name: "io.helidon*"
+        update-types: ["version-update:semver-major"]
     groups:
       gradle-minor-and-patch:
         update-types:
