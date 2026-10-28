@@ -7,8 +7,8 @@ import groovy.json.JsonSlurper
 buildscript {
     dependencies {
         constraints {
-            classpath("com.fasterxml.jackson.core:jackson-core:2.22.3")
-            classpath("com.fasterxml.jackson.core:jackson-databind:2.22.3")
+            classpath("com.fasterxml.jackson.core:jackson-core:2.22.4")
+            classpath("com.fasterxml.jackson.core:jackson-databind:2.22.4")
         }
     }
 }
